@@ -1,0 +1,27 @@
+{
+  "name": "cytoscape-graph-algos",
+  "version": "1.0.0",
+  "main": "dist/cytospace-graph-algos.cjs.js",
+  "module": "dist/cytoscape-graph-algos.esm.js",
+  "browser": "dist/cytoscape-graph-algos.js",
+  "dependencies": {
+    "cytoscape": "^3.21.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "rollup": "^1.0.0",
+    "rollup-plugin-babel": "^4.2.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "test.html",
+    "pretest": "npm run build"
+  },
+  "files": [
+    "dist"
+  ]
+}
