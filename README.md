@@ -34,7 +34,8 @@ npm install
 `npm test` builds the library, then tests it.
 
 <a href=" href="https://www.google.com/" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
-[https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html]
+[https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html][https://ivis-at-bilkent.github.io/cytoscape.js-layout-utilities/demo.html]
+                                                                                                                                   
 
 
 ## Variations
