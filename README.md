@@ -33,6 +33,9 @@ npm install
 
 `npm test` builds the library, then tests it.
 
+<a href="doc:introduction" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
+
+
 ## Variations
 
 * [babel](https://github.com/rollup/rollup-starter-lib/tree/babel) — illustrates writing the source code in ES2015 and transpiling it for older environments with [Babel](https://babeljs.io/)
