@@ -6,8 +6,8 @@ import {graphofinterest} from "./graphofinterest.js";
 export default function register(cytoscape){
 	cytoscape('collection', 'kneighborhood', kneighborhood);
 	cytoscape('collection', 'compoundbfs', compoundbfs);
-	cytoscape('collection', 'commonstream', commonstream);
-	cytoscape('collection', 'graphofinterest', graphofinterest);
+	cytoscape('collection', 'commonstream', commonstream); 
+	cytoscape('collection', 'graphofinterest', graphofinterest); // Paths Between shortest path 
 }
 
 
