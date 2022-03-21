@@ -35,11 +35,14 @@ export function commonstream( roots, k, direction ){
         while( candidates.length !== 0 ){
                var candidate = candidates.pop();
                if( count[ candidate.id()] === roots.length){
-                   if( candidate.isNode())
+                   if( candidate.isNode()){
                        commonnodes.push(candidate);
+                       candidate.addClass('highlighted');
+                   }
                    else
                        commonedges.push(candidate);
-                   candidate.select();
+                       candidate.addClass('highlighted');
+                   //candidate.select();
                }       
         }
         return [commonnodes, commonedges];

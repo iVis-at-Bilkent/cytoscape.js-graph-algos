@@ -19,10 +19,18 @@ export function kneighborhood(root,k,direction){
   console.log(neighbornodes.length, neighboredges.length) ;
   //console.log(dist[neighbornodes[0].id()]);
 
-  for( let i = 0; i < neighbornodes.length; i++)
-       neighbornodes[i].select();
-  for( let i = 0; i < neighboredges.length; i++)
-       neighboredges[i].select();
+  for( let i = 0; i < neighbornodes.length; i++){
+     if(  neighbornodes[i].isParent() === false)
+       neighbornodes[i].addClass('highlighted');
+       else 
+       neighbornodes[i].addClass('highlightedParent');
+       console.log(neighbornodes[i].id());
+       //neighbornodes[i].select();
+  }
+  for( let i = 0; i < neighboredges.length; i++){
+       neighboredges[i].addClass('highlighted');
+       //neighboredges[i].select();
+  }
 
   return [neighbornodes, neighboredges];
 

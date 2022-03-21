@@ -41,13 +41,15 @@ export  function compoundbfs(roots,k,direction){
         allNodesinCompounds = allNodesinCompounds.union(anchestors);
   
         let noOfNodesinCompound = allNodesinCompounds.length;
-        //console.log(anchestors.length);
+        console.log( node.id() + " " +  noOfNodesinCompound);
   
         for( let i = 0; i < noOfNodesinCompound; i++){
              dist [ allNodesinCompounds[i].id() ] = depth;
              compoundVisited [ allNodesinCompounds[i].id() ] = true;
   
              if( visited[ allNodesinCompounds[i].id()] !== true ){
+               neighbornodes.push(allNodesinCompounds[i]);             
+          
                visited[allNodesinCompounds[i].id()] = true;
                Q.push(allNodesinCompounds[i]);
              }

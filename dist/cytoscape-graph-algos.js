@@ -59,11 +59,13 @@
     console.log(neighbornodes.length, neighboredges.length); //console.log(dist[neighbornodes[0].id()]);
 
     for (var i = 0; i < neighbornodes.length; i++) {
-      neighbornodes[i].select();
+      if (neighbornodes[i].isParent() === false) neighbornodes[i].addClass('highlighted');else neighbornodes[i].addClass('highlightedParent');
+      console.log(neighbornodes[i].id()); //neighbornodes[i].select();
     }
 
     for (var _i = 0; _i < neighboredges.length; _i++) {
-      neighboredges[_i].select();
+      neighboredges[_i].addClass('highlighted'); //neighboredges[i].select();
+
     }
 
     return [neighbornodes, neighboredges]; //  var cyy = cytoscape({container: document.getElementById('cyy')});
@@ -159,13 +161,15 @@
         anchestors = anchestors.union(node);
         var allNodesinCompounds = anchestors.descendants();
         allNodesinCompounds = allNodesinCompounds.union(anchestors);
-        var noOfNodesinCompound = allNodesinCompounds.length; //console.log(anchestors.length);
+        var noOfNodesinCompound = allNodesinCompounds.length;
+        console.log(node.id() + " " + noOfNodesinCompound);
 
         for (var _i = 0; _i < noOfNodesinCompound; _i++) {
           dist[allNodesinCompounds[_i].id()] = depth;
           compoundVisited[allNodesinCompounds[_i].id()] = true;
 
           if (visited[allNodesinCompounds[_i].id()] !== true) {
+            neighbornodes.push(allNodesinCompounds[_i]);
             visited[allNodesinCompounds[_i].id()] = true;
             Q.push(allNodesinCompounds[_i]);
           }
@@ -240,8 +244,12 @@
       var candidate = candidates.pop();
 
       if (count[candidate.id()] === roots.length) {
-        if (candidate.isNode()) commonnodes.push(candidate);else commonedges.push(candidate);
-        candidate.select();
+        if (candidate.isNode()) {
+          commonnodes.push(candidate);
+          candidate.addClass('highlighted');
+        } else commonedges.push(candidate);
+
+        candidate.addClass('highlighted'); //candidate.select();
       }
     }
 
@@ -266,7 +274,8 @@
 
     for (var i = 0; i < forwardneighbornodes.length; i++) {
       if (forwarddist[forwardneighbornodes[i].id()] !== undefined && reversedist[forwardneighbornodes[i].id()] && forwarddist[forwardneighbornodes[i].id()] + reversedist[forwardneighbornodes[i].id()] <= k) {
-        forwardneighbornodes[i].select();
+        //forwardneighbornodes[i].select();
+        forwardneighbornodes[i].addClass('highlighted');
         resultNodes.push(forwardneighbornodes[i]);
       }
     }
@@ -275,7 +284,8 @@
       console.log(forwardneighboredges[_i].source().id() + " ");
 
       if (forwarddist[forwardneighboredges[_i].source().id()] !== undefined && reversedist[forwardneighboredges[_i].target().id()] !== undefined && forwarddist[forwardneighboredges[_i].source().id()] + reversedist[forwardneighboredges[_i].target().id()] < k) {
-        forwardneighboredges[_i].select();
+        //forwardneighboredges[i].select(); 
+        forwardneighboredges[_i].addClass('highlighted');
 
         resultEdges.push(forwardneighboredges[_i]);
       }
@@ -288,7 +298,7 @@
     cytoscape('collection', 'kneighborhood', kneighborhood);
     cytoscape('collection', 'compoundbfs', compoundbfs);
     cytoscape('collection', 'commonstream', commonstream);
-    cytoscape('collection', 'graphofinterest', graphofinterest);
+    cytoscape('collection', 'graphofinterest', graphofinterest); // Paths Between shortest path 
   }
 
   if (typeof window.cytoscape !== 'undefined') {

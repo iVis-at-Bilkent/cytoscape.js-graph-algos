@@ -14,7 +14,6 @@
   <script src="https://raw.githack.com/iVis-at-Bilkent/cose-base/unstable/cose-base.js"></script>
   <script src="https://raw.githack.com/iVis-at-Bilkent/cytoscape.js-fcose/unstable/cytoscape-fcose.js"></script>
   <script src="https://unpkg.com/cytoscape-graphml/cytoscape-graphml.js"></script>
-  <script src="cytoscape-layout-utilities.js"></script>
     <script src="cytoscape.min.js"></script>
     
     <script src="https://unpkg.com/layout-base/layout-base.js"></script>
@@ -193,7 +192,14 @@
                   ,'curve-style': 'straight'
                 }
               },
-                            
+              {
+                selector: ':parent',
+                style: {
+                  'background-color': '#FFFFFF',
+                  'border-color': '#2B65EC'
+                  
+                }
+              },           
               {
                 selector: 'node:selected',
                 style: {
@@ -202,7 +208,33 @@
                   
                 }
               },
-              
+              { selector: 'node.highlighted',
+                style: {
+                  'background-color': '#FF00FF',
+                  'border-color': 'red',
+                  label: 'data(id)'
+                }
+             },
+             { selector: 'node.highlightedParent',
+                style: {
+                //  'background-color': '#FF00FF',
+                  'border-color': '#FF00FF',
+                  'border-width': 2,
+                  label: 'data(id)'
+                }
+             },
+             { selector: 'edge.highlighted',
+                style: {
+                  'width': 3
+                 , 'line-color': '#FF00FF',
+                  'target-arrow-shape': 'triangle'
+                  ,'target-arrow-color': '#FF00FF'
+                  ,'target-arrow-fill': 'filled'
+                  ,'arrow-scale': 1
+                  ,'curve-style': 'straight'
+                //  label: 'data(id)'
+                }
+             },
               {
                 selector: 'edge:selected',
                 style: {
@@ -233,20 +265,20 @@
             {"data":{"id":"glyph19","position":{"x":893.1427762830865,"y":856.2695126662625},"group":"nodes"}},
             {"data":{"id":"glyph11","position":{"x":939.3335184518824,"y":758.3699048922733},"group":"nodes"}},
             {"data":{"id":"glyph18","position":{"x":770.4114528170364,"y":659.2220219290564},"group":"nodes"}},
-            {"data":{"id":"glyph16","position":{"x":818.0111009023315,"y":564.8072603606723},"group":"nodes"}},
+            {"data":{"id":"glyph16","position":{"x":818.0111009023315,"y":564.8072603606723},"group":"nodes","parent": "glyph18" }},
             {"data":{"id":"glyph22","position":{"x":651.1292498357636,"y":314.1387423188818},"group":"nodes"}},
             {"data":{"id":"glyph4","position":{"x":792.0076145303351,"y":454.0225025614517},"group":"nodes"}},
-            {"data":{"id":"glyph23","position":{"x":704.0937009722281,"y":398.0421081673902},"group":"nodes"}},
-            {"data":{"id":"glyph24","position":{"x":809.2974819306742,"y":231.7141323534711},"group":"nodes"}},
+            {"data":{"id":"glyph23","position":{"x":704.0937009722281,"y":398.0421081673902},"group":"nodes","parent": "glyph20"}},
+            {"data":{"id":"glyph24","position":{"x":809.2974819306742,"y":231.7141323534711},"group":"nodes","parent": "glyph23"}},
             {"data":{"id":"glyph25","position":{"x":890.826951363933,"y":299.74915938409947},"group":"nodes"}},
             {"data":{"id":"glyph20","position":{"x":786.2625869125006,"y":331.67766378118495},"group":"nodes"}},
-            {"data":{"id":"glyph26","position":{"x":879.2981049664311,"y":389.27232563593486},"group":"nodes"}},
+            {"data":{"id":"glyph26","position":{"x":879.2981049664311,"y":389.27232563593486},"group":"nodes","parent": "glyph20"}},
             {"data":{"id":"glyph35","position":{"x":627.088268638501,"y":40.089848876876886},"group":"nodes"}},
             {"data":{"id":"glyph36","position":{"x":329.6761506918384,"y":187.20503497360494},"group":"nodes"}},
             {"data":{"id":"glyph37","position":{"x":155.12947729633356,"y":379.5263531900425},"group":"nodes"}},
             {"data":{"id":"glyph38","position":{"x":70.13952165372024,"y":581.2691021233562},"group":"nodes"}},
             {"data":{"id":"glyph21","position":{"x":713.4639263718316,"y":229.06355211274115},"group":"nodes"}},
-            {"data":{"id":"glyph42","position":{"x":523.848994074475,"y":108.47701882803744},"group":"nodes"/*, "parent": "glyph21"*/}},
+            {"data":{"id":"glyph42","position":{"x":523.848994074475,"y":108.47701882803744},"group":"nodes", "parent": "glyph21"}},
             {"data":{"id":"glyph41","position":{"x":718.966532806447,"y":116.46683749236911},"group":"nodes"}},
             {"data":{"id":"glyph31","position":{"x":621.3138039842713,"y":145.7168752444793},"group":"nodes"}},
             {"data":{"id":"glyph27","position":{"x":525.2099120385327,"y":210.92542274858295},"group":"nodes"}},
@@ -279,14 +311,14 @@
             {"data":{"id":"e37","source":"glyph16","target":"glyph4","group":"edges"}},
             {"data":{"id":"e38","source":"glyph10","target":"glyph17","group":"edges"}},
             {"data":{"id":"e39","source":"glyph19","target":"glyph11","group":"edges"}},
-            {"data":{"id":"e40","source":"glyph18","target":"glyph16","group":"edges"}},
+            //{"data":{"id":"e40","source":"glyph18","target":"glyph16","group":"edges"}},
             //{"data":{"id":"e41","source":"glyph22","target":"glyph20","group":"edges"}},
             {"data":{"id":"e42","source":"glyph4","target":"glyph20","group":"edges"}},
             {"data":{"id":"e43","source":"glyph20","target":"glyph21","group":"edges"}},
-            {"data":{"id":"e44","source":"glyph23","target":"glyph20","group":"edges"}},
-            {"data":{"id":"e45","source":"glyph24","target":"glyph20","group":"edges"}},
+            //{"data":{"id":"e44","source":"glyph23","target":"glyph20","group":"edges"}},
+           // {"data":{"id":"e45","source":"glyph24","target":"glyph20","group":"edges"}},
             {"data":{"id":"e46","source":"glyph20","target":"glyph25","group":"edges"}},
-            {"data":{"id":"e47","source":"glyph20","target":"glyph26","group":"edges"}},
+           // {"data":{"id":"e47","source":"glyph20","target":"glyph26","group":"edges"}},
             {"data":{"id":"e48","source":"glyph35","target":"glyph31","group":"edges"}},
             {"data":{"id":"e49","source":"glyph36","target":"glyph32","group":"edges"}},
             //{"data":{"id":"e50","source":"glyph37","target":"glyph33","group":"edges"}},
@@ -309,6 +341,7 @@
             {"data":{"id":"e67","source":"glyph13","target":"glyph22","group":"edges"}},
             {"data":{"id":"e68","source":"glyph17","target":"glyph6","group":"edges"}},
             {"data":{"id":"e69","source":"glyph25","target":"glyph27","group":"edges"}}]
+            //{"data":{"id":"e70","source":"glyph42","target":"glyph31","group":"edges"}}
           });          
           
           cy.layout({
@@ -323,6 +356,12 @@ element.onclick = function(event) {
 //console.log(cy.elements().kneighborhood);
 var root = cy.$id("glyph10");
 var root2 = cy.$id("glyph17");
+/*root.addClass('highlighted');
+console.log(cy.$('node.highlighted').size());
+console.log(cy.$('node.highlighted')[0].id());*/
+cy.style().update();
+//console.log(cy.$('node.highlighted')[1].id());
+//return ;
 var sourceNodes = [];
 var direction;
 var limit;
@@ -333,7 +372,7 @@ var valueRoot ;
 var neighborhoodK = 0;
          //cy.elements().commonstream([root,root2],4, "DOWNSTREAM");
         // cy.elements().commonstream([root,root2],1, "DOWNSTREAM");
-        cy.elements().graphofinterest([root,root2], 5);
+        //cy.elements().graphofinterest([root,root2], 5);
       
       function neighborhoodquery( ){
         cy.elements().kneighborhood(root,2);
@@ -583,6 +622,25 @@ var neighborhoodK = 0;
          sourceNodes = [];
         });
 
+        document.getElementById('clearNodes')
+        .addEventListener('click',  () => {
+
+        var nodes = cy.nodes();
+
+        for( let i = 0; i < nodes.length; i++){
+             nodes[i].unselect();
+             nodes[i].removeClass('highlighted');
+             nodes[i].removeClass('highlightedParent');
+        }
+        var edges = cy.edges();
+
+        for( let i = 0; i < edges.length; i++){
+             edges[i].unselect();
+             edges[i].removeClass('highlighted');
+        }
+        });
+
+
      
 
     });
@@ -660,9 +718,11 @@ var neighborhoodK = 0;
           <option value="BOTHSTREAM"> BOTHSTREAM</option>
         </select>
         </div>
-
+        
 
   </div>
+
+  <button id ="clearNodes" class="button" >Clear</button>
   
 
   <div id="cy"></div>

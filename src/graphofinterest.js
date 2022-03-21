@@ -9,7 +9,8 @@ export function graphofinterest(roots, k ){
         if( forwarddist[forwardneighbornodes[i].id()] !== undefined && reversedist[forwardneighbornodes[i].id()] &&
         forwarddist[forwardneighbornodes[i].id()] + reversedist[forwardneighbornodes[i].id()] <= k 
         ){
-        forwardneighbornodes[i].select();
+        //forwardneighbornodes[i].select();
+        forwardneighbornodes[i].addClass('highlighted');
         resultNodes.push(forwardneighbornodes[i]);
         }
     }
@@ -21,7 +22,8 @@ export function graphofinterest(roots, k ){
          forwarddist[forwardneighboredges[i].source().id()] + reversedist[forwardneighboredges[i].target().id()] < k 
          ){
              
-            forwardneighboredges[i].select(); 
+            //forwardneighboredges[i].select(); 
+            forwardneighboredges[i].addClass('highlighted'); 
             resultEdges.push(forwardneighboredges[i]);
          }
     }
