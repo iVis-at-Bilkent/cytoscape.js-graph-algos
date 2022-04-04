@@ -35,6 +35,10 @@
       font-weight: bold;
       cursor: pointer;
     }
+    .direction {
+      margin-left : 5px;
+      margin-bottom: 5px;
+    }
 
     input[type="file"] {
       display: none;
@@ -66,7 +70,7 @@
 
     input {
       display: table-cell;
-      margin-left: 5px;
+      margin-left: 0px;
     }
 
     #cy {
@@ -215,6 +219,13 @@
                   label: 'data(id)'
                 }
              },
+             { selector: 'node.highlightedTarget',
+                style: {
+                  'background-color': '#000000',
+                  'border-color': 'red',
+                  label: 'data(id)'
+                }
+             },
              { selector: 'node.highlightedParent',
                 style: {
                 //  'background-color': '#FF00FF',
@@ -266,7 +277,7 @@
             {"data":{"id":"glyph11","position":{"x":939.3335184518824,"y":758.3699048922733},"group":"nodes"}},
             {"data":{"id":"glyph18","position":{"x":770.4114528170364,"y":659.2220219290564},"group":"nodes"}},
             {"data":{"id":"glyph16","position":{"x":818.0111009023315,"y":564.8072603606723},"group":"nodes","parent": "glyph18" }},
-            {"data":{"id":"glyph22","position":{"x":651.1292498357636,"y":314.1387423188818},"group":"nodes"}},
+            {"data":{"id":"glyph22","position":{"x":651.1292498357636,"y":314.1387423188818},"group":"nodes","parent": "glyph43"}},
             {"data":{"id":"glyph4","position":{"x":792.0076145303351,"y":454.0225025614517},"group":"nodes"}},
             {"data":{"id":"glyph23","position":{"x":704.0937009722281,"y":398.0421081673902},"group":"nodes","parent": "glyph20"}},
             {"data":{"id":"glyph24","position":{"x":809.2974819306742,"y":231.7141323534711},"group":"nodes","parent": "glyph23"}},
@@ -276,7 +287,7 @@
             {"data":{"id":"glyph35","position":{"x":627.088268638501,"y":40.089848876876886},"group":"nodes"}},
             {"data":{"id":"glyph36","position":{"x":329.6761506918384,"y":187.20503497360494},"group":"nodes"}},
             {"data":{"id":"glyph37","position":{"x":155.12947729633356,"y":379.5263531900425},"group":"nodes"}},
-            {"data":{"id":"glyph38","position":{"x":70.13952165372024,"y":581.2691021233562},"group":"nodes"}},
+            {"data":{"id":"glyph38","position":{"x":70.13952165372024,"y":581.2691021233562},"group":"nodes","parent": "glyph40"}},
             {"data":{"id":"glyph21","position":{"x":713.4639263718316,"y":229.06355211274115},"group":"nodes"}},
             {"data":{"id":"glyph42","position":{"x":523.848994074475,"y":108.47701882803744},"group":"nodes", "parent": "glyph21"}},
             {"data":{"id":"glyph41","position":{"x":718.966532806447,"y":116.46683749236911},"group":"nodes"}},
@@ -284,13 +295,13 @@
             {"data":{"id":"glyph27","position":{"x":525.2099120385327,"y":210.92542274858295},"group":"nodes"}},
             {"data":{"id":"glyph32","position":{"x":426.3492127437995,"y":257.85665030680025},"group":"nodes"}},
             {"data":{"id":"glyph28","position":{"x":346.30926488002945,"y":344.4562152937847},"group":"nodes"}},
-            {"data":{"id":"glyph43","position":{"x":363.54724181648487,"y":486.5705174517715},"group":"nodes"}},
+            {"data":{"id":"glyph43","position":{"x":363.54724181648487,"y":486.5705174517715},"group":"nodes","parent": "glyph34"}},
             {"data":{"id":"glyph33","position":{"x":269.87972487503066,"y":430.2423722580144},"group":"nodes"}},
             {"data":{"id":"glyph29","position":{"x":227.86139816113416,"y":531.824141876398},"group":"nodes"}},
-            {"data":{"id":"glyph39","position":{"x":104.77693104995387,"y":691.8382969303054},"group":"nodes"}},
-            {"data":{"id":"glyph40","position":{"x":292.039416141131,"y":643.4009391289965},"group":"nodes"}},
+            {"data":{"id":"glyph39","position":{"x":104.77693104995387,"y":691.8382969303054},"group":"nodes","parent": "glyph40"}},
+            {"data":{"id":"glyph40","position":{"x":292.039416141131,"y":643.4009391289965},"group":"nodes","parent": "glyph34"}},
             {"data":{"id":"glyph34","position":{"x":193.8304385062596,"y":632.9540034207419},"group":"nodes"}},
-            {"data":{"id":"glyph30","position":{"x":205.4745704273754,"y":733.5181650652648},"group":"nodes"}},
+            {"data":{"id":"glyph30","position":{"x":205.4745704273754,"y":733.5181650652648},"group":"nodes","parent": "glyph43"}},
             {"data":{"id":"glyph14","position":{"x":695.1248473196924,"y":482.8828321494848},"group":"nodes"}},
             {"data":{"id":"glyph5","position":{"x":721.6687687330186,"y":570.3868893775194},"group":"nodes"}},
             {"data":{"id":"e22","source":"glyph9","target":"glyph8","group":"edges"}},
@@ -322,7 +333,7 @@
             {"data":{"id":"e48","source":"glyph35","target":"glyph31","group":"edges"}},
             {"data":{"id":"e49","source":"glyph36","target":"glyph32","group":"edges"}},
             //{"data":{"id":"e50","source":"glyph37","target":"glyph33","group":"edges"}},
-            {"data":{"id":"e51","source":"glyph38","target":"glyph34","group":"edges"}},
+           // {"data":{"id":"e51","source":"glyph38","target":"glyph34","group":"edges"}},
             {"data":{"id":"e52","source":"glyph21","target":"glyph31","group":"edges"}},
             {"data":{"id":"e53","source":"glyph42","target":"glyph31","group":"edges"}},
             {"data":{"id":"e54","source":"glyph31","target":"glyph41","group":"edges"}},
@@ -332,15 +343,16 @@
             {"data":{"id":"e58","source":"glyph28","target":"glyph33","group":"edges"}},
             //{"data":{"id":"e59","source":"glyph33","target":"glyph43","group":"edges"}},
             //{"data":{"id":"e60","source":"glyph33","target":"glyph29","group":"edges"}},
-            {"data":{"id":"e61","source":"glyph29","target":"glyph34","group":"edges"}},
+            //{"data":{"id":"e61","source":"glyph29","target":"glyph34","group":"edges"}},
             //{"data":{"id":"e62","source":"glyph39","target":"glyph34","group":"edges"}},
-            {"data":{"id":"e63","source":"glyph34","target":"glyph40","group":"edges"}},
-            {"data":{"id":"e64","source":"glyph34","target":"glyph30","group":"edges"}},
+         //   {"data":{"id":"e63","source":"glyph34","target":"glyph40","group":"edges"}},
+          //  {"data":{"id":"e64","source":"glyph34","target":"glyph30","group":"edges"}},
             {"data":{"id":"e65","source":"glyph14","target":"glyph5","group":"edges"}},
             {"data":{"id":"e66","source":"glyph33","target":"glyph35","group":"edges"}},
             {"data":{"id":"e67","source":"glyph13","target":"glyph22","group":"edges"}},
             {"data":{"id":"e68","source":"glyph17","target":"glyph6","group":"edges"}},
-            {"data":{"id":"e69","source":"glyph25","target":"glyph27","group":"edges"}}]
+            {"data":{"id":"e69","source":"glyph25","target":"glyph27","group":"edges"}},
+            {"data":{"id":"e72","source":"glyph40","target":"glyph32","group":"edges"}}]
             //{"data":{"id":"e70","source":"glyph42","target":"glyph31","group":"edges"}}
           });          
           
@@ -363,17 +375,20 @@ cy.style().update();
 //console.log(cy.$('node.highlighted')[1].id());
 //return ;
 var sourceNodes = [];
+var targetNodes = [];
+var d = 1;
 var direction;
 var limit;
 document.getElementById('neighborhoodUI').style.display =  document.getElementById("queries").value === "kneighborhood" ? 'block' : 'none';
-         document.getElementById('commonstreamUI').style.display =  document.getElementById("queries") === "commonstream" ? 'block' : 'none';
-         document.getElementById('graphofinterestUI').style.display =  document.getElementById("queries") === "graphofinterest" ? 'block' : 'none';
+         document.getElementById('commonstreamUI').style.display =  document.getElementById("queries").value === "commonstream" ? 'block' : 'none';
+         document.getElementById('graphofinterestUI').style.display =  document.getElementById("queries").value === "graphofinterest" ? 'block' : 'none';
+         document.getElementById('PathsFromToUI').style.display =  document.getElementById("queries").value === "pathsFromTo" ? 'block' : 'none';
 var valueRoot ;
 var neighborhoodK = 0;
          //cy.elements().commonstream([root,root2],4, "DOWNSTREAM");
         // cy.elements().commonstream([root,root2],1, "DOWNSTREAM");
         //cy.elements().graphofinterest([root,root2], 5);
-      
+      +
       function neighborhoodquery( ){
         cy.elements().kneighborhood(root,2);
       }  
@@ -500,12 +515,14 @@ var neighborhoodK = 0;
         document.getElementById('queries')
         .addEventListener('change', function (ev) {
          valueRoot = this.value;
+         console.log(this.value + "initial" );
          var element =  document.getElementById('neighborhoodUI');
          document.getElementById('neighborhoodUI').style.display =  this.value === "kneighborhood" ? 'block' : 'none';
          document.getElementById('commonstreamUI').style.display =  this.value === "commonstream" ? 'block' : 'none';
          document.getElementById('graphofinterestUI').style.display =  this.value === "graphofinterest" ? 'block' : 'none';
+         document.getElementById('PathsFromToUI').style.display =  this.value === "pathsFromTo" ? 'block' : 'none';
          limit = 1; // default
-         direction = "UPSTREAM"
+         direction = this.value !== "pathsFromTo" ? "UPSTREAM" : "directed";
          console.log(this.value);
         });
 
@@ -524,6 +541,18 @@ var neighborhoodK = 0;
         document.getElementById('limitGoI')
         .addEventListener('change', function (ev) {
          limit = parseInt( this.value);
+         console.log(this.value);
+        });
+
+        
+        document.getElementById('limitPfT')
+        .addEventListener('change', function (ev) {
+         limit = parseInt( this.value);
+         console.log(this.value);
+        });
+        document.getElementById('dPfT')
+        .addEventListener('change', function (ev) {
+         d = parseInt( this.value);
          console.log(this.value);
         });
         
@@ -545,6 +574,12 @@ var neighborhoodK = 0;
          console.log(this.value);
         });
 
+        document.getElementById('directionPfT')
+        .addEventListener('change', function (ev) {
+         direction = this.value;
+         console.log(this.value);
+        });
+
         document.getElementById('addNodesNeighborhood')
         .addEventListener('click',  () => {
           sourceNodes = [];
@@ -557,6 +592,7 @@ var neighborhoodK = 0;
               if( nodes[i].selected() === true){
                  sourceNodes.push(nodes[i]);
                  //nodes[i].unselect();
+                 nodes[i].addClass("highlighted");
               }
          }
          //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
@@ -582,6 +618,7 @@ var neighborhoodK = 0;
               if( nodes[i].selected() === true){
                  sourceNodes.push(nodes[i]);
                  //nodes[i].unselect();
+                 nodes[i].addClass("highlighted");
               }
          }
          //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
@@ -608,6 +645,7 @@ var neighborhoodK = 0;
               if( nodes[i].selected() === true){
                  sourceNodes.push(nodes[i]);
                  //nodes[i].unselect();
+                 nodes[i].addClass("highlighted");
               }
          }
          //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
@@ -622,6 +660,50 @@ var neighborhoodK = 0;
          sourceNodes = [];
         });
 
+        document.getElementById('addSourceNodesPfT')
+        .addEventListener('click',  () => {
+          sourceNodes = [];
+        // neighborhoodK = parseInt( this.value);
+        //return ;
+
+         var nodes = cy.nodes();
+
+         for( let i = 0; i < nodes.length; i++){
+              if( nodes[i].selected() === true){
+                 sourceNodes.push(nodes[i]);
+                 //nodes[i].unselect();
+                 nodes[i].addClass("highlighted");
+                 nodes[i].unselect();
+              }
+         }
+         //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
+         //sourceNode = [];
+        });
+
+        document.getElementById('addTargetNodesPfT')
+        .addEventListener('click',  () => {
+          targetNodes = [];
+        // neighborhoodK = parseInt( this.value);
+        //return ;
+
+         var nodes = cy.nodes();
+
+         for( let i = 0; i < nodes.length; i++){
+              if( nodes[i].selected() === true){
+                 targetNodes.push(nodes[i]);
+                 //nodes[i].unselect();
+                 nodes[i].addClass("highlightedTarget");
+              }
+         }
+         //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
+         //sourceNode = [];
+        });
+
+        document.getElementById('applyPfT')
+        .addEventListener('click',  () => {
+           cy.elements().PathsFromTo(sourceNodes, targetNodes,limit, d, direction);
+        });
+
         document.getElementById('clearNodes')
         .addEventListener('click',  () => {
 
@@ -631,6 +713,7 @@ var neighborhoodK = 0;
              nodes[i].unselect();
              nodes[i].removeClass('highlighted');
              nodes[i].removeClass('highlightedParent');
+             nodes[i].removeClass('highlightedTarget');
         }
         var edges = cy.edges();
 
@@ -659,13 +742,13 @@ var neighborhoodK = 0;
   <div class="topnav">
 
 
-
+    <label >Query:</label>
     <select name="queries" id="queries">
-      <option value="anyQuery">Please select any query</option>
+     
       <option value="kneighborhood">k-neighborhood</option>
       <option value="commonstream">CommonStream</option>
       <option value="graphofinterest">GraphofInterest</option>
-      <option value="shortestpath">ShortestPath </option>
+      <option value="pathsFromTo">PathsFromTo </option>
     </select>
 
     <div id = "neighborhoodUI" >
@@ -678,7 +761,7 @@ var neighborhoodK = 0;
     <button id="applyNeighborhood" class="button" >Apply Neighborhood Query</button>
     <br /> <br /> 
     <label >Direction:</label>
-    <select id="directionNeighborhood">
+    <select id="directionNeighborhood" class= "direction">
       <option value="UPSTREAM">UPSTREAM</option>
       <option value="DOWNSTREAM"> DOWNSTREAM</option>
       <option value="BOTHSTREAM"> BOTHSTREAM</option>
@@ -695,7 +778,7 @@ var neighborhoodK = 0;
       <button id="applycommonstream" class="button" >Apply CommonStream Query</button>
       <br /> <br /> 
       <label >Direction:</label>
-      <select id="directioncommonstream">
+      <select id="directioncommonstream" class= "direction">
         <option value="UPSTREAM">UPSTREAM</option>
         <option value="DOWNSTREAM"> DOWNSTREAM</option>
         <option value="BOTHSTREAM"> BOTHSTREAM</option>
@@ -712,12 +795,35 @@ var neighborhoodK = 0;
         <button id="applyGoI" class="button" >Apply GraphofInterest Query</button>
         <br /> <br /> 
         <label >Direction:</label>
-        <select id="directionGoI">
+        <select id="directionGoI" class= "direction">
           <option value="UPSTREAM">UPSTREAM</option>
           <option value="DOWNSTREAM"> DOWNSTREAM</option>
           <option value="BOTHSTREAM"> BOTHSTREAM</option>
         </select>
         </div>
+
+
+        <div id = "PathsFromToUI" >
+          <label >Limit:</label>
+          <input  id="limitPfT" type="number" min="1" value="1"
+          step="1"> </input>
+          <br /> <br />
+          <label >d:</label>
+          <input  id="dPfT" type="number" min="1" value="1"
+          step="1"> </input>
+          <br /> <br />
+          <button id ="addSourceNodesPfT" class="button" >Add Source Nodes</button>
+          <br /> <br />
+          <button id ="addTargetNodesPfT" class="button" >Add Target Nodes</button>
+          <br /> <br />
+          <button id="applyPfT" class="button" >Apply PathsFromTo Query</button>
+          <br /> <br /> 
+          <label >Mod:</label>
+          <select id="directionPfT" class= "direction">
+            <option value="directed">DIRECTED</option>
+            <option value="undirected"> UNDIRECTED</option>
+          </select>
+          </div>
         
 
   </div>

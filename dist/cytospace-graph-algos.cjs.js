@@ -137,6 +137,7 @@ function compoundbfs(roots, k, direction) {
     dist[roots[i].id()] = 0;
     visited[roots[i].id()] = true;
     Q.push(roots[i]);
+    neighbornodes.push(roots[i]);
   } //  var cyy = cytoscape({container: document.getElementById('cyy')});
   //kneighbors.push(root);
   // root = cy.$('f68');
@@ -197,6 +198,10 @@ function compoundbfs(roots, k, direction) {
     }
   }
 
+  for (var _i3 = 0; _i3 < neighboredges.length; _i3++) {
+    console.log("Edge" + " " + neighboredges[_i3].id());
+  }
+
   return [neighbornodes, neighboredges, dist];
   /*cy.layout({
     name: 'null'
@@ -204,35 +209,50 @@ function compoundbfs(roots, k, direction) {
   //return cyy ; 
 }
 
+function reverseDirection(direction) {
+  if (direction === "BOTHSTREAM") return direction;
+  if (direction === "UPSTREAM") return "DOWNSTREAM";
+  if (direction === "DOWNSTREAM") return "UPSTREAM";
+}
+
 function commonstream(roots, k, direction) {
   var count = {};
   var candidates = [];
   var commonnodes = [];
   var commonedges = [];
+  var distancesFrom = {};
 
   for (var i = 0; i < roots.length; i++) {
     var _cy$elements$compound = cy.elements().compoundbfs(roots[i], k, direction),
         _cy$elements$compound2 = _slicedToArray(_cy$elements$compound, 3),
-        neighbornodes = _cy$elements$compound2[0],
-        neighboredges = _cy$elements$compound2[1],
+        _neighbornodes = _cy$elements$compound2[0],
+        _neighboredges = _cy$elements$compound2[1],
         dist = _cy$elements$compound2[2];
 
-    console.log(dist[neighbornodes[0].id()]);
-
-    for (var j = 0; j < neighbornodes.length; j++) {
-      console.log(neighbornodes[j].id());
-
-      if (count[neighbornodes[j].id()] === undefined) {
-        count[neighbornodes[j].id()] = 1;
-        candidates.push(neighbornodes[j]);
-      } else count[neighbornodes[j].id()]++;
+    for (var j = 0; j < _neighboredges.length; j++) {
+      console.log(i + " " + _neighboredges[j].id() + " Edges");
     }
 
-    for (var _j = 0; _j < neighboredges.length; _j++) {
-      if (count[neighboredges[_j].id()] === undefined) {
-        count[neighboredges[_j].id()] = 1;
-        candidates.push(neighboredges[_j]);
-      } else count[neighboredges[_j].id()]++;
+    console.log(dist[_neighbornodes[0].id()] + " " + i);
+
+    for (var _j = 0; _j < _neighbornodes.length; _j++) {
+      if (_neighbornodes[_j].id() === "glyph27") console.log("Distance" + dist[_neighbornodes[_j].id()]);
+      console.log(_neighbornodes[_j].id() + " " + i + " " + dist[_neighbornodes[_j].id()]);
+
+      if (count[_neighbornodes[_j].id()] === undefined) {
+        count[_neighbornodes[_j].id()] = 1;
+        distancesFrom[_neighbornodes[_j].id()] = dist[_neighbornodes[_j].id()];
+        candidates.push(_neighbornodes[_j]);
+      } else {
+        count[_neighbornodes[_j].id()]++;
+        if (distancesFrom[_neighbornodes[_j].id()] > dist[_neighbornodes[_j].id()]) distancesFrom[_neighbornodes[_j].id()] = dist[_neighbornodes[_j].id()];
+      }
+    }
+
+    for (var _j2 = 0; _j2 < _neighboredges.length; _j2++) {
+      if (count[_neighboredges[_j2].id()] === undefined) {
+        count[_neighboredges[_j2].id()] = 1; //  candidates.push( neighboredges[j] );
+      } else count[_neighboredges[_j2].id()]++;
     }
   }
 
@@ -241,11 +261,45 @@ function commonstream(roots, k, direction) {
 
     if (count[candidate.id()] === roots.length) {
       if (candidate.isNode()) {
+        console.log(candidate.id());
         commonnodes.push(candidate);
-        candidate.addClass('highlighted');
-      } else commonedges.push(candidate);
+        if (candidate.isParent() === true) candidate.addClass('highlightedParent');else candidate.addClass('highlighted');
+      } else {
+        commonedges.push(candidate); //candidate.addClass('highlighted');
+      } //candidate.select();
 
-      candidate.addClass('highlighted'); //candidate.select();
+    }
+  }
+
+  var _cy$elements$compound3 = cy.elements().compoundbfs(commonnodes, k, reverseDirection(direction)),
+      _cy$elements$compound4 = _slicedToArray(_cy$elements$compound3, 3),
+      neighbornodes = _cy$elements$compound4[0],
+      neighboredges = _cy$elements$compound4[1],
+      distancesTo = _cy$elements$compound4[2];
+
+  var allEdges = cy.edges();
+
+  for (var _i = 0; _i < allEdges.length; _i++) {
+    var sourceId = allEdges[_i].source().id();
+
+    var targetId = allEdges[_i].target().id();
+
+    if (direction === "BOTHSTREAM") {
+      if (distancesFrom[sourceId] !== undefined && distancesTo[targetId] !== undefined && distancesFrom[sourceId] + distancesTo[targetId] <= k - 1) {
+        allEdges[_i].addClass('highlighted');
+      }
+    } else if (direction === "DOWNSTREAM") {
+      if (sourceId === "glyph27" && targetId === "glyph32") console.log(distancesFrom[sourceId] + " " + distancesTo[targetId]);
+
+      if (distancesFrom[sourceId] !== undefined && distancesTo[targetId] !== undefined && distancesFrom[sourceId] + distancesTo[targetId] <= k - 1) {
+        allEdges[_i].addClass('highlighted');
+      }
+    } else if (direction === "UPSTREAM") {
+      if (sourceId === "glyph25" && targetId === "glyph27") console.log(distancesTo[sourceId] + " " + distancesFrom[targetId]);
+
+      if (distancesTo[sourceId] !== undefined && distancesFrom[targetId] !== undefined && distancesTo[sourceId] + distancesFrom[targetId] <= k - 1) {
+        allEdges[_i].addClass('highlighted');
+      }
     }
   }
 
@@ -271,7 +325,7 @@ function graphofinterest(roots, k) {
   for (var i = 0; i < forwardneighbornodes.length; i++) {
     if (forwarddist[forwardneighbornodes[i].id()] !== undefined && reversedist[forwardneighbornodes[i].id()] && forwarddist[forwardneighbornodes[i].id()] + reversedist[forwardneighbornodes[i].id()] <= k) {
       //forwardneighbornodes[i].select();
-      forwardneighbornodes[i].addClass('highlighted');
+      if (forwardneighbornodes[i].isParent()) forwardneighbornodes[i].addClass('highlightedParent');else forwardneighbornodes[i].addClass('highlighted');
       resultNodes.push(forwardneighbornodes[i]);
     }
   }
@@ -290,11 +344,70 @@ function graphofinterest(roots, k) {
   return [resultNodes, resultEdges];
 }
 
+function PathsFromTo(sources, targets, k, d, mod) {
+  var _cy$elements$compound = cy.elements().compoundbfs(sources, k, mod === "directed" ? "DOWNSTREAM" : "BOTHSTREAM"),
+      _cy$elements$compound2 = _slicedToArray(_cy$elements$compound, 3),
+      nodesFromSources = _cy$elements$compound2[0],
+      edgesFromSources = _cy$elements$compound2[1],
+      distancesFromSources = _cy$elements$compound2[2];
+
+  var _cy$elements$compound3 = cy.elements().compoundbfs(targets, k, mod === "directed" ? "UPSTREAM" : "BOTHSTREAM"),
+      _cy$elements$compound4 = _slicedToArray(_cy$elements$compound3, 3),
+      nodesToTargets = _cy$elements$compound4[0],
+      edgesToTargets = _cy$elements$compound4[1],
+      distancesToTargets = _cy$elements$compound4[2];
+
+  var l = -1;
+
+  for (var i = 0; i < targets.length; i++) {
+    if (l == -1) l = distancesFromSources[targets[i].id()];
+    if (distancesFromSources[targets[i].id()] < l) l = distancesFromSources[targets[i].id()];
+  }
+
+  var edges = cy.edges();
+
+  for (var _i = 0; _i < edges.length; _i++) {
+    var sourceId = edges[_i].source().id();
+
+    var targetId = edges[_i].target().id();
+
+    var minDistance = l + d >= k ? k : l + d;
+
+    if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
+      //edges[i].source().addClass("highlighted");
+      //edges[i].target().addClass("highlighted");
+      edges[_i].addClass("highlighted");
+    }
+
+    if (mod === "undirected") {
+      if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
+        //edges[i].source().addClass("highlighted");
+        //edges[i].target().addClass("highlighted");
+        edges[_i].addClass("highlighted");
+      }
+    }
+  }
+
+  var nodes = cy.nodes();
+
+  for (var _i2 = 0; _i2 < nodes.length; _i2++) {
+    var minDistance = l + d >= k ? k : l + d;
+
+    if (distancesFromSources[nodes[_i2].id()] !== undefined && distancesToTargets[nodes[_i2].id()] !== undefined && distancesFromSources[nodes[_i2].id()] + distancesToTargets[nodes[_i2].id()] <= minDistance) {
+      //edges[i].source().addClass("highlighted");
+      //edges[i].target().addClass("highlighted"); 
+      if (nodes[_i2].isParent() === true) nodes[_i2].addClass("highlightedParent");else nodes[_i2].addClass("highlighted");
+    }
+  }
+}
+
 function register(cytoscape) {
   cytoscape('collection', 'kneighborhood', kneighborhood);
   cytoscape('collection', 'compoundbfs', compoundbfs);
   cytoscape('collection', 'commonstream', commonstream);
   cytoscape('collection', 'graphofinterest', graphofinterest); // Paths Between shortest path 
+
+  cytoscape('collection', 'PathsFromTo', PathsFromTo);
 }
 
 if (typeof window.cytoscape !== 'undefined') {

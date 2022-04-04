@@ -10,7 +10,10 @@ export function graphofinterest(roots, k ){
         forwarddist[forwardneighbornodes[i].id()] + reversedist[forwardneighbornodes[i].id()] <= k 
         ){
         //forwardneighbornodes[i].select();
-        forwardneighbornodes[i].addClass('highlighted');
+        if( forwardneighbornodes[i].isParent())
+            forwardneighbornodes[i].addClass('highlightedParent');
+        else
+            forwardneighbornodes[i].addClass('highlighted');
         resultNodes.push(forwardneighbornodes[i]);
         }
     }

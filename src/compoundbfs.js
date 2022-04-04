@@ -15,6 +15,7 @@ export  function compoundbfs(roots,k,direction){
     dist[ roots[i].id() ] = 0; 
     visited[roots[i].id()] = true;
     Q.push(roots[i]);
+    neighbornodes.push(roots[i]);
     }
   
   //  var cyy = cytoscape({container: document.getElementById('cyy')});
@@ -95,6 +96,9 @@ export  function compoundbfs(roots,k,direction){
       }
       
     }
+
+    for( let i = 0; i < neighboredges.length; i++ )
+        console.log("Edge" + " " + neighboredges[i].id());
   
     return [neighbornodes, neighboredges,dist ];
     
