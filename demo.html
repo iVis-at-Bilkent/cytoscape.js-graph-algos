@@ -179,7 +179,7 @@
               {
                 selector: 'node',
                 style: {
-                  'background-color': '#2B65EC',
+                  'background-color': '#808080',
                   label: 'data(id)'
                 }
               },
@@ -188,9 +188,9 @@
                 selector: 'edge',
                 style: {
                   'width': 3
-                 , 'line-color': '#2B65EC'
+                 , 'line-color': '#808080'
                  , 'target-arrow-shape': 'triangle'
-                  ,'target-arrow-color': '#2B65EC'
+                  ,'target-arrow-color': '#808080'
                   ,'target-arrow-fill': 'filled'
                   ,'arrow-scale': 1
                   ,'curve-style': 'straight'
@@ -200,7 +200,7 @@
                 selector: ':parent',
                 style: {
                   'background-color': '#FFFFFF',
-                  'border-color': '#2B65EC'
+                  'border-color': '#808080'
                   
                 }
               },           
@@ -212,16 +212,39 @@
                   
                 }
               },
-              { selector: 'node.highlighted',
+              { selector: 'node.highlightedSource',
                 style: {
-                  'background-color': '#FF00FF',
+                  'background-color': '#00FF00',
                   'border-color': 'red',
                   label: 'data(id)'
                 }
              },
+              { selector: 'node.highlighted',
+                style: {
+                  'background-color': '#FFA500',
+                  'border-color': 'red',
+                  label: 'data(id)'
+                }
+             },
+
+             { selector: 'node.highlightedCommon',
+                style: {
+                  'background-color': ' #00FFFF',
+                  'border-color': 'red',
+                  label: 'data(id)'
+                }
+             },
+
+             { selector: 'node.highlightedCommonParent',
+                style: {
+                  'border-color': '#00FFFF',
+                  label: 'data(id)'
+                }
+             },
+
              { selector: 'node.highlightedTarget',
                 style: {
-                  'background-color': '#000000',
+                  'background-color': '#FF0000',
                   'border-color': 'red',
                   label: 'data(id)'
                 }
@@ -229,7 +252,7 @@
              { selector: 'node.highlightedParent',
                 style: {
                 //  'background-color': '#FF00FF',
-                  'border-color': '#FF00FF',
+                  'border-color': '#FFA500',
                   'border-width': 2,
                   label: 'data(id)'
                 }
@@ -237,9 +260,9 @@
              { selector: 'edge.highlighted',
                 style: {
                   'width': 3
-                 , 'line-color': '#FF00FF',
+                 , 'line-color': '#FFA500',
                   'target-arrow-shape': 'triangle'
-                  ,'target-arrow-color': '#FF00FF'
+                  ,'target-arrow-color': '#FFA500'
                   ,'target-arrow-fill': 'filled'
                   ,'arrow-scale': 1
                   ,'curve-style': 'straight'
@@ -357,7 +380,8 @@
           });          
           
           cy.layout({
-    name: 'fcose'
+    name: 'fcose',
+    nodeDimensionsIncludeLabels: true
 }).run();
 
 /*var elemnt = document.getElementById("neighborhood");
@@ -523,68 +547,50 @@ var neighborhoodK = 0;
          document.getElementById('PathsFromToUI').style.display =  this.value === "pathsFromTo" ? 'block' : 'none';
          limit = 1; // default
          direction = this.value !== "pathsFromTo" ? "UPSTREAM" : "directed";
-         console.log(this.value);
         });
 
         document.getElementById('limitneighborhood')
         .addEventListener('change', function (ev) {
          limit = parseInt( this.value);
-         console.log(this.value);
         });
 
         document.getElementById('limitcommonstream')
         .addEventListener('change', function (ev) {
          limit = parseInt( this.value);
-         console.log(this.value);
         });
 
         document.getElementById('limitGoI')
         .addEventListener('change', function (ev) {
          limit = parseInt( this.value);
-         console.log(this.value);
         });
 
         
         document.getElementById('limitPfT')
         .addEventListener('change', function (ev) {
          limit = parseInt( this.value);
-         console.log(this.value);
         });
         document.getElementById('dPfT')
         .addEventListener('change', function (ev) {
          d = parseInt( this.value);
-         console.log(this.value);
         });
         
         document.getElementById('directionNeighborhood')
         .addEventListener('change', function (ev) {
          direction = this.value;
-         console.log(this.value);
         });
 
         document.getElementById('directioncommonstream')
         .addEventListener('change', function (ev) {
          direction = this.value;
-         console.log(this.value);
         });
-
-        document.getElementById('directionGoI')
-        .addEventListener('change', function (ev) {
-         direction = this.value;
-         console.log(this.value);
-        });
-
         document.getElementById('directionPfT')
         .addEventListener('change', function (ev) {
          direction = this.value;
-         console.log(this.value);
         });
 
         document.getElementById('addNodesNeighborhood')
         .addEventListener('click',  () => {
           sourceNodes = [];
-        // neighborhoodK = parseInt( this.value);
-        //return ;
 
          var nodes = cy.nodes();
 
@@ -592,11 +598,9 @@ var neighborhoodK = 0;
               if( nodes[i].selected() === true){
                  sourceNodes.push(nodes[i]);
                  //nodes[i].unselect();
-                 nodes[i].addClass("highlighted");
+                 nodes[i].addClass("highlightedSource");
               }
          }
-         //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
-         //sourceNode = [];
         });
 
         document.getElementById('applyNeighborhood')
@@ -618,74 +622,55 @@ var neighborhoodK = 0;
               if( nodes[i].selected() === true){
                  sourceNodes.push(nodes[i]);
                  //nodes[i].unselect();
-                 nodes[i].addClass("highlighted");
+                 nodes[i].addClass("highlightedSource");
               }
          }
-         //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
-         //sourceNode = [];
         });
 
         document.getElementById('applycommonstream')
         .addEventListener('click',  () => {
 
-         cy.elements().commonstream(sourceNodes , limit , direction);
+         cy.elements().CommonStream(sourceNodes , limit , direction);
          sourceNodes = [];
         });
 
 
         document.getElementById('addNodesGoI')
         .addEventListener('click',  () => {
-          sourceNodes = [];
-        // neighborhoodK = parseInt( this.value);
-        //return ;
-
-         var nodes = cy.nodes();
-
-         for( let i = 0; i < nodes.length; i++){
-              if( nodes[i].selected() === true){
-                 sourceNodes.push(nodes[i]);
-                 //nodes[i].unselect();
-                 nodes[i].addClass("highlighted");
-              }
+             sourceNodes = [];
+             var nodes = cy.nodes();
+             for( let i = 0; i < nodes.length; i++){
+                  if( nodes[i].selected() === true){
+                  sourceNodes.push(nodes[i]);
+                  nodes[i].addClass("highlightedSource");
+              } 
          }
-         //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
-         //sourceNode = [];
         });
 
         document.getElementById('applyGoI')
         .addEventListener('click',  () => {
 
         console.log("GoI");
-         cy.elements().graphofinterest(sourceNodes , limit );
+         cy.elements().PathsBetween(sourceNodes , limit );
          sourceNodes = [];
         });
 
         document.getElementById('addSourceNodesPfT')
         .addEventListener('click',  () => {
           sourceNodes = [];
-        // neighborhoodK = parseInt( this.value);
-        //return ;
-
-         var nodes = cy.nodes();
-
-         for( let i = 0; i < nodes.length; i++){
-              if( nodes[i].selected() === true){
-                 sourceNodes.push(nodes[i]);
-                 //nodes[i].unselect();
-                 nodes[i].addClass("highlighted");
-                 nodes[i].unselect();
+          var nodes = cy.nodes();
+          for( let i = 0; i < nodes.length; i++){
+               if( nodes[i].selected() === true){
+                   sourceNodes.push(nodes[i]);
+                   nodes[i].addClass("highlightedSource");
+                   nodes[i].unselect();
               }
          }
-         //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
-         //sourceNode = [];
         });
 
         document.getElementById('addTargetNodesPfT')
         .addEventListener('click',  () => {
           targetNodes = [];
-        // neighborhoodK = parseInt( this.value);
-        //return ;
-
          var nodes = cy.nodes();
 
          for( let i = 0; i < nodes.length; i++){
@@ -695,8 +680,6 @@ var neighborhoodK = 0;
                  nodes[i].addClass("highlightedTarget");
               }
          }
-         //cy.elements().kneighborhood(sourceNodes , neighborhoodK);
-         //sourceNode = [];
         });
 
         document.getElementById('applyPfT')
@@ -714,6 +697,9 @@ var neighborhoodK = 0;
              nodes[i].removeClass('highlighted');
              nodes[i].removeClass('highlightedParent');
              nodes[i].removeClass('highlightedTarget');
+             nodes[i].removeClass('highlightedSource');
+             nodes[i].removeClass('highlightedCommon');
+             nodes[i].removeClass('highlightedCommonParent');
         }
         var edges = cy.edges();
 
@@ -794,12 +780,6 @@ var neighborhoodK = 0;
         <br /> <br />
         <button id="applyGoI" class="button" >Apply GraphofInterest Query</button>
         <br /> <br /> 
-        <label >Direction:</label>
-        <select id="directionGoI" class= "direction">
-          <option value="UPSTREAM">UPSTREAM</option>
-          <option value="DOWNSTREAM"> DOWNSTREAM</option>
-          <option value="BOTHSTREAM"> BOTHSTREAM</option>
-        </select>
         </div>
 
 
@@ -824,13 +804,8 @@ var neighborhoodK = 0;
             <option value="undirected"> UNDIRECTED</option>
           </select>
           </div>
-        
-
   </div>
-
   <button id ="clearNodes" class="button" >Clear</button>
-  
-
   <div id="cy"></div>
 
 </body>

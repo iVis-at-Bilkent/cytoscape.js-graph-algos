@@ -1,6 +1,3 @@
-
-
-
 function reverseDirection(direction) {
     if( direction === "BOTHSTREAM")
         return direction;
@@ -9,104 +6,84 @@ function reverseDirection(direction) {
     if( direction === "DOWNSTREAM")
         return "UPSTREAM";
 }
-
-export function commonstream( roots, k, direction ){
-
+export function CommonStream( roots, k, direction ){
        var count = {};
-
        var candidates = [];
-       
-       var commonnodes = [];
-       var commonedges = [];
+       var commonNodes = [];
+       var commonEdges = [];
        var distancesFrom = {};
-
-
+       var visitSources = {};
+       for( let i = 0; i < roots.length;i++)
+            visitSources[roots[i].id()] = true;
        for( let i = 0; i < roots.length; i++){
-            let [ neighbornodes, neighboredges,dist] = cy.elements().compoundbfs(roots[i], k, direction);
-            for( let j = 0; j < neighboredges.length; j++)
-                 console.log( i + " " + neighboredges[j].id() + " Edges");
-            console.log(dist[neighbornodes[0].id()] + " " + i);
-
-            for( let j = 0; j < neighbornodes.length; j++){
-                if( neighbornodes[j].id() === "glyph27")
-                    console.log( "Distance"  + dist[neighbornodes[j].id()] );
-                 console.log(neighbornodes[j].id() + " " + i + " " + dist[neighbornodes[j].id()]);
-                 if( count [neighbornodes[j].id()] === undefined ){
-                     count [neighbornodes[j].id()] = 1;
-                     distancesFrom[neighbornodes[j].id()] = dist[neighbornodes[j].id()];
-                     candidates.push( neighbornodes[j] );
+            let neighborBFS = cy.elements().CompoundBfs(roots[i], k, direction);
+            var neighborNodes = neighborBFS.neighborNodes;
+            var neighborEdges = neighborBFS.neighborEdges;
+            var dist = neighborBFS.distances;
+            for( let j = 0; j < neighborNodes.length; j++){
+                 if( count [neighborNodes[j].id()] === undefined ){
+                     count [neighborNodes[j].id()] = 1;
+                     distancesFrom[neighborNodes[j].id()] = dist[neighborNodes[j].id()];
+                     candidates.push( neighborNodes[j] );
                  }
                  else {
-                     count [neighbornodes[j].id()]++;
-                     if( distancesFrom[neighbornodes[j].id()] > dist[neighbornodes[j].id()] )
-                         distancesFrom[neighbornodes[j].id()] = dist[neighbornodes[j].id()];  
+                     count [neighborNodes[j].id()]++;
+                     if( distancesFrom[neighborNodes[j].id()] > dist[neighborNodes[j].id()] )
+                         distancesFrom[neighborNodes[j].id()] = dist[neighborNodes[j].id()];  
                  }
             }
-            for( let j = 0; j < neighboredges.length; j++)
-                 if( count [neighboredges[j].id()] === undefined ){
-                     count [neighboredges[j].id()] = 1;
-                   //  candidates.push( neighboredges[j] );
+            for( let j = 0; j < neighborEdges.length; j++)
+                 if( count [neighborEdges[j].id()] === undefined ){
+                     count [neighborEdges[j].id()] = 1;
                  }
                  else 
-                     count [neighboredges[j].id()]++;
-      
+                     count [neighborEdges[j].id()]++;
        } 
        while( candidates.length !== 0 ){
                var candidate = candidates.pop();
                if( count[ candidate.id()] === roots.length){
                    if( candidate.isNode()){
-                       console.log(candidate.id());
-
-                       commonnodes.push(candidate);
+                       commonNodes.push(candidate);
+                       if( visitSources[candidate.id()] === true)
+                           continue;
                        if(candidate.isParent() === true)
-                          candidate.addClass('highlightedParent');
+                          candidate.addClass('highlightedCommonParent');
                        else 
-                       candidate.addClass('highlighted');
+                       candidate.addClass('highlightedCommon');
+                       visitSources[candidate.id()] = true;
                    }
                    else{
-                       commonedges.push(candidate);
-                       //candidate.addClass('highlighted');
+                       commonEdges.push(candidate);
                    }
-                   //candidate.select();
                }       
             }
-        let [ neighbornodes, neighboredges,distancesTo] = cy.elements().compoundbfs(commonnodes, k, reverseDirection(direction ));    
+        var compoundBFS = cy.elements().CompoundBfs(commonNodes, k, reverseDirection(direction ));    
         var allEdges = cy.edges();
+        var allNodes = cy.nodes();
+        var neighborNodes = compoundBFS.commonNodes;
+        var neighborEdges = compoundBFS.commonEdges;
+        var distancesTo = compoundBFS.distances;
+        for( let i = 0; i < allNodes.length; i++){
+             var nodeId = allNodes[i].id();
+             if( distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && 
+                 distancesFrom[ nodeId ] + distancesTo[nodeId] <= k - 1){
+                 if( visitSources[nodeId] === true)
+                     continue;
+                 if( allNodes[i].isParent() === true)
+                 allNodes[i].addClass('highlightedParent');
+                 else
+                 allNodes[i].addClass('highlighted');
+                 visitSources[nodeId] = true;   
+             }
+        }
         for( let i = 0; i < allEdges.length; i++){
              var sourceId = allEdges[i].source().id();
              var targetId = allEdges[i].target().id();
-
-
-             if( direction === "BOTHSTREAM"){ 
-                 if( distancesFrom[sourceId] !== undefined && distancesTo[targetId] !== undefined && 
-                    distancesFrom[ sourceId ] + distancesTo[targetId] <= k - 1){
-                        allEdges[i].addClass('highlighted');
-                     
-                 }
-             }
-
-             else if( direction === "DOWNSTREAM" ){
-                 if( sourceId === "glyph27" && targetId === "glyph32" )
-                     console.log( distancesFrom[sourceId] + " " + distancesTo[targetId]);
-                if( distancesFrom[sourceId] !== undefined && distancesTo[targetId] !== undefined && 
-                    distancesFrom[ sourceId ] + distancesTo[targetId] <= k - 1){
-                        allEdges[i].addClass('highlighted');
-                     
-                 } 
-
-             }
-
-             else if( direction === "UPSTREAM"){
-                if( sourceId === "glyph25" && targetId === "glyph27" )
-                console.log( distancesTo[sourceId] + " " + distancesFrom[targetId]);
-                if( distancesTo[sourceId] !== undefined && distancesFrom[targetId] !== undefined && 
-                    distancesTo[ sourceId ] + distancesFrom[targetId] <= k - 1){
-                        allEdges[i].addClass('highlighted');
-                     
-                 } 
-
-
-             }
+             if( visitSources[sourceId] === true && visitSources[targetId] === true)
+                 allEdges[i].addClass('highlighted');
         }
-        return [commonnodes, commonedges];
+        return {
+            commonNodes:commonNodes,
+            commonEdges:commonEdges
+        }
     }

@@ -1,50 +1,39 @@
-# rollup-starter-lib
+# Description
+This repository includes several graph algorithms which can be used for querying compound graph-based pathway databases. This repository is implemented as Cytoscape.js extension. k-neighborhood, CommonStream, Paths Between and Paths From to are the algorithms implemented in this extension. Details can be found at (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2784781/). 
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rollup/rollup-starter-lib.svg)](https://greenkeeper.io/)
+<a href=" href="" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
+[https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html]
+                                                                                                                                   
+This repository uses fCoSE layout in its demo. So, please cite the following you use this repository.
+                                                                                                                                   
+H. Balci and U. Dogrusoz, "fCoSE: a fast compound graph layout algorithm with constraint support", IEEE Trans. on Visualization and Computer Graphics, to appear.
 
-This repo contains a bare-bones example of how to create a library using Rollup, including importing a module from `node_modules` and converting it from CommonJS.
+U. Dogrusoz, E. Giral, A. Cetintas, A. Civril and E. Demir, "A Layout Algorithm For Undirected Compound Graphs", Information Sciences, 179, pp. 980-994, 2009.
+                                                                          
+# Dependencies
 
-We're creating a library called `how-long-till-lunch`, which usefully tells us how long we have to wait until lunch, using the [ms](https://github.com/zeit/ms) package:
+    Cytoscape.js ^3.2.0
+    cose-base ^2.0.0
+    cytoscape-layout-utilities.js (optional for packing disconnected components) ^1.0.0
 
-```js
-console.log('it will be lunchtime in ' + howLongTillLunch());
-```
+# Usage Instructions
 
-## Getting started
-
-Clone this repository and install its dependencies:
+Clone this repository.
 
 ```bash
 git clone https://github.com/rollup/rollup-starter-lib
-cd rollup-starter-lib
-npm install
-```
-
+```                                                                                                
 `npm run build` builds the library to `dist`, generating three files:
 
-* `dist/how-long-till-lunch.cjs.js`
+* `dist/cytoscape-graph-algos.esm.js`
     A CommonJS bundle, suitable for use in Node.js, that `require`s the external dependency. This corresponds to the `"main"` field in package.json
-* `dist/how-long-till-lunch.esm.js`
+* `dist/cytoscape-graph-algos.js`
     an ES module bundle, suitable for use in other people's libraries and applications, that `import`s the external dependency. This corresponds to the `"module"` field in package.json
-* `dist/how-long-till-lunch.umd.js`
-    a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json
-
-`npm run dev` builds the library, then keeps rebuilding it whenever the source files change using [rollup-watch](https://github.com/rollup/rollup-watch).
-
-`npm test` builds the library, then tests it.
-
-<a href=" href="https://www.google.com/" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
-[https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html]
-                                                                                                                                   
-
-
-## Variations
-
-* [babel](https://github.com/rollup/rollup-starter-lib/tree/babel) — illustrates writing the source code in ES2015 and transpiling it for older environments with [Babel](https://babeljs.io/)
-* [buble](https://github.com/rollup/rollup-starter-lib/tree/buble) — similar, but using [Bublé](https://buble.surge.sh/) which is a faster alternative with less configuration
-* [TypeScript](https://github.com/rollup/rollup-starter-lib/tree/typescript) — uses [TypeScript](https://www.typescriptlang.org/) for type-safe code and transpiling
-
-
+* `dist/cytoscape-graph-algos.cjs.js`
+    a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json             
+    
+ `npm test` builds the library, then tests it.
+                                                                                                              
 
 ## License
 
