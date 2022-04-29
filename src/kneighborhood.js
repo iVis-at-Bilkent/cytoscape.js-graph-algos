@@ -1,5 +1,3 @@
-
-
 export function kneighborhood(root,k,direction){
   var Q = [];
   var visited  = {};

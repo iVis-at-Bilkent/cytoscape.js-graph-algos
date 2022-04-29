@@ -16,6 +16,7 @@ export function CommonStream( roots, k, direction ){
        for( let i = 0; i < roots.length;i++)
             visitSources[roots[i].id()] = true;
        for( let i = 0; i < roots.length; i++){
+            // find neighbors for each node in source nodes
             let neighborBFS = cy.elements().CompoundBfs(roots[i], k, direction);
             var neighborNodes = neighborBFS.neighborNodes;
             var neighborEdges = neighborBFS.neighborEdges;
@@ -41,6 +42,7 @@ export function CommonStream( roots, k, direction ){
        } 
        while( candidates.length !== 0 ){
                var candidate = candidates.pop();
+               //select common nodes
                if( count[ candidate.id()] === roots.length){
                    if( candidate.isNode()){
                        commonNodes.push(candidate);
@@ -63,6 +65,7 @@ export function CommonStream( roots, k, direction ){
         var neighborNodes = compoundBFS.commonNodes;
         var neighborEdges = compoundBFS.commonEdges;
         var distancesTo = compoundBFS.distances;
+        //highlighting graph
         for( let i = 0; i < allNodes.length; i++){
              var nodeId = allNodes[i].id();
              if( distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && 

@@ -1,3 +1,12 @@
+/*
+  Implementation of PathsFromTo algorithm, this algorithm finds all paths starting from source nodes and ends at 
+  target nodes and not exceeding given limit
+  sources: source nodes
+  targets: target nodes
+  k: limit
+  d: further distance to compute path limit
+  mod: direction of algorithm( directed or undirected)
+*/
 export function PathsFromTo( sources, targets, k,d,mod ){       
        var bfsFromSources = cy.elements().CompoundBfs(sources, k, mod === "directed" ? 
        "DOWNSTREAM" : "BOTHSTREAM");

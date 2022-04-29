@@ -15,6 +15,7 @@ export  function CompoundBfs(roots,k,direction){
         var node = Q.shift();
         var depth = dist [ node.id() ] ;
         if( compoundVisited[ node.id()] !== true ){
+            //find all nodes in compound node if current node is in the compound node
             var anchestors = node.parents();
             anchestors = anchestors.union(node);
             var allNodesinCompounds = anchestors.descendants();
@@ -38,6 +39,7 @@ export  function CompoundBfs(roots,k,direction){
       else if (direction === "DOWNSTREAM" )
           neighbors = node.outgoers();
       var noOfNeighbors = neighbors.length;
+      //chechking neighbors of current node
       for( let i = 0; i < noOfNeighbors; i++ ){
            var neighbori = neighbors[i];
            if( neighbori.isNode() ){

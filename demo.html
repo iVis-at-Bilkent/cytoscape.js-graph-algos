@@ -14,7 +14,6 @@
   <script src="https://raw.githack.com/iVis-at-Bilkent/cose-base/unstable/cose-base.js"></script>
   <script src="https://raw.githack.com/iVis-at-Bilkent/cytoscape.js-fcose/unstable/cytoscape-fcose.js"></script>
   <script src="https://unpkg.com/cytoscape-graphml/cytoscape-graphml.js"></script>
-    <script src="cytoscape.min.js"></script>
     
     <script src="https://unpkg.com/layout-base/layout-base.js"></script>
 <script src="https://unpkg.com/cose-base/cose-base.js"></script>
@@ -90,8 +89,29 @@
       /* font-weight: bold;*/
       border-color: black;
       border-style: solid;
-      font-size: 16;
-      padding: 10;
+      font-size: 16px;
+      padding: 10px;
+    }
+    .topnav2{
+      width: 19%;
+      background-color: #e9e9e9;
+      /* font-weight: bold;*/
+      border-color: black;
+      border-left-style: solid;
+      border-right-style:solid;
+      border-bottom-style: solid;
+      border-top-style: solid;
+      font-size: 16px;
+      padding: 8px;
+    }
+
+    .neighborhoodSelections{
+      display: flex;
+      vertical-align: middle;
+    }
+
+    .selection{
+      width: 120px;
     }
 
     .topnav b:hover {
@@ -125,7 +145,7 @@
     .topnav .checkmark {
       position: absolute;
       top: 17px;
-      left: 0;
+      left: 0px;
       right: 0px;
       height: 12px;
       width: 12px;
@@ -417,125 +437,12 @@ var neighborhoodK = 0;
         cy.elements().kneighborhood(root,2);
       }  
 
-      function changeBorder(eles) {
-        eles.forEach(function (ele) {
-          ele.css("background-color", 'purple');
-        });
-        return eles;
-      }
-      function revertBorder(eles) {
-        eles.forEach(function (ele) {
-          ele.css("background-color", 'lightgrey');
-        });
-        return eles;
-      }
-
-      $("#polyominoPack").click(function () {
-        
-        api.setOption("desiredAspectRatio", parseFloat($('#desiredAspectRatio').val()));
-        api.setOption("polyominoGridSizeFactor", parseFloat($('#gridSizeFactor').val()));
-        api.setOption("utilityFunction", parseInt($('#utilityFunctionType').val()));
-        api.setOption("componentSpacing", (document.getElementById('auto-spacing').checked ? undefined : parseInt($('#componentSpacing').val())));
-        
-        var components = cy.elements(":visible").components();
-        var subgraphs = [];
-        components.forEach(function (component) {
-          var subgraph = {};
-          subgraph.nodes = [];
-          subgraph.edges = [];
-
-          component.edges().forEach(function (edge) {
-            subgraph.edges.push({ startX: edge.sourceEndpoint().x, startY: edge.sourceEndpoint().y, endX: edge.targetEndpoint().x, endY: edge.targetEndpoint().y });
-          });
-          component.nodes().forEach(function (node) {
-            var boundingBox = node.boundingBox();
-            subgraph.nodes.push({ x: boundingBox.x1, y: boundingBox.y1, width: boundingBox.w, height: boundingBox.h });
-          });
-
-          subgraphs.push(subgraph);
-        });
-
-      
-
-      });
     
           
       
       var newNodeCounter = 0;
 
-      $("#addRandomNeighbors").click(function () {
-        var selectedNodes = cy.nodes(":selected");
-        var newNodesAll = cy.collection();
-        
-        selectedNodes.forEach(function(node){
-          var newNodesForSelected = cy.collection();
-          var randomNeighborCount = Math.floor(1 + 5*Math.random());
-          // for each selected node, add random nodes and connect them to the selected node
-          for(var i=0; i < randomNeighborCount; i++) {
-            var nodeId = node.id() + "_n" + newNodeCounter;
-            var edgeId = node.id() + "_e" + newNodeCounter;
-            var newEles = cy.add([
-              { group: 'nodes', data: { id: nodeId, name: node.css("content")}},
-              { group: 'edges', data: { id: edgeId, source: node.id(), target: nodeId } }
-            ]);                       
-            newNodeCounter++;
-            newNodesAll.merge(newEles.nodes());
-            newNodesForSelected.merge(newEles.nodes());
-          }
-          
-          var currentColor = adjust(rgbToHex(node.numericStyle("background-color")), -50);
-          newNodesForSelected.css("background-color", currentColor);           
-          
-          // add random edges between newly added nodes
-          if(newNodesForSelected.length > 1) {
-            var randomEdgeCount = Math.floor(newNodesForSelected.length * Math.random());
-            var newEdgeIds = new Set();
-            for(var i=0; i < randomEdgeCount; i++) {
-              var index1 = Math.floor(newNodesForSelected.length * Math.random());
-              var index2 = Math.floor(newNodesForSelected.length * Math.random());
-              if(index1 == index2 && (index2 + 1 < newNodesForSelected.length)){
-                index2++;
-              }
-              if(index1 == index2 && (index2 - 1 >= 0)){
-                index2--;
-              }
-                     
-              var newEdgeId = newNodesForSelected[index1].id() + "_" + newNodesForSelected[index2].id();             
-              if(!newEdgeIds.has(newEdgeId)) {
-                cy.add([
-                  { group: 'edges', data: { id: newEdgeId, source: newNodesForSelected[index1].id(), target: newNodesForSelected[index2].id() } }
-                ]);
-                newEdgeIds.add(newEdgeId);
-              }              
-            }
-          }
-        });
-        
-        // place all newly added nodes to appropriate positions by using extension functionality
-        api.placeNewNodes(newNodesAll);
-        
-        if (document.getElementById('layout').checked) {
-          cy.layout(layoutOptions).run();
-        }
-      });      
-
-
-        document.getElementById('load-button')
-        .addEventListener('click', () =>{
-          document.getElementById('graphml-input').click();
-        });
-      document.getElementById('graphml-input')
-        .addEventListener('change', function (ev) {
-          const file = this.files[0];
-
-          cy.elements().remove(); 
-          file.text().then((s) => {
-              cy.graphml({layoutBy: "fcose"})
-              cy.graphml(s);
-          });
-        });
-
-
+             
         document.getElementById('queries')
         .addEventListener('change', function (ev) {
          valueRoot = this.value;
@@ -718,17 +625,12 @@ var neighborhoodK = 0;
 
 <body>
   <h1>cytoscape-graph-algos.js demo</h1>
-  <div class="topnav">
-    <label class="custom-file-input" for="graphml-input">
-      <button id="load-button" class="button">Load Graphml</button>
-    </label>
-    <input id="graphml-input" type="file" accept=".graphml">
-  </div>
+  
   
   <div class="topnav">
 
-
-    <label >Query:</label>
+    <div>
+    <label >Select Query</label>
     <select name="queries" id="queries">
      
       <option value="kneighborhood">k-neighborhood</option>
@@ -736,46 +638,62 @@ var neighborhoodK = 0;
       <option value="graphofinterest">GraphofInterest</option>
       <option value="pathsFromTo">PathsFromTo </option>
     </select>
+    <br /> <br /> 
+    </div>
 
     <div id = "neighborhoodUI" >
-    <label >Limit:</label>
-    <input  id="limitneighborhood" type="number" min="1" value="1"
-    step="1"> </input>
-    <br /> <br />
+      
+      <form>
+        <p><label for = "limitneighborhood">Limit</label>
+        <input  id="limitneighborhood"  style="width:110px; margin-bottom: 10px!important;margin-left: 5px;" type="number" min="1" value="1"
+        step="1"> </input>
+        </p>
+
+  
+   <p> <label for = "directionNeighborhood" >Direction</label> 
+    <select id="directionNeighborhood" style="width:110px; margin-bottom: 10px!important;margin-left: 5px">
+      <option value="UPSTREAM">UPSTREAM</option>
+      <option value="DOWNSTREAM"> DOWNSTREAM</option>
+      <option value="BOTHSTREAM"> BOTHSTREAM</option>
+    </select></p>
+  </form>
+
+    <br />
     <button id ="addNodesNeighborhood" class="button" >Add Selected Nodes</button>
     <br /> <br />
     <button id="applyNeighborhood" class="button" >Apply Neighborhood Query</button>
     <br /> <br /> 
-    <label >Direction:</label>
-    <select id="directionNeighborhood" class= "direction">
-      <option value="UPSTREAM">UPSTREAM</option>
-      <option value="DOWNSTREAM"> DOWNSTREAM</option>
-      <option value="BOTHSTREAM"> BOTHSTREAM</option>
-    </select>
     </div>
 
     <div id = "commonstreamUI" >
-      <label >Limit:</label>
-      <input  id="limitcommonstream" type="number" min="1" value="1"
-      step="1" > </input>
-      <br /> <br />
-      <button id ="addNodescommonstream" class="button" >Add Selected Nodes</button>
-      <br /> <br />
-      <button id="applycommonstream" class="button" >Apply CommonStream Query</button>
-      <br /> <br /> 
-      <label >Direction:</label>
-      <select id="directioncommonstream" class= "direction">
+      <form>
+      <p><label for = "limitcommonstream"> Limit</label>
+      <input  id="limitcommonstream"  style="width:110px; margin-bottom: 10px!important;margin-left: 5px;" type="number" min="1" value="1"
+      step="1" > </input></p>
+      <p><label for = "directioncommonstream"  style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
+      <select id="directioncommonstream">
         <option value="UPSTREAM">UPSTREAM</option>
         <option value="DOWNSTREAM"> DOWNSTREAM</option>
         <option value="BOTHSTREAM"> BOTHSTREAM</option>
       </select>
+      </p>
+    </form>
+      <br />
+      <button id ="addNodescommonstream" class="button" >Add Selected Nodes</button>
+      <br /> <br />
+      <button id="applycommonstream" class="button" >Apply CommonStream Query</button>
+      <br /> <br /> 
+    
       </div>
 
       <div id = "graphofinterestUI" >
-        <label >Limit:</label>
+
+        <form>
+        <label >Limit</label>
         <input  id="limitGoI" type="number" min="1" value="1"
-        step="1"> </input>
-        <br /> <br />
+        step="1"  style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
+        </form>
+        <br />
         <button id ="addNodesGoI" class="button" >Add Selected Nodes</button>
         <br /> <br />
         <button id="applyGoI" class="button" >Apply GraphofInterest Query</button>
@@ -784,28 +702,31 @@ var neighborhoodK = 0;
 
 
         <div id = "PathsFromToUI" >
-          <label >Limit:</label>
+          <form>
+          <p><label >Limit</label>
           <input  id="limitPfT" type="number" min="1" value="1"
-          step="1"> </input>
-          <br /> <br />
-          <label >d:</label>
+          step="1"  style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input></p>
+          <br />
+          <p><label >Further Distance</label>
           <input  id="dPfT" type="number" min="1" value="1"
-          step="1"> </input>
-          <br /> <br />
+          step="1"  style="width:110px; margin-bottom: 10px!important;margin-left: 5px;" > </input>
+          <br /> <br /></p>
+          <p><label >Direction</label>
+          <select id="directionPfT" class= "direction"  style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">
+            <option value="directed">DIRECTED</option>
+            <option value="undirected"> UNDIRECTED</option>
+          </select></p>
+          </form>
           <button id ="addSourceNodesPfT" class="button" >Add Source Nodes</button>
           <br /> <br />
           <button id ="addTargetNodesPfT" class="button" >Add Target Nodes</button>
           <br /> <br />
           <button id="applyPfT" class="button" >Apply PathsFromTo Query</button>
           <br /> <br /> 
-          <label >Mod:</label>
-          <select id="directionPfT" class= "direction">
-            <option value="directed">DIRECTED</option>
-            <option value="undirected"> UNDIRECTED</option>
-          </select>
           </div>
+          <button id ="clearNodes" class="button" >Clear</button>
   </div>
-  <button id ="clearNodes" class="button" >Clear</button>
+ 
   <div id="cy"></div>
 
 </body>
