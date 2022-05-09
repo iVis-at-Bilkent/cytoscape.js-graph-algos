@@ -39,6 +39,7 @@ function CompoundBfs(roots, k, direction) {
     var depth = dist[node.id()];
 
     if (compoundVisited[node.id()] !== true) {
+      //find all nodes in compound node if current node is in the compound node
       var anchestors = node.parents();
       anchestors = anchestors.union(node);
       var allNodesinCompounds = anchestors.descendants();
@@ -59,7 +60,7 @@ function CompoundBfs(roots, k, direction) {
 
     var neighbors;
     if (direction === "BOTHSTREAM") neighbors = node.neighborhood();else if (direction === "UPSTREAM") neighbors = node.incomers();else if (direction === "DOWNSTREAM") neighbors = node.outgoers();
-    var noOfNeighbors = neighbors.length;
+    var noOfNeighbors = neighbors.length; //chechking neighbors of current node
 
     for (var _i2 = 0; _i2 < noOfNeighbors; _i2++) {
       var neighbori = neighbors[_i2];
@@ -103,6 +104,7 @@ function CommonStream(roots, k, direction) {
   }
 
   for (var _i = 0; _i < roots.length; _i++) {
+    // find neighbors for each node in source nodes
     var neighborBFS = cy.elements().CompoundBfs(roots[_i], k, direction);
     var neighborNodes = neighborBFS.neighborNodes;
     var neighborEdges = neighborBFS.neighborEdges;
@@ -127,7 +129,7 @@ function CommonStream(roots, k, direction) {
   }
 
   while (candidates.length !== 0) {
-    var candidate = candidates.pop();
+    var candidate = candidates.pop(); //select common nodes
 
     if (count[candidate.id()] === roots.length) {
       if (candidate.isNode()) {
@@ -146,7 +148,7 @@ function CommonStream(roots, k, direction) {
   var allNodes = cy.nodes();
   var neighborNodes = compoundBFS.commonNodes;
   var neighborEdges = compoundBFS.commonEdges;
-  var distancesTo = compoundBFS.distances;
+  var distancesTo = compoundBFS.distances; //highlighting graph
 
   for (var _i2 = 0; _i2 < allNodes.length; _i2++) {
     var nodeId = allNodes[_i2].id();
@@ -217,6 +219,15 @@ function PathsBetween(roots, k) {
   };
 }
 
+/*
+  Implementation of PathsFromTo algorithm, this algorithm finds all paths starting from source nodes and ends at 
+  target nodes and not exceeding given limit
+  sources: source nodes
+  targets: target nodes
+  k: limit
+  d: further distance to compute path limit
+  mod: direction of algorithm( directed or undirected)
+*/
 function PathsFromTo(sources, targets, k, d, mod) {
   var bfsFromSources = cy.elements().CompoundBfs(sources, k, mod === "directed" ? "DOWNSTREAM" : "BOTHSTREAM");
   var bfsToTargets = cy.elements().CompoundBfs(targets, k, mod === "directed" ? "UPSTREAM" : "BOTHSTREAM");

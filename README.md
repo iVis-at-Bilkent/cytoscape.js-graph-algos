@@ -1,11 +1,8 @@
 # Description
 This repository includes several graph algorithms which can be used for querying compound graph-based pathway databases. This repository is implemented as Cytoscape.js extension. k-neighborhood, CommonStream, Paths Between and Paths From to are the algorithms implemented in this extension. Details can be found at (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2784781/). 
 
-<<<<<<< HEAD
 <a href=" href="" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
-=======
 <a href=" href="https://www.google.com/" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
->>>>>>> b9306758f82d3e8739608c0aa0a76f43c29cbcf6
 [https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html]
                                                                                                                                    
 This repository uses fCoSE layout in its demo. So, please cite the following you use this repository.

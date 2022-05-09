@@ -421,8 +421,8 @@ cy.style().update();
 var sourceNodes = [];
 var targetNodes = [];
 var d = 1;
-var direction;
-var limit;
+var direction = "UPSTREAM";
+var limit = 1;
 document.getElementById('neighborhoodUI').style.display =  document.getElementById("queries").value === "kneighborhood" ? 'block' : 'none';
          document.getElementById('commonstreamUI').style.display =  document.getElementById("queries").value === "commonstream" ? 'block' : 'none';
          document.getElementById('graphofinterestUI').style.display =  document.getElementById("queries").value === "graphofinterest" ? 'block' : 'none';
@@ -512,7 +512,8 @@ var neighborhoodK = 0;
 
         document.getElementById('applyNeighborhood')
         .addEventListener('click',  () => {
-
+         
+         if( sourceNodes[0] !== undefined)
          cy.elements().kneighborhood(sourceNodes[0] , limit , direction);
          sourceNodes = [];
         });
@@ -633,10 +634,10 @@ var neighborhoodK = 0;
     <label >Select Query</label>
     <select name="queries" id="queries">
      
-      <option value="kneighborhood">k-neighborhood</option>
-      <option value="commonstream">CommonStream</option>
-      <option value="graphofinterest">GraphofInterest</option>
-      <option value="pathsFromTo">PathsFromTo </option>
+      <option value="kneighborhood">k-Neighborhood</option>
+      <option value="commonstream">Common Stream</option>
+      <option value="graphofinterest">Paths Between</option>
+      <option value="pathsFromTo">Paths From To </option>
     </select>
     <br /> <br /> 
     </div>
