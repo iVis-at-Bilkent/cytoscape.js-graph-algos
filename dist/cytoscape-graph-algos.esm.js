@@ -173,10 +173,10 @@ function CommonStream(roots, k, direction) {
 }
 
 /*
-  Implementation of PathsBetween algorithm, this algorithm finds all paths whose length not exceeding given limit
-  , starting from source nodes and ends at source nodes.
-  roots: source nodes
-  k: limit
+	Implementation of PathsBetween algorithm, this algorithm finds all paths whose length not exceeding given limit
+	, starting from source nodes and ends at source nodes.
+	roots: source nodes
+	k: limit
 */
 function PathsBetween(roots, k) {
   var forwardBFS = cy.elements().CompoundBfs(roots, k, "DOWNSTREAM");
@@ -218,13 +218,13 @@ function PathsBetween(roots, k) {
 }
 
 /*
-  Implementation of PathsFromTo algorithm, this algorithm finds all paths starting from source nodes and ends at 
-  target nodes and not exceeding given limit
-  sources: source nodes
-  targets: target nodes
-  k: limit
-  d: further distance to compute path limit
-  mod: direction of algorithm( directed or undirected)
+	Implementation of PathsFromTo algorithm, this algorithm finds all paths starting from source nodes and ends at 
+	target nodes and not exceeding given limit
+	sources: source nodes
+	targets: target nodes
+	k: limit
+	d: further distance to compute path limit
+	mod: direction of algorithm( directed or undirected)
 */
 function PathsFromTo(sources, targets, k, d, mod) {
   var bfsFromSources = cy.elements().CompoundBfs(sources, k, mod === "directed" ? "DOWNSTREAM" : "BOTHSTREAM");
@@ -238,6 +238,8 @@ function PathsFromTo(sources, targets, k, d, mod) {
   var l = -1;
   var visitSources = {},
       visitTargets = {};
+  var nodesOnThePaths = [],
+      edgesOnThePaths = [];
 
   for (var i = 0; i < sources.length; i++) {
     visitSources[sources[i].id()] = true;
@@ -263,11 +265,15 @@ function PathsFromTo(sources, targets, k, d, mod) {
 
     if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
       edges[_i3].addClass("highlighted");
+
+      edgesOnThePaths.push(edges[_i3]);
     }
 
     if (mod === "undirected") {
       if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
         edges[_i3].addClass("highlighted");
+
+        edgesOnThePaths.push(edges[_i3]);
       }
     }
   }
@@ -279,9 +285,23 @@ function PathsFromTo(sources, targets, k, d, mod) {
 
     if (distancesFromSources[nodes[_i4].id()] !== undefined && distancesToTargets[nodes[_i4].id()] !== undefined && distancesFromSources[nodes[_i4].id()] + distancesToTargets[nodes[_i4].id()] <= minDistance) {
       if (visitSources[nodes[_i4].id()] === true || visitTargets[nodes[_i4].id()] === true) continue;
-      if (nodes[_i4].isParent() === true) nodes[_i4].addClass("highlightedParent");else nodes[_i4].addClass("highlighted");
+
+      if (nodes[_i4].isParent() === true) {
+        nodes[_i4].addClass("highlightedParent");
+
+        nodesOnThePaths.push(nodes[_i4]);
+      } else {
+        nodes[_i4].addClass("highlighted");
+
+        nodesOnThePaths.push(nodes[_i4]);
+      }
     }
   }
+
+  return {
+    nodesOnThePaths: nodesOnThePaths,
+    edgesOnThePaths: edgesOnThePaths
+  };
 }
 
 function register(cytoscape) {
