@@ -5,6 +5,7 @@
 	k: limit
 */
 export function pathsBetween(roots, k) {
+	let cy = this.cy();
 	var forwardBFS = cy.elements().compoundBFS(roots, k, "DOWNSTREAM");
 	let reverseBFS = cy.elements().compoundBFS(roots, k, "UPSTREAM");
 	var forwardNeighborNodes = forwardBFS.neighborNodes;

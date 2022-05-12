@@ -8,6 +8,7 @@
 	mod: direction of algorithm( directed or undirected)
 */
 export function pathsFromTo(sources, targets, k, d, mod) {
+	let cy = this.cy();
 	var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "directed" ?
 		"DOWNSTREAM" : "BOTHSTREAM");
 	var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "directed" ?

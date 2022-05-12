@@ -5,6 +5,7 @@
 }(this, function () { 'use strict';
 
 	function kNeighborhood(root, k, direction) {
+	  var cy = this.cy();
 	  var compoundBFS = cy.elements().compoundBFS(root, k, direction);
 	  var neighborNodes = compoundBFS.neighborNodes;
 	  var neighborEdges = compoundBFS.neighborEdges;
@@ -177,7 +178,7 @@
 	  return {
 	    commonNodes: commonNodes,
 	    nodesOnPath: nodesOnPath,
-	    commonEdges: commonEdges
+	    edgesOnPath: commonEdges
 	  };
 	}
 
@@ -188,6 +189,7 @@
 		k: limit
 	*/
 	function pathsBetween(roots, k) {
+	  var cy = this.cy();
 	  var forwardBFS = cy.elements().compoundBFS(roots, k, "DOWNSTREAM");
 	  var reverseBFS = cy.elements().compoundBFS(roots, k, "UPSTREAM");
 	  var forwardNeighborNodes = forwardBFS.neighborNodes;
@@ -236,6 +238,7 @@
 		mod: direction of algorithm( directed or undirected)
 	*/
 	function pathsFromTo(sources, targets, k, d, mod) {
+	  var cy = this.cy();
 	  var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "directed" ? "DOWNSTREAM" : "BOTHSTREAM");
 	  var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "directed" ? "UPSTREAM" : "BOTHSTREAM");
 	  var nodesFromSources = bfsFromSources.neighborNodes;
