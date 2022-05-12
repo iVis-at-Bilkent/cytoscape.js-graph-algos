@@ -1,7 +1,7 @@
 'use strict';
 
-function kneighborhood(root, k, direction) {
-  var compoundBFS = cy.elements().CompoundBfs(root, k, direction);
+function kNeighborhood(root, k, direction) {
+  var compoundBFS = cy.elements().compoundBFS(root, k, direction);
   var neighborNodes = compoundBFS.neighborNodes;
   var neighborEdges = compoundBFS.neighborEdges;
 
@@ -19,7 +19,7 @@ function kneighborhood(root, k, direction) {
   };
 }
 
-function CompoundBfs(roots, k, direction) {
+function compoundBFS(roots, k, direction) {
   var Q = [];
   var dist = {};
   var visited = {};
@@ -91,11 +91,12 @@ function reverseDirection(direction) {
   if (direction === "DOWNSTREAM") return "UPSTREAM";
 }
 
-function CommonStream(roots, k, direction) {
+function commonStream(roots, k, direction) {
   var count = {};
   var candidates = [];
   var commonNodes = [];
   var commonEdges = [];
+  var nodesOnPath = [];
   var distancesFrom = {};
   var visitSources = {};
 
@@ -105,7 +106,7 @@ function CommonStream(roots, k, direction) {
 
   for (var _i = 0; _i < roots.length; _i++) {
     // find neighbors for each node in source nodes
-    var neighborBFS = cy.elements().CompoundBfs(roots[_i], k, direction);
+    var neighborBFS = cy.elements().compoundBFS(roots[_i], k, direction);
     var neighborNodes = neighborBFS.neighborNodes;
     var neighborEdges = neighborBFS.neighborEdges;
     var dist = neighborBFS.distances;
@@ -143,7 +144,7 @@ function CommonStream(roots, k, direction) {
     }
   }
 
-  var compoundBFS = cy.elements().CompoundBfs(commonNodes, k, reverseDirection(direction));
+  var compoundBFS = cy.elements().compoundBFS(commonNodes, k, reverseDirection(direction));
   var allEdges = cy.edges();
   var allNodes = cy.nodes();
   var neighborNodes = compoundBFS.commonNodes;
@@ -156,6 +157,7 @@ function CommonStream(roots, k, direction) {
     if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && distancesFrom[nodeId] + distancesTo[nodeId] <= k - 1) {
       if (visitSources[nodeId] === true) continue;
       if (allNodes[_i2].isParent() === true) allNodes[_i2].addClass('highlightedParent');else allNodes[_i2].addClass('highlighted');
+      nodesOnPath.push(allNodes[_i2]);
       visitSources[nodeId] = true;
     }
   }
@@ -170,6 +172,7 @@ function CommonStream(roots, k, direction) {
 
   return {
     commonNodes: commonNodes,
+    nodesOnPath: nodesOnPath,
     commonEdges: commonEdges
   };
 }
@@ -180,9 +183,9 @@ function CommonStream(roots, k, direction) {
 	roots: source nodes
 	k: limit
 */
-function PathsBetween(roots, k) {
-  var forwardBFS = cy.elements().CompoundBfs(roots, k, "DOWNSTREAM");
-  var reverseBFS = cy.elements().CompoundBfs(roots, k, "UPSTREAM");
+function pathsBetween(roots, k) {
+  var forwardBFS = cy.elements().compoundBFS(roots, k, "DOWNSTREAM");
+  var reverseBFS = cy.elements().compoundBFS(roots, k, "UPSTREAM");
   var forwardNeighborNodes = forwardBFS.neighborNodes;
   var forwardNeighborEdges = forwardBFS.neighborEdges;
   var forwardDist = forwardBFS.distances;
@@ -228,9 +231,9 @@ function PathsBetween(roots, k) {
 	d: further distance to compute path limit
 	mod: direction of algorithm( directed or undirected)
 */
-function PathsFromTo(sources, targets, k, d, mod) {
-  var bfsFromSources = cy.elements().CompoundBfs(sources, k, mod === "directed" ? "DOWNSTREAM" : "BOTHSTREAM");
-  var bfsToTargets = cy.elements().CompoundBfs(targets, k, mod === "directed" ? "UPSTREAM" : "BOTHSTREAM");
+function pathsFromTo(sources, targets, k, d, mod) {
+  var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "directed" ? "DOWNSTREAM" : "BOTHSTREAM");
+  var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "directed" ? "UPSTREAM" : "BOTHSTREAM");
   var nodesFromSources = bfsFromSources.neighborNodes;
   var edgesFromSources = bfsFromSources.neighborEdges;
   var distancesFromSources = bfsFromSources.distances;
@@ -307,11 +310,11 @@ function PathsFromTo(sources, targets, k, d, mod) {
 }
 
 function register(cytoscape) {
-  cytoscape('collection', 'kneighborhood', kneighborhood);
-  cytoscape('collection', 'CompoundBfs', CompoundBfs);
-  cytoscape('collection', 'CommonStream', CommonStream);
-  cytoscape('collection', 'PathsBetween', PathsBetween);
-  cytoscape('collection', 'PathsFromTo', PathsFromTo);
+  cytoscape('collection', 'kNeighborhood', kNeighborhood);
+  cytoscape('collection', 'compoundBFS', compoundBFS);
+  cytoscape('collection', 'commonStream', commonStream);
+  cytoscape('collection', 'pathsBetween', pathsBetween);
+  cytoscape('collection', 'pathsFromTo', pathsFromTo);
 }
 
 if (typeof window.cytoscape !== 'undefined') {

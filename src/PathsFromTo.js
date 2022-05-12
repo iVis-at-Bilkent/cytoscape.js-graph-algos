@@ -7,10 +7,10 @@
 	d: further distance to compute path limit
 	mod: direction of algorithm( directed or undirected)
 */
-export function PathsFromTo(sources, targets, k, d, mod) {
-	var bfsFromSources = cy.elements().CompoundBfs(sources, k, mod === "directed" ?
+export function pathsFromTo(sources, targets, k, d, mod) {
+	var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "directed" ?
 		"DOWNSTREAM" : "BOTHSTREAM");
-	var bfsToTargets = cy.elements().CompoundBfs(targets, k, mod === "directed" ?
+	var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "directed" ?
 		"UPSTREAM" : "BOTHSTREAM");
 	var nodesFromSources = bfsFromSources.neighborNodes;
 	var edgesFromSources = bfsFromSources.neighborEdges;

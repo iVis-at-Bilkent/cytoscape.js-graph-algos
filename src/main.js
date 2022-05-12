@@ -1,15 +1,15 @@
-import {kneighborhood} from "./kneighborhood.js";
-import {CompoundBfs} from "./CompoundBfs.js";
-import {CommonStream} from "./CommonStream.js"
-import {PathsBetween} from "./PathsBetween.js";
-import {PathsFromTo} from "./PathsFromTo.js";
+import {kNeighborhood} from "./kNeighborhood.js";
+import {compoundBFS} from "./compoundBFS.js";
+import {commonStream} from "./commonStream.js"
+import {pathsBetween} from "./pathsBetween.js";
+import {pathsFromTo} from "./pathsFromTo.js";
 
 export default function register(cytoscape) {
-	cytoscape('collection', 'kneighborhood', kneighborhood);
-	cytoscape('collection', 'CompoundBfs', CompoundBfs);
-	cytoscape('collection', 'CommonStream', CommonStream);
-	cytoscape('collection', 'PathsBetween', PathsBetween);
-	cytoscape('collection', 'PathsFromTo', PathsFromTo);
+	cytoscape('collection', 'kNeighborhood', kNeighborhood);
+	cytoscape('collection', 'compoundBFS', compoundBFS);
+	cytoscape('collection', 'commonStream', commonStream);
+	cytoscape('collection', 'pathsBetween', pathsBetween);
+	cytoscape('collection', 'pathsFromTo', pathsFromTo);
 }
 if (typeof window.cytoscape !== 'undefined') {
 	register(window.cytoscape);

@@ -1,9 +1,9 @@
-export function kneighborhood(root, k, direction) {
+export function kNeighborhood(root, k, direction) {
 	var Q = [];
 	var visited = {};
 	var compoundVisited = {};
 	var kneighbors = [];
-	var compoundBFS = cy.elements().CompoundBfs(root, k, direction);
+	var compoundBFS = cy.elements().compoundBFS(root, k, direction);
 	let neighborNodes = compoundBFS.neighborNodes;
 	let neighborEdges = compoundBFS.neighborEdges;
 

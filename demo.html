@@ -523,7 +523,7 @@
 				.addEventListener('click', () => {
 
 					if (sourceNodes[0] !== undefined)
-						cy.elements().kneighborhood(sourceNodes[0], limit, direction);
+						cy.elements().kNeighborhood(sourceNodes[0], limit, direction);
 					sourceNodes = [];
 				});
 
@@ -547,7 +547,7 @@
 			document.getElementById('applycommonstream')
 				.addEventListener('click', () => {
 
-					cy.elements().CommonStream(sourceNodes, limit, direction);
+					cy.elements().commonStream(sourceNodes, limit, direction);
 					sourceNodes = [];
 				});
 
@@ -568,7 +568,7 @@
 				.addEventListener('click', () => {
 
 					console.log("GoI");
-					cy.elements().PathsBetween(sourceNodes, limit);
+					cy.elements().pathsBetween(sourceNodes, limit);
 					sourceNodes = [];
 				});
 
@@ -601,7 +601,7 @@
 
 			document.getElementById('applyPfT')
 				.addEventListener('click', () => {
-					cy.elements().PathsFromTo(sourceNodes, targetNodes, limit, d, direction);
+					cy.elements().pathsFromTo(sourceNodes, targetNodes, limit, d, direction);
 				});
 
 			document.getElementById('clearNodes')

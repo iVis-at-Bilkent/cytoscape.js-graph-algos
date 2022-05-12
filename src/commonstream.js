@@ -6,18 +6,19 @@ function reverseDirection(direction) {
 	if (direction === "DOWNSTREAM")
 		return "UPSTREAM";
 }
-export function CommonStream(roots, k, direction) {
+export function commonStream(roots, k, direction) {
 	var count = {};
 	var candidates = [];
 	var commonNodes = [];
 	var commonEdges = [];
+	var nodesOnPath = [];
 	var distancesFrom = {};
 	var visitSources = {};
 	for (let i = 0; i < roots.length; i++)
 		visitSources[roots[i].id()] = true;
 	for (let i = 0; i < roots.length; i++) {
 		// find neighbors for each node in source nodes
-		let neighborBFS = cy.elements().CompoundBfs(roots[i], k, direction);
+		let neighborBFS = cy.elements().compoundBFS(roots[i], k, direction);
 		var neighborNodes = neighborBFS.neighborNodes;
 		var neighborEdges = neighborBFS.neighborEdges;
 		var dist = neighborBFS.distances;
@@ -59,7 +60,7 @@ export function CommonStream(roots, k, direction) {
 			}
 		}
 	}
-	var compoundBFS = cy.elements().CompoundBfs(commonNodes, k, reverseDirection(direction));
+	var compoundBFS = cy.elements().compoundBFS(commonNodes, k, reverseDirection(direction));
 	var allEdges = cy.edges();
 	var allNodes = cy.nodes();
 	var neighborNodes = compoundBFS.commonNodes;
@@ -76,6 +77,7 @@ export function CommonStream(roots, k, direction) {
 				allNodes[i].addClass('highlightedParent');
 			else
 				allNodes[i].addClass('highlighted');
+			nodesOnPath.push(allNodes[i]);
 			visitSources[nodeId] = true;
 		}
 	}
@@ -87,6 +89,7 @@ export function CommonStream(roots, k, direction) {
 	}
 	return {
 		commonNodes: commonNodes,
+		nodesOnPath: nodesOnPath,
 		commonEdges: commonEdges
 	}
 }

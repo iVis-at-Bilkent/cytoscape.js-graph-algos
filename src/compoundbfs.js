@@ -1,4 +1,4 @@
-export function CompoundBfs(roots, k, direction) {
+export function compoundBFS(roots, k, direction) {
 	var Q = [];
 	var dist = {};
 	var visited = {};
