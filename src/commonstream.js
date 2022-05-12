@@ -90,6 +90,6 @@ export function commonStream(roots, k, direction) {
 	return {
 		commonNodes: commonNodes,
 		nodesOnPath: nodesOnPath,
-		commonEdges: commonEdges
+		edgesOnPath: commonEdges
 	}
 }
