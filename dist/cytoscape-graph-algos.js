@@ -97,6 +97,7 @@
 	}
 
 	function commonStream(roots, k, direction) {
+	  var cy = this.cy();
 	  var count = {};
 	  var candidates = [];
 	  var commonNodes = [];

@@ -7,6 +7,7 @@ function reverseDirection(direction) {
 		return "UPSTREAM";
 }
 export function commonStream(roots, k, direction) {
+	let cy = this.cy();
 	var count = {};
 	var candidates = [];
 	var commonNodes = [];
