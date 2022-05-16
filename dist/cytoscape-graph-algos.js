@@ -97,6 +97,7 @@
 	}
 
 	function commonStream(roots, k, direction) {
+	  var cy = this.cy();
 	  var count = {};
 	  var candidates = [];
 	  var commonNodes = [];
@@ -330,8 +331,8 @@
 	  cytoscape('collection', 'pathsFromTo', pathsFromTo);
 	}
 
-	if (typeof window.cytoscape !== 'undefined') {
-	  register(window.cytoscape);
+	if (typeof cytoscape !== 'undefined') {
+	  register(cytoscape);
 	}
 
 	return register;

@@ -11,6 +11,6 @@ export default function register(cytoscape) {
 	cytoscape('collection', 'pathsBetween', pathsBetween);
 	cytoscape('collection', 'pathsFromTo', pathsFromTo);
 }
-if (typeof window.cytoscape !== 'undefined') {
-	register(window.cytoscape);
+if (typeof cytoscape !== 'undefined') {
+	register(cytoscape);
 }
