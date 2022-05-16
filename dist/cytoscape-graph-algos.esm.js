@@ -23,14 +23,14 @@ function compoundBFS(roots, k, direction) {
   var dist = {};
   var visited = {};
   var compoundVisited = {};
-  var neighborNodes = [];
-  var neighborEdges = [];
+  var neighborNodes = cy.collection();
+  var neighborEdges = cy.collection();
 
   for (var i = 0; i < roots.length; i++) {
     dist[roots[i].id()] = 0;
     visited[roots[i].id()] = true;
     Q.push(roots[i]);
-    neighborNodes.push(roots[i]);
+    neighborNodes.merge(roots[i]);
   }
 
   while (Q.length !== 0) {
@@ -50,7 +50,7 @@ function compoundBFS(roots, k, direction) {
         compoundVisited[allNodesinCompounds[_i].id()] = true;
 
         if (visited[allNodesinCompounds[_i].id()] !== true) {
-          neighborNodes.push(allNodesinCompounds[_i]);
+          neighborNodes.merge(allNodesinCompounds[_i]);
           visited[allNodesinCompounds[_i].id()] = true;
           Q.push(allNodesinCompounds[_i]);
         }
@@ -69,10 +69,10 @@ function compoundBFS(roots, k, direction) {
           dist[neighbori.id()] = depth + 1;
           visited[neighbori.id()] = true;
           Q.push(neighbori);
-          neighborNodes.push(neighbori);
+          neighborNodes.merge(neighbori);
         }
       } else if (neighbori.isEdge() && depth < k) {
-        neighborEdges.push(neighbori);
+        neighborEdges.merge(neighbori);
       }
     }
   }
@@ -94,9 +94,9 @@ function commonStream(roots, k, direction) {
   var cy = this.cy();
   var count = {};
   var candidates = [];
-  var commonNodes = [];
-  var nodesOnPath = [];
-  var edgesOnPath = [];
+  var commonNodes = cy.collection();
+  var nodesOnPath = cy.collection();
+  var edgesOnPath = cy.collection();
   var distancesFrom = {};
   var visitSources = {};
 
@@ -134,7 +134,7 @@ function commonStream(roots, k, direction) {
 
     if (count[candidate.id()] === roots.length) {
       if (candidate.isNode()) {
-        commonNodes.push(candidate);
+        commonNodes.merge(candidate);
         if (visitSources[candidate.id()] === true) continue;
         if (candidate.isParent() === true) candidate.addClass('highlightedCommonParent');else candidate.addClass('highlightedCommon');
         visitSources[candidate.id()] = true;
@@ -159,7 +159,7 @@ function commonStream(roots, k, direction) {
         allNodes[_i2].addClass('highlightedParent');
       } else allNodes[_i2].addClass('highlighted');
 
-      nodesOnPath.push(allNodes[_i2]);
+      nodesOnPath.merge(allNodes[_i2]);
       visitSources[nodeId] = true;
     }
   }
@@ -172,7 +172,7 @@ function commonStream(roots, k, direction) {
     if (visitSources[sourceId] === true && visitSources[targetId] === true) {
       allEdges[_i3].addClass('highlighted');
 
-      edgesOnPath.push(allEdges[_i3]);
+      edgesOnPath.merge(allEdges[_i3]);
     }
   }
 
@@ -199,8 +199,8 @@ function pathsBetween(roots, k) {
   var reverseNeighborNodes = reverseBFS.neighborNodes;
   var reversedNeighborEdges = reverseBFS.neighborEdges;
   var reverseDist = reverseBFS.distances;
-  var resultNodes = [],
-      resultEdges = [],
+  var resultNodes = cy.collection(),
+      resultEdges = cy.collection(),
       visitSources = {};
 
   for (var i = 0; i < roots.length; i++) {
@@ -209,7 +209,7 @@ function pathsBetween(roots, k) {
 
   for (var _i = 0; _i < forwardNeighborNodes.length; _i++) {
     if (forwardDist[forwardNeighborNodes[_i].id()] !== undefined && reverseDist[forwardNeighborNodes[_i].id()] && forwardDist[forwardNeighborNodes[_i].id()] + reverseDist[forwardNeighborNodes[_i].id()] <= k) {
-      resultNodes.push(forwardNeighborNodes[_i]);
+      resultNodes.merge(forwardNeighborNodes[_i]);
       if (visitSources[forwardNeighborNodes[_i].id()] === true) continue;
       if (forwardNeighborNodes[_i].isParent()) forwardNeighborNodes[_i].addClass('highlightedParent');else forwardNeighborNodes[_i].addClass('highlighted');
     }
@@ -219,7 +219,7 @@ function pathsBetween(roots, k) {
     if (forwardDist[forwardNeighborEdges[_i2].source().id()] !== undefined && reverseDist[forwardNeighborEdges[_i2].target().id()] !== undefined && forwardDist[forwardNeighborEdges[_i2].source().id()] + reverseDist[forwardNeighborEdges[_i2].target().id()] < k) {
       forwardNeighborEdges[_i2].addClass('highlighted');
 
-      resultEdges.push(forwardNeighborEdges[_i2]);
+      resultEdges.merge(forwardNeighborEdges[_i2]);
     }
   }
 
@@ -251,8 +251,8 @@ function pathsFromTo(sources, targets, k, d, mod) {
   var l = -1;
   var visitSources = {},
       visitTargets = {};
-  var nodesOnThePaths = [],
-      edgesOnThePaths = [];
+  var nodesOnThePaths = cy.collection(),
+      edgesOnThePaths = cy.collection();
 
   for (var i = 0; i < sources.length; i++) {
     visitSources[sources[i].id()] = true;
@@ -279,14 +279,14 @@ function pathsFromTo(sources, targets, k, d, mod) {
     if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
       edges[_i3].addClass("highlighted");
 
-      edgesOnThePaths.push(edges[_i3]);
+      edgesOnThePaths.merge(edges[_i3]);
     }
 
     if (mod === "UNDIRECTED") {
       if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
         edges[_i3].addClass("highlighted");
 
-        edgesOnThePaths.push(edges[_i3]);
+        edgesOnThePaths.merge(edges[_i3]);
       }
     }
   }
@@ -302,11 +302,11 @@ function pathsFromTo(sources, targets, k, d, mod) {
       if (nodes[_i4].isParent() === true) {
         nodes[_i4].addClass("highlightedParent");
 
-        nodesOnThePaths.push(nodes[_i4]);
+        nodesOnThePaths.merge(nodes[_i4]);
       } else {
         nodes[_i4].addClass("highlighted");
 
-        nodesOnThePaths.push(nodes[_i4]);
+        nodesOnThePaths.merge(nodes[_i4]);
       }
     }
   }

@@ -14,7 +14,7 @@ export function pathsBetween(roots, k) {
 	var reverseNeighborNodes = reverseBFS.neighborNodes;
 	var reversedNeighborEdges = reverseBFS.neighborEdges;
 	var reverseDist = reverseBFS.distances;
-	var resultNodes = [], resultEdges = [], visitSources = {};
+	var resultNodes = cy.collection(), resultEdges = cy.collection(), visitSources = {};
 
 	for (let i = 0; i < roots.length; i++)
 		visitSources[roots[i].id()] = true;
@@ -22,7 +22,7 @@ export function pathsBetween(roots, k) {
 	for (let i = 0; i < forwardNeighborNodes.length; i++) {
 		if (forwardDist[forwardNeighborNodes[i].id()] !== undefined && reverseDist[forwardNeighborNodes[i].id()] &&
 			forwardDist[forwardNeighborNodes[i].id()] + reverseDist[forwardNeighborNodes[i].id()] <= k) {
-			resultNodes.push(forwardNeighborNodes[i]);
+			resultNodes.merge(forwardNeighborNodes[i]);
 			if (visitSources[forwardNeighborNodes[i].id()] === true)
 				continue;
 			if (forwardNeighborNodes[i].isParent())
@@ -37,7 +37,7 @@ export function pathsBetween(roots, k) {
 			forwardDist[forwardNeighborEdges[i].source().id()] + reverseDist[forwardNeighborEdges[i].target().id()] < k
 		) {
 			forwardNeighborEdges[i].addClass('highlighted');
-			resultEdges.push(forwardNeighborEdges[i]);
+			resultEdges.merge(forwardNeighborEdges[i]);
 		}
 	}
 	return {

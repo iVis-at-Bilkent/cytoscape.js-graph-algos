@@ -21,7 +21,7 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 	var distancesToTargets = bfsToTargets.distances;
 	var l = -1;
 	var visitSources = {}, visitTargets = {};
-	var nodesOnThePaths = [], edgesOnThePaths = [];
+	var nodesOnThePaths = cy.collection(), edgesOnThePaths = cy.collection();
 
 	for (let i = 0; i < sources.length; i++)
 		visitSources[sources[i].id()] = true;
@@ -41,14 +41,14 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 		if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined &&
 			distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
 			edges[i].addClass("highlighted");
-			edgesOnThePaths.push(edges[i]);
+			edgesOnThePaths.merge(edges[i]);
 		}
 
 		if (mod === "UNDIRECTED") {
 			if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined &&
 				distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
 				edges[i].addClass("highlighted");
-				edgesOnThePaths.push(edges[i]);
+				edgesOnThePaths.merge(edges[i]);
 			}
 		}
 	}
@@ -61,11 +61,11 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 				continue;
 			if (nodes[i].isParent() === true) {
 				nodes[i].addClass("highlightedParent");
-				nodesOnThePaths.push(nodes[i]);
+				nodesOnThePaths.merge(nodes[i]);
 			}
 			else {
 				nodes[i].addClass("highlighted");
-				nodesOnThePaths.push(nodes[i]);
+				nodesOnThePaths.merge(nodes[i]);
 			}
 		}
 	}

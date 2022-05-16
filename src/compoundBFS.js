@@ -3,13 +3,13 @@ export function compoundBFS(roots, k, direction) {
 	var dist = {};
 	var visited = {};
 	var compoundVisited = {};
-	var neighborNodes = [];
-	var neighborEdges = [];
+	var neighborNodes = cy.collection();
+	var neighborEdges = cy.collection();
 	for (let i = 0; i < roots.length; i++) {
 		dist[roots[i].id()] = 0;
 		visited[roots[i].id()] = true;
 		Q.push(roots[i]);
-		neighborNodes.push(roots[i]);
+		neighborNodes.merge(roots[i]);
 	}
 	while (Q.length !== 0) {
 		var node = Q.shift();
@@ -25,7 +25,7 @@ export function compoundBFS(roots, k, direction) {
 				dist[allNodesinCompounds[i].id()] = depth;
 				compoundVisited[allNodesinCompounds[i].id()] = true;
 				if (visited[allNodesinCompounds[i].id()] !== true) {
-					neighborNodes.push(allNodesinCompounds[i]);
+					neighborNodes.merge(allNodesinCompounds[i]);
 					visited[allNodesinCompounds[i].id()] = true;
 					Q.push(allNodesinCompounds[i]);
 				}
@@ -47,11 +47,11 @@ export function compoundBFS(roots, k, direction) {
 					dist[neighbori.id()] = depth + 1;
 					visited[neighbori.id()] = true;
 					Q.push(neighbori);
-					neighborNodes.push(neighbori);
+					neighborNodes.merge(neighbori);
 				}
 			}
 			else if (neighbori.isEdge() && depth < k) {
-				neighborEdges.push(neighbori);
+				neighborEdges.merge(neighbori);
 			}
 		}
 	}

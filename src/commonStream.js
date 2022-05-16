@@ -10,10 +10,10 @@ export function commonStream(roots, k, direction) {
 	let cy = this.cy();
 	var count = {};
 	var candidates = [];
-	var commonNodes = [];
+	var commonNodes = cy.collection();
 	var commonEdges = [];
-	var nodesOnPath = [];
-	var edgesOnPath = [];
+	var nodesOnPath = cy.collection();
+	var edgesOnPath = cy.collection();
 	var distancesFrom = {};
 	var visitSources = {};
 	for (let i = 0; i < roots.length; i++)
@@ -48,7 +48,7 @@ export function commonStream(roots, k, direction) {
 		//select common nodes
 		if (count[candidate.id()] === roots.length) {
 			if (candidate.isNode()) {
-				commonNodes.push(candidate);
+				commonNodes.merge(candidate);
 				if (visitSources[candidate.id()] === true)
 					continue;
 				if (candidate.isParent() === true)
@@ -80,7 +80,7 @@ export function commonStream(roots, k, direction) {
 			}
 			else
 				allNodes[i].addClass('highlighted');
-			nodesOnPath.push(allNodes[i]);
+			nodesOnPath.merge(allNodes[i]);
 			visitSources[nodeId] = true;
 		}
 	}
@@ -89,7 +89,7 @@ export function commonStream(roots, k, direction) {
 		var targetId = allEdges[i].target().id();
 		if (visitSources[sourceId] === true && visitSources[targetId] === true){
 			allEdges[i].addClass('highlighted');
-			edgesOnPath.push(allEdges[i]);
+			edgesOnPath.merge(allEdges[i]);
 		}
 	}
 	return {
