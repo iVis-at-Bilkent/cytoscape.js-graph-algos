@@ -100,8 +100,8 @@
 	  var count = {};
 	  var candidates = [];
 	  var commonNodes = [];
-	  var commonEdges = [];
 	  var nodesOnPath = [];
+	  var edgesOnPath = [];
 	  var distancesFrom = {};
 	  var visitSources = {};
 
@@ -143,8 +143,6 @@
 	        if (visitSources[candidate.id()] === true) continue;
 	        if (candidate.isParent() === true) candidate.addClass('highlightedCommonParent');else candidate.addClass('highlightedCommon');
 	        visitSources[candidate.id()] = true;
-	      } else {
-	        commonEdges.push(candidate);
 	      }
 	    }
 	  }
@@ -161,7 +159,11 @@
 
 	    if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && distancesFrom[nodeId] + distancesTo[nodeId] <= k - 1) {
 	      if (visitSources[nodeId] === true) continue;
-	      if (allNodes[_i2].isParent() === true) allNodes[_i2].addClass('highlightedParent');else allNodes[_i2].addClass('highlighted');
+
+	      if (allNodes[_i2].isParent() === true) {
+	        allNodes[_i2].addClass('highlightedParent');
+	      } else allNodes[_i2].addClass('highlighted');
+
 	      nodesOnPath.push(allNodes[_i2]);
 	      visitSources[nodeId] = true;
 	    }
@@ -172,13 +174,17 @@
 
 	    var targetId = allEdges[_i3].target().id();
 
-	    if (visitSources[sourceId] === true && visitSources[targetId] === true) allEdges[_i3].addClass('highlighted');
+	    if (visitSources[sourceId] === true && visitSources[targetId] === true) {
+	      allEdges[_i3].addClass('highlighted');
+
+	      edgesOnPath.push(allEdges[_i3]);
+	    }
 	  }
 
 	  return {
 	    commonNodes: commonNodes,
 	    nodesOnPath: nodesOnPath,
-	    edgesOnPath: commonEdges
+	    edgesOnPath: edgesOnPath
 	  };
 	}
 
@@ -239,8 +245,8 @@
 	*/
 	function pathsFromTo(sources, targets, k, d, mod) {
 	  var cy = this.cy();
-	  var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "directed" ? "DOWNSTREAM" : "BOTHSTREAM");
-	  var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "directed" ? "UPSTREAM" : "BOTHSTREAM");
+	  var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
+	  var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
 	  var nodesFromSources = bfsFromSources.neighborNodes;
 	  var edgesFromSources = bfsFromSources.neighborEdges;
 	  var distancesFromSources = bfsFromSources.distances;
@@ -281,7 +287,7 @@
 	      edgesOnThePaths.push(edges[_i3]);
 	    }
 
-	    if (mod === "undirected") {
+	    if (mod === "UNDIRECTED") {
 	      if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
 	        edges[_i3].addClass("highlighted");
 

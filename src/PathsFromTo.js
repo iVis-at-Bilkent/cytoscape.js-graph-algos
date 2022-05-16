@@ -9,9 +9,9 @@
 */
 export function pathsFromTo(sources, targets, k, d, mod) {
 	let cy = this.cy();
-	var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "directed" ?
+	var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "DIRECTED" ?
 		"DOWNSTREAM" : "BOTHSTREAM");
-	var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "directed" ?
+	var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "DIRECTED" ?
 		"UPSTREAM" : "BOTHSTREAM");
 	var nodesFromSources = bfsFromSources.neighborNodes;
 	var edgesFromSources = bfsFromSources.neighborEdges;
@@ -44,7 +44,7 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 			edgesOnThePaths.push(edges[i]);
 		}
 
-		if (mod === "undirected") {
+		if (mod === "UNDIRECTED") {
 			if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined &&
 				distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
 				edges[i].addClass("highlighted");

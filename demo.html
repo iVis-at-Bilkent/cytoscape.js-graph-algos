@@ -438,7 +438,13 @@
 			document.getElementById('PathsFromToUI').style.display = document.getElementById("queries").value === "pathsFromTo" ? 'block' : 'none';
 			var valueRoot;
 			var neighborhoodK = 0;
-			//cy.elements().commonstream([root,root2],4, "DOWNSTREAM");
+
+			/*let a = cy.collection().merge(cy.getElementById("glyph36")).merge(cy.getElementById("glyph27"));
+console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
+            //cy.elements().pathsFromTo(cy.getElementById("glyph11"), cy.getElementById("glyph1"), 3, 1, "UNDIRECTED");
+
+			let a = cy.collection().merge(cy.getElementById("glyph36")).merge(cy.getElementById("glyph27"));
+console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));
 			// cy.elements().commonstream([root,root2],1, "DOWNSTREAM");
 			//cy.elements().graphofinterest([root,root2], 5);
 			+
@@ -730,8 +736,8 @@
 				<p><label>Direction</label>
 					<select id="directionPfT" class="direction"
 						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">
-						<option value="directed">DIRECTED</option>
-						<option value="undirected"> UNDIRECTED</option>
+						<option value="DIRECTED">DIRECTED</option>
+						<option value="UNDIRECTED"> UNDIRECTED</option>
 					</select>
 				</p>
 			</form>

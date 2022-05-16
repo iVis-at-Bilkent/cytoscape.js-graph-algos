@@ -12,6 +12,7 @@ export function commonStream(roots, k, direction) {
 	var commonNodes = [];
 	var commonEdges = [];
 	var nodesOnPath = [];
+	var edgesOnPath = [];
 	var distancesFrom = {};
 	var visitSources = {};
 	for (let i = 0; i < roots.length; i++)
@@ -73,8 +74,9 @@ export function commonStream(roots, k, direction) {
 			distancesFrom[nodeId] + distancesTo[nodeId] <= k - 1) {
 			if (visitSources[nodeId] === true)
 				continue;
-			if (allNodes[i].isParent() === true)
+			if (allNodes[i].isParent() === true){
 				allNodes[i].addClass('highlightedParent');
+			}
 			else
 				allNodes[i].addClass('highlighted');
 			nodesOnPath.push(allNodes[i]);
@@ -84,12 +86,14 @@ export function commonStream(roots, k, direction) {
 	for (let i = 0; i < allEdges.length; i++) {
 		var sourceId = allEdges[i].source().id();
 		var targetId = allEdges[i].target().id();
-		if (visitSources[sourceId] === true && visitSources[targetId] === true)
+		if (visitSources[sourceId] === true && visitSources[targetId] === true){
 			allEdges[i].addClass('highlighted');
+			edgesOnPath.push(allEdges[i]);
+		}
 	}
 	return {
 		commonNodes: commonNodes,
 		nodesOnPath: nodesOnPath,
-		edgesOnPath: commonEdges
+		edgesOnPath: edgesOnPath
 	}
 }
