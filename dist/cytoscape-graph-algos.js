@@ -25,6 +25,7 @@
 	}
 
 	function compoundBFS(roots, k, direction) {
+	  var cy = this.cy();
 	  var Q = [];
 	  var dist = {};
 	  var visited = {};
