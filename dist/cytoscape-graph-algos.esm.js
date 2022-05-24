@@ -10,6 +10,7 @@ function kNeighborhood(root, k, direction) {
 }
 
 function compoundBFS(roots, k, direction) {
+  var cy = this.cy();
   var Q = [];
   var dist = {};
   var visited = {};

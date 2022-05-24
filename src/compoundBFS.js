@@ -1,4 +1,5 @@
 export function compoundBFS(roots, k, direction) {
+	let cy = this.cy();
 	var Q = [];
 	var dist = {};
 	var visited = {};
