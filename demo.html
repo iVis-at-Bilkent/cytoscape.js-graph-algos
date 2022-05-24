@@ -528,8 +528,20 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			document.getElementById('applyNeighborhood')
 				.addEventListener('click', () => {
 
-					if (sourceNodes[0] !== undefined)
-						cy.elements().kNeighborhood(sourceNodes[0], limit, direction);
+					if (sourceNodes[0] !== undefined){
+						var kNeighborhood = cy.elements().kNeighborhood(sourceNodes[0], limit, direction);
+						var neighborNodes = kNeighborhood.neighborNodes;
+						var neighborEdges = kNeighborhood.neighborEdges;
+						for (let i = 0; i < neighborNodes.length; i++) {
+		                     if (neighborNodes[i].isParent() === false && neighborNodes[i].id() !== root.id())
+			                      neighborNodes[i].addClass('highlighted');
+		                     else if (neighborNodes[i].id() !== root.id())
+			                      neighborNodes[i].addClass('highlightedParent');
+                        	}
+	                for (let i = 0; i < neighborEdges.length; i++) {
+	                        	neighborEdges[i].addClass('highlighted');
+	                      }
+						}
 					sourceNodes = [];
 				});
 
@@ -553,7 +565,32 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			document.getElementById('applycommonstream')
 				.addEventListener('click', () => {
 
-					cy.elements().commonStream(sourceNodes, limit, direction);
+					var commonStream = cy.elements().commonStream(sourceNodes, limit, direction);
+					var commonNodes = commonStream.commonNodes;
+					var edgesOnPath = commonStream.edgesOnPath;
+					var nodesOnPath = commonStream.nodesOnPath;
+					for (let i = 0; i < commonNodes.length; i++) {
+		         var nodeId = commonNodes[i].id();
+	          	
+			       if (commonNodes[i].isParent() === true){
+				         commonNodes[i].addClass('highlightedCommonParent');
+			       }
+			       else
+				        commonNodes[i].addClass('highlightedCommon');
+		      }
+					for (let i = 0; i < nodesOnPath.length; i++) {
+	          	
+			       if (nodesOnPath[i].isParent() === true){
+				         nodesOnPath[i].addClass('highlightedParent');
+			       }
+			       else
+				        nodesOnPath[i].addClass('highlighted');
+		      }
+	        for (let i = 0; i < edgesOnPath.length; i++) {
+		       
+		        	edgesOnPath[i].addClass('highlighted');
+	      	}
+
 					sourceNodes = [];
 				});
 
@@ -574,7 +611,18 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 				.addEventListener('click', () => {
 
 					console.log("GoI");
-					cy.elements().pathsBetween(sourceNodes, limit);
+					var pathsBetween = cy.elements().pathsBetween(sourceNodes, limit);
+					var resultNodes = pathsBetween.resultNodes;
+					var resultEdges = pathsBetween.resultEdges;
+					for ( let i = 0; i < resultNodes.length; i++){
+						if (resultNodes[i].isParent())
+				resultNodes[i].addClass('highlightedParent');
+			else
+				resultNodes[i].addClass('highlighted');
+					}
+          for ( let i = 0; i < resultEdges.length; i++){
+				resultEdges[i].addClass('highlighted');
+					}
 					sourceNodes = [];
 				});
 
@@ -607,7 +655,18 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 			document.getElementById('applyPfT')
 				.addEventListener('click', () => {
-					cy.elements().pathsFromTo(sourceNodes, targetNodes, limit, d, direction);
+					var pathsFromTo = cy.elements().pathsFromTo(sourceNodes, targetNodes, limit, d, direction);
+					var nodesOnThePaths = pathsFromTo.nodesOnThePaths;
+					var edgesOnThePaths = pathsFromTo.edgesOnThePaths;
+					for ( let i = 0; i < nodesOnThePaths.length; i++){
+						if (nodesOnThePaths[i].isParent())
+				nodesOnThePaths[i].addClass('highlightedParent');
+			else
+				nodesOnThePaths[i].addClass('highlighted');
+					}
+          for ( let i = 0; i < edgesOnThePaths.length; i++){
+				edgesOnThePaths[i].addClass('highlighted');
+					}
 				});
 
 			document.getElementById('clearNodes')
@@ -661,13 +720,13 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 		<div id="neighborhoodUI">
 
 			<form>
-				<p><label for="limitneighborhood">Limit</label>
+				<p><label for="limitneighborhood" style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
 					<input id="limitneighborhood" style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"
 						type="number" min="1" value="1" step="1"> </input>
 				</p>
 
 
-				<p> <label for="directionNeighborhood">Direction</label>
+				<p> <label for="directionNeighborhood"style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
 					<select id="directionNeighborhood" style="width:110px; margin-bottom: 10px!important;margin-left: 5px">
 						<option value="UPSTREAM">UPSTREAM</option>
 						<option value="DOWNSTREAM"> DOWNSTREAM</option>
@@ -685,13 +744,13 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 		<div id="commonstreamUI">
 			<form>
-				<p><label for="limitcommonstream"> Limit</label>
+				<p><label for="limitcommonstream" style="width:100px; margin-bottom: 10px!important;margin-left: 5px;""> Limit</label>
 					<input id="limitcommonstream" style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"
 						type="number" min="1" value="1" step="1"> </input>
 				</p>
 				<p><label for="directioncommonstream"
-						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
-					<select id="directioncommonstream">
+						style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
+					<select id="directioncommonstream" style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">
 						<option value="UPSTREAM">UPSTREAM</option>
 						<option value="DOWNSTREAM"> DOWNSTREAM</option>
 						<option value="BOTHSTREAM"> BOTHSTREAM</option>
@@ -709,7 +768,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 		<div id="graphofinterestUI">
 
 			<form>
-				<label>Limit</label>
+				<label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
 				<input id="limitGoI" type="number" min="1" value="1" step="1"
 					style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
 			</form>
@@ -723,17 +782,17 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 		<div id="PathsFromToUI">
 			<form>
-				<p><label>Limit</label>
+				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
 					<input id="limitPfT" type="number" min="1" value="1" step="1"
 						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
 				</p>
 				<br />
-				<p><label>Further Distance</label>
+				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Further Distance</label>
 					<input id="dPfT" type="number" min="1" value="1" step="1"
 						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
 					<br /> <br />
 				</p>
-				<p><label>Direction</label>
+				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
 					<select id="directionPfT" class="direction"
 						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">
 						<option value="DIRECTED">DIRECTED</option>

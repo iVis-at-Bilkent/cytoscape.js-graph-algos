@@ -25,10 +25,6 @@ export function pathsBetween(roots, k) {
 			resultNodes.merge(forwardNeighborNodes[i]);
 			if (visitSources[forwardNeighborNodes[i].id()] === true)
 				continue;
-			if (forwardNeighborNodes[i].isParent())
-				forwardNeighborNodes[i].addClass('highlightedParent');
-			else
-				forwardNeighborNodes[i].addClass('highlighted');
 		}
 	}
 	for (let i = 0; i < forwardNeighborEdges.length; i++) {
@@ -36,7 +32,6 @@ export function pathsBetween(roots, k) {
 			reverseDist[forwardNeighborEdges[i].target().id()] !== undefined &&
 			forwardDist[forwardNeighborEdges[i].source().id()] + reverseDist[forwardNeighborEdges[i].target().id()] < k
 		) {
-			forwardNeighborEdges[i].addClass('highlighted');
 			resultEdges.merge(forwardNeighborEdges[i]);
 		}
 	}

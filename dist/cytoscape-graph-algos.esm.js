@@ -3,15 +3,6 @@ function kNeighborhood(root, k, direction) {
   var compoundBFS = cy.elements().compoundBFS(root, k, direction);
   var neighborNodes = compoundBFS.neighborNodes;
   var neighborEdges = compoundBFS.neighborEdges;
-
-  for (var i = 0; i < neighborNodes.length; i++) {
-    if (neighborNodes[i].isParent() === false && neighborNodes[i].id() !== root.id()) neighborNodes[i].addClass('highlighted');else if (neighborNodes[i].id() !== root.id()) neighborNodes[i].addClass('highlightedParent');
-  }
-
-  for (var _i = 0; _i < neighborEdges.length; _i++) {
-    neighborEdges[_i].addClass('highlighted');
-  }
-
   return {
     neighborNodes: neighborNodes,
     neighborEdges: neighborEdges
@@ -136,7 +127,6 @@ function commonStream(roots, k, direction) {
       if (candidate.isNode()) {
         commonNodes.merge(candidate);
         if (visitSources[candidate.id()] === true) continue;
-        if (candidate.isParent() === true) candidate.addClass('highlightedCommonParent');else candidate.addClass('highlightedCommon');
         visitSources[candidate.id()] = true;
       }
     }
@@ -154,11 +144,6 @@ function commonStream(roots, k, direction) {
 
     if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && distancesFrom[nodeId] + distancesTo[nodeId] <= k - 1) {
       if (visitSources[nodeId] === true) continue;
-
-      if (allNodes[_i2].isParent() === true) {
-        allNodes[_i2].addClass('highlightedParent');
-      } else allNodes[_i2].addClass('highlighted');
-
       nodesOnPath.merge(allNodes[_i2]);
       visitSources[nodeId] = true;
     }
@@ -170,8 +155,6 @@ function commonStream(roots, k, direction) {
     var targetId = allEdges[_i3].target().id();
 
     if (visitSources[sourceId] === true && visitSources[targetId] === true) {
-      allEdges[_i3].addClass('highlighted');
-
       edgesOnPath.merge(allEdges[_i3]);
     }
   }
@@ -211,14 +194,11 @@ function pathsBetween(roots, k) {
     if (forwardDist[forwardNeighborNodes[_i].id()] !== undefined && reverseDist[forwardNeighborNodes[_i].id()] && forwardDist[forwardNeighborNodes[_i].id()] + reverseDist[forwardNeighborNodes[_i].id()] <= k) {
       resultNodes.merge(forwardNeighborNodes[_i]);
       if (visitSources[forwardNeighborNodes[_i].id()] === true) continue;
-      if (forwardNeighborNodes[_i].isParent()) forwardNeighborNodes[_i].addClass('highlightedParent');else forwardNeighborNodes[_i].addClass('highlighted');
     }
   }
 
   for (var _i2 = 0; _i2 < forwardNeighborEdges.length; _i2++) {
     if (forwardDist[forwardNeighborEdges[_i2].source().id()] !== undefined && reverseDist[forwardNeighborEdges[_i2].target().id()] !== undefined && forwardDist[forwardNeighborEdges[_i2].source().id()] + reverseDist[forwardNeighborEdges[_i2].target().id()] < k) {
-      forwardNeighborEdges[_i2].addClass('highlighted');
-
       resultEdges.merge(forwardNeighborEdges[_i2]);
     }
   }
@@ -277,15 +257,11 @@ function pathsFromTo(sources, targets, k, d, mod) {
     var minDistance = l + d >= k ? k : l + d;
 
     if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
-      edges[_i3].addClass("highlighted");
-
       edgesOnThePaths.merge(edges[_i3]);
     }
 
     if (mod === "UNDIRECTED") {
       if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
-        edges[_i3].addClass("highlighted");
-
         edgesOnThePaths.merge(edges[_i3]);
       }
     }
@@ -300,12 +276,8 @@ function pathsFromTo(sources, targets, k, d, mod) {
       if (visitSources[nodes[_i4].id()] === true || visitTargets[nodes[_i4].id()] === true) continue;
 
       if (nodes[_i4].isParent() === true) {
-        nodes[_i4].addClass("highlightedParent");
-
         nodesOnThePaths.merge(nodes[_i4]);
       } else {
-        nodes[_i4].addClass("highlighted");
-
         nodesOnThePaths.merge(nodes[_i4]);
       }
     }

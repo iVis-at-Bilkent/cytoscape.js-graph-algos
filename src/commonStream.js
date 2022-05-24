@@ -51,10 +51,6 @@ export function commonStream(roots, k, direction) {
 				commonNodes.merge(candidate);
 				if (visitSources[candidate.id()] === true)
 					continue;
-				if (candidate.isParent() === true)
-					candidate.addClass('highlightedCommonParent');
-				else
-					candidate.addClass('highlightedCommon');
 				visitSources[candidate.id()] = true;
 			}
 			else {
@@ -75,11 +71,6 @@ export function commonStream(roots, k, direction) {
 			distancesFrom[nodeId] + distancesTo[nodeId] <= k - 1) {
 			if (visitSources[nodeId] === true)
 				continue;
-			if (allNodes[i].isParent() === true){
-				allNodes[i].addClass('highlightedParent');
-			}
-			else
-				allNodes[i].addClass('highlighted');
 			nodesOnPath.merge(allNodes[i]);
 			visitSources[nodeId] = true;
 		}
@@ -88,7 +79,6 @@ export function commonStream(roots, k, direction) {
 		var sourceId = allEdges[i].source().id();
 		var targetId = allEdges[i].target().id();
 		if (visitSources[sourceId] === true && visitSources[targetId] === true){
-			allEdges[i].addClass('highlighted');
 			edgesOnPath.merge(allEdges[i]);
 		}
 	}

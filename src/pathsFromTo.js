@@ -40,14 +40,12 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 		var minDistance = (l + d >= k ? k : l + d);
 		if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined &&
 			distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
-			edges[i].addClass("highlighted");
 			edgesOnThePaths.merge(edges[i]);
 		}
 
 		if (mod === "UNDIRECTED") {
 			if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined &&
 				distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
-				edges[i].addClass("highlighted");
 				edgesOnThePaths.merge(edges[i]);
 			}
 		}
@@ -60,11 +58,9 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 			if (visitSources[nodes[i].id()] === true || visitTargets[nodes[i].id()] === true)
 				continue;
 			if (nodes[i].isParent() === true) {
-				nodes[i].addClass("highlightedParent");
 				nodesOnThePaths.merge(nodes[i]);
 			}
 			else {
-				nodes[i].addClass("highlighted");
 				nodesOnThePaths.merge(nodes[i]);
 			}
 		}
