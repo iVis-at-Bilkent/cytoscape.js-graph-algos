@@ -9,9 +9,9 @@
 */
 export function pathsFromTo(sources, targets, k, d, mod) {
 	let cy = this.cy();
-	var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "DIRECTED" ?
+	var bfsFromSources = this.compoundBFS(sources, k, mod === "DIRECTED" ?
 		"DOWNSTREAM" : "BOTHSTREAM");
-	var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "DIRECTED" ?
+	var bfsToTargets = this.compoundBFS(targets, k, mod === "DIRECTED" ?
 		"UPSTREAM" : "BOTHSTREAM");
 	var nodesFromSources = bfsFromSources.neighborNodes;
 	var edgesFromSources = bfsFromSources.neighborEdges;

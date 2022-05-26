@@ -452,6 +452,14 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					cy.elements().kneighborhood(root, 2);
 				}
 
+				function removeSelections(){
+					var nodes = cy.nodes();
+					var edges = cy.edges();
+					for( let i = 0; i < nodes.length; i++)
+					    nodes[i].unselect();
+					for( let i = 0; i < edges.length; i++)
+					    edges[i].unselect();
+				}
 
 
 
@@ -519,7 +527,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
 							sourceNodes.push(nodes[i]);
-							//nodes[i].unselect();
+							nodes[i].unselect();
 							nodes[i].addClass("highlightedSource");
 						}
 					}
@@ -527,18 +535,22 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 			document.getElementById('applyNeighborhood')
 				.addEventListener('click', () => {
-
+                              
 					if (sourceNodes[0] !== undefined){
+						
 						var kNeighborhood = cy.elements().kNeighborhood(sourceNodes[0], limit, direction);
 						var neighborNodes = kNeighborhood.neighborNodes;
 						var neighborEdges = kNeighborhood.neighborEdges;
+						console.log(neighborEdges.length);
+						removeSelections();
 						for (let i = 0; i < neighborNodes.length; i++) {
-		                     if (neighborNodes[i].isParent() === false && neighborNodes[i].id() !== root.id())
+		                     if (neighborNodes[i].isParent() === false && neighborNodes[i].id() !== sourceNodes[0].id())
 			                      neighborNodes[i].addClass('highlighted');
-		                     else if (neighborNodes[i].id() !== root.id())
+		                     else if (neighborNodes[i].id() !== sourceNodes[0].id())
 			                      neighborNodes[i].addClass('highlightedParent');
                         	}
 	                for (let i = 0; i < neighborEdges.length; i++) {
+						        neighborEdges[i].unselect();
 	                        	neighborEdges[i].addClass('highlighted');
 	                      }
 						}
@@ -556,7 +568,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
 							sourceNodes.push(nodes[i]);
-							//nodes[i].unselect();
+							nodes[i].unselect();
 							nodes[i].addClass("highlightedSource");
 						}
 					}
@@ -564,14 +576,18 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 			document.getElementById('applycommonstream')
 				.addEventListener('click', () => {
-
 					var commonStream = cy.elements().commonStream(sourceNodes, limit, direction);
+					removeSelections();
 					var commonNodes = commonStream.commonNodes;
 					var edgesOnPath = commonStream.edgesOnPath;
 					var nodesOnPath = commonStream.nodesOnPath;
+					var markedSources = {};
+					for( let i = 0; i < sourceNodes.length;i++)
+					     markedSources[sourceNodes[i].id()] = true;
 					for (let i = 0; i < commonNodes.length; i++) {
 		         var nodeId = commonNodes[i].id();
-	          	
+	          	 if( markedSources[nodeId] === true)
+				     continue;
 			       if (commonNodes[i].isParent() === true){
 				         commonNodes[i].addClass('highlightedCommonParent');
 			       }
@@ -602,6 +618,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
 							sourceNodes.push(nodes[i]);
+							nodes[i].unselect();
 							nodes[i].addClass("highlightedSource");
 						}
 					}
@@ -609,12 +626,18 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 			document.getElementById('applyGoI')
 				.addEventListener('click', () => {
+					var markedSources = {};
+					for( let i = 0; i < sourceNodes.length;i++)
+					     markedSources[sourceNodes[i].id()] = true;
 
 					console.log("GoI");
 					var pathsBetween = cy.elements().pathsBetween(sourceNodes, limit);
+					removeSelections();
 					var resultNodes = pathsBetween.resultNodes;
 					var resultEdges = pathsBetween.resultEdges;
 					for ( let i = 0; i < resultNodes.length; i++){
+						if(markedSources[resultNodes[i].id()] === true )
+						   continue;
 						if (resultNodes[i].isParent())
 				resultNodes[i].addClass('highlightedParent');
 			else
@@ -633,7 +656,9 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
 							sourceNodes.push(nodes[i]);
-							nodes[i].addClass("highlightedSource");
+							nodes[i].unselect();
+							nodes[i].
+							addClass("highlightedSource");
 							nodes[i].unselect();
 						}
 					}
@@ -647,7 +672,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
 							targetNodes.push(nodes[i]);
-							//nodes[i].unselect();
+							nodes[i].unselect();
 							nodes[i].addClass("highlightedTarget");
 						}
 					}
@@ -655,10 +680,19 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 			document.getElementById('applyPfT')
 				.addEventListener('click', () => {
+					var markedSources = {};
+					var markedTargets = {};
+					for( let i = 0; i < sourceNodes.length;i++)
+					     markedSources[sourceNodes[i].id()] = true;
+						 for( let i = 0; i < targetNodes.length;i++)
+					     markedTargets[targetNodes[i].id()] = true;
 					var pathsFromTo = cy.elements().pathsFromTo(sourceNodes, targetNodes, limit, d, direction);
 					var nodesOnThePaths = pathsFromTo.nodesOnThePaths;
 					var edgesOnThePaths = pathsFromTo.edgesOnThePaths;
+					removeSelections();
 					for ( let i = 0; i < nodesOnThePaths.length; i++){
+						if( markedSources[nodesOnThePaths[i].id()] === true || markedTargets[nodesOnThePaths[i].id()] === true)
+						    continue;
 						if (nodesOnThePaths[i].isParent())
 				nodesOnThePaths[i].addClass('highlightedParent');
 			else
@@ -705,7 +739,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 	<div class="topnav">
 
 		<div>
-			<p><label>Select Query</label>
+			<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Select Query</label>
 				<select name="queries" id="queries" style="width:140px; margin-bottom: 10px!important;margin-left: 5px;">
 
 					<option value="kneighborhood">k-Neighborhood</option>
@@ -714,7 +748,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					<option value="pathsFromTo">Paths From To </option>
 				</select>
 			</p>
-			<br /> <br />
+			<br /> 
 		</div>
 
 		<div id="neighborhoodUI">
@@ -786,11 +820,9 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					<input id="limitPfT" type="number" min="1" value="1" step="1"
 						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
 				</p>
-				<br />
-				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Further Distance</label>
+				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;"> Distance</label>
 					<input id="dPfT" type="number" min="1" value="1" step="1"
 						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
-					<br /> <br />
 				</p>
 				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
 					<select id="directionPfT" class="direction"
@@ -800,6 +832,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					</select>
 				</p>
 			</form>
+			<br/>
 			<button id="addSourceNodesPfT" class="button">Add Source Nodes</button>
 			<br /> <br />
 			<button id="addTargetNodesPfT" class="button">Add Target Nodes</button>

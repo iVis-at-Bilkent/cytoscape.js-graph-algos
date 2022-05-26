@@ -1,16 +1,26 @@
 export function compoundBFS(roots, k, direction) {
+	let eles = this;
 	let cy = this.cy();
 	var Q = [];
 	var dist = {};
 	var visited = {};
 	var compoundVisited = {};
+	var inCallingCollection = {};
 	var neighborNodes = cy.collection();
 	var neighborEdges = cy.collection();
+
+
+	for( let i = 0; i < eles.length; i++){
+	     console.log(eles[i].id() ) ;
+		 inCallingCollection[eles[i].id()] = true;
+	}
 	for (let i = 0; i < roots.length; i++) {
+		if( inCallingCollection[roots[i].id()] === true){
 		dist[roots[i].id()] = 0;
 		visited[roots[i].id()] = true;
 		Q.push(roots[i]);
 		neighborNodes.merge(roots[i]);
+		}
 	}
 	while (Q.length !== 0) {
 		var node = Q.shift();
@@ -44,6 +54,7 @@ export function compoundBFS(roots, k, direction) {
 		for (let i = 0; i < noOfNeighbors; i++) {
 			var neighbori = neighbors[i];
 			if (neighbori.isNode()) {
+				continue;
 				if (visited[neighbori.id()] !== true && depth + 1 <= k) {
 					dist[neighbori.id()] = depth + 1;
 					visited[neighbori.id()] = true;
@@ -51,8 +62,17 @@ export function compoundBFS(roots, k, direction) {
 					neighborNodes.merge(neighbori);
 				}
 			}
-			else if (neighbori.isEdge() && depth < k) {
-				neighborEdges.merge(neighbori);
+			else if (neighbori.isEdge() && depth < k && inCallingCollection[neighbori.id()] === true) {
+				var targetNode = neighbori.source().id() === node.id() ? neighbori.target() : neighbori.source();
+				
+				if (visited[targetNode.id()] !== true && depth + 1 <= k && inCallingCollection[targetNode.id() ] === true) {
+					dist[targetNode.id()] = depth + 1;
+					visited[targetNode.id()] = true;
+					Q.push(targetNode);
+					neighborNodes.merge(targetNode);
+					neighborEdges.merge(neighbori);
+				}
+				
 			}
 		}
 	}

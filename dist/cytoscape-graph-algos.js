@@ -6,9 +6,10 @@
 
 	function kNeighborhood(root, k, direction) {
 	  var cy = this.cy();
-	  var compoundBFS = cy.elements().compoundBFS(root, k, direction);
+	  var compoundBFS = this.compoundBFS(root, k, direction);
 	  var neighborNodes = compoundBFS.neighborNodes;
 	  var neighborEdges = compoundBFS.neighborEdges;
+	  console.log(neighborEdges.length);
 	  return {
 	    neighborNodes: neighborNodes,
 	    neighborEdges: neighborEdges
@@ -16,19 +17,29 @@
 	}
 
 	function compoundBFS(roots, k, direction) {
+	  var eles = this;
 	  var cy = this.cy();
 	  var Q = [];
 	  var dist = {};
 	  var visited = {};
 	  var compoundVisited = {};
+	  var inCallingCollection = {};
 	  var neighborNodes = cy.collection();
 	  var neighborEdges = cy.collection();
+	  console.log(eles.length);
 
-	  for (var i = 0; i < roots.length; i++) {
-	    dist[roots[i].id()] = 0;
-	    visited[roots[i].id()] = true;
-	    Q.push(roots[i]);
-	    neighborNodes.merge(roots[i]);
+	  for (var i = 0; i < eles.length; i++) {
+	    console.log(eles[i].id());
+	    inCallingCollection[eles[i].id()] = true;
+	  }
+
+	  for (var _i = 0; _i < roots.length; _i++) {
+	    if (inCallingCollection[roots[_i].id()] === true) {
+	      dist[roots[_i].id()] = 0;
+	      visited[roots[_i].id()] = true;
+	      Q.push(roots[_i]);
+	      neighborNodes.merge(roots[_i]);
+	    }
 	  }
 
 	  while (Q.length !== 0) {
@@ -43,14 +54,14 @@
 	      allNodesinCompounds = allNodesinCompounds.union(anchestors);
 	      var noOfNodesinCompound = allNodesinCompounds.length;
 
-	      for (var _i = 0; _i < noOfNodesinCompound; _i++) {
-	        dist[allNodesinCompounds[_i].id()] = depth;
-	        compoundVisited[allNodesinCompounds[_i].id()] = true;
+	      for (var _i2 = 0; _i2 < noOfNodesinCompound; _i2++) {
+	        dist[allNodesinCompounds[_i2].id()] = depth;
+	        compoundVisited[allNodesinCompounds[_i2].id()] = true;
 
-	        if (visited[allNodesinCompounds[_i].id()] !== true) {
-	          neighborNodes.merge(allNodesinCompounds[_i]);
-	          visited[allNodesinCompounds[_i].id()] = true;
-	          Q.push(allNodesinCompounds[_i]);
+	        if (visited[allNodesinCompounds[_i2].id()] !== true) {
+	          neighborNodes.merge(allNodesinCompounds[_i2]);
+	          visited[allNodesinCompounds[_i2].id()] = true;
+	          Q.push(allNodesinCompounds[_i2]);
 	        }
 	      }
 	    }
@@ -59,18 +70,29 @@
 	    if (direction === "BOTHSTREAM") neighbors = node.neighborhood();else if (direction === "UPSTREAM") neighbors = node.incomers();else if (direction === "DOWNSTREAM") neighbors = node.outgoers();
 	    var noOfNeighbors = neighbors.length; //chechking neighbors of current node
 
-	    for (var _i2 = 0; _i2 < noOfNeighbors; _i2++) {
-	      var neighbori = neighbors[_i2];
+	    for (var _i3 = 0; _i3 < noOfNeighbors; _i3++) {
+	      var neighbori = neighbors[_i3];
 
 	      if (neighbori.isNode()) {
+	        continue;
+
 	        if (visited[neighbori.id()] !== true && depth + 1 <= k) {
 	          dist[neighbori.id()] = depth + 1;
 	          visited[neighbori.id()] = true;
 	          Q.push(neighbori);
 	          neighborNodes.merge(neighbori);
 	        }
-	      } else if (neighbori.isEdge() && depth < k) {
-	        neighborEdges.merge(neighbori);
+	      } else if (neighbori.isEdge() && depth < k && inCallingCollection[neighbori.id()] === true) {
+	        var targetNode = neighbori.source().id() === node.id() ? neighbori.target() : neighbori.source();
+
+	        if (visited[targetNode.id()] !== true && depth + 1 <= k && inCallingCollection[targetNode.id()] === true) {
+	          dist[targetNode.id()] = depth + 1;
+	          visited[targetNode.id()] = true;
+	          Q.push(targetNode);
+	          neighborNodes.merge(targetNode);
+	          neighborEdges.merge(neighbori);
+	          console.log(targetNode.id() + " " + neighbori.id());
+	        }
 	      }
 	    }
 	  }
@@ -104,7 +126,7 @@
 
 	  for (var _i = 0; _i < roots.length; _i++) {
 	    // find neighbors for each node in source nodes
-	    var neighborBFS = cy.elements().compoundBFS(roots[_i], k, direction);
+	    var neighborBFS = this.compoundBFS(roots[_i], k, direction);
 	    var neighborNodes = neighborBFS.neighborNodes;
 	    var neighborEdges = neighborBFS.neighborEdges;
 	    var dist = neighborBFS.distances;
@@ -139,7 +161,7 @@
 	    }
 	  }
 
-	  var compoundBFS = cy.elements().compoundBFS(commonNodes, k, reverseDirection(direction));
+	  var compoundBFS = this.compoundBFS(commonNodes, k, reverseDirection(direction));
 	  var allEdges = cy.edges();
 	  var allNodes = cy.nodes();
 	  var neighborNodes = compoundBFS.commonNodes;
@@ -181,8 +203,8 @@
 	*/
 	function pathsBetween(roots, k) {
 	  var cy = this.cy();
-	  var forwardBFS = cy.elements().compoundBFS(roots, k, "DOWNSTREAM");
-	  var reverseBFS = cy.elements().compoundBFS(roots, k, "UPSTREAM");
+	  var forwardBFS = this.compoundBFS(roots, k, "DOWNSTREAM");
+	  var reverseBFS = this.compoundBFS(roots, k, "UPSTREAM");
 	  var forwardNeighborNodes = forwardBFS.neighborNodes;
 	  var forwardNeighborEdges = forwardBFS.neighborEdges;
 	  var forwardDist = forwardBFS.distances;
@@ -227,8 +249,8 @@
 	*/
 	function pathsFromTo(sources, targets, k, d, mod) {
 	  var cy = this.cy();
-	  var bfsFromSources = cy.elements().compoundBFS(sources, k, mod === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
-	  var bfsToTargets = cy.elements().compoundBFS(targets, k, mod === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
+	  var bfsFromSources = this.compoundBFS(sources, k, mod === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
+	  var bfsToTargets = this.compoundBFS(targets, k, mod === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
 	  var nodesFromSources = bfsFromSources.neighborNodes;
 	  var edgesFromSources = bfsFromSources.neighborEdges;
 	  var distancesFromSources = bfsFromSources.distances;

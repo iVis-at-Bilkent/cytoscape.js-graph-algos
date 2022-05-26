@@ -6,8 +6,8 @@
 */
 export function pathsBetween(roots, k) {
 	let cy = this.cy();
-	var forwardBFS = cy.elements().compoundBFS(roots, k, "DOWNSTREAM");
-	let reverseBFS = cy.elements().compoundBFS(roots, k, "UPSTREAM");
+	var forwardBFS = this.compoundBFS(roots, k, "DOWNSTREAM");
+	let reverseBFS = this.compoundBFS(roots, k, "UPSTREAM");
 	var forwardNeighborNodes = forwardBFS.neighborNodes;
 	var forwardNeighborEdges = forwardBFS.neighborEdges;
 	var forwardDist = forwardBFS.distances;
