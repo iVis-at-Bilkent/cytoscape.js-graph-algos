@@ -475,7 +475,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					document.getElementById('graphofinterestUI').style.display = this.value === "graphofinterest" ? 'block' : 'none';
 					document.getElementById('PathsFromToUI').style.display = this.value === "pathsFromTo" ? 'block' : 'none';
 					limit = 1; // default
-					direction = this.value !== "pathsFromTo" ? "UPSTREAM" : "directed";
+					direction = ( this.value !== "pathsFromTo" && this.value !== "graphofinterest" ) ? "UPSTREAM" : "DIRECTED";
 				});
 
 			document.getElementById('limitneighborhood')
@@ -513,6 +513,10 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					direction = this.value;
 				});
 			document.getElementById('directionPfT')
+				.addEventListener('change', function (ev) {
+					direction = this.value;
+				});
+			document.getElementById('directionGoI')
 				.addEventListener('change', function (ev) {
 					direction = this.value;
 				});
@@ -627,7 +631,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					var markedSources = {};
 					for( let i = 0; i < sourceNodes.length;i++)
 					     markedSources[sourceNodes[i].id()] = true;
-					var pathsBetween = cy.elements().pathsBetween(sourceNodes, limit);
+					var pathsBetween = cy.elements().pathsBetween(sourceNodes, limit, direction);
 					removeSelections();
 					var resultNodes = pathsBetween.resultNodes;
 					var resultEdges = pathsBetween.resultEdges;
@@ -774,7 +778,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 		<div id="commonstreamUI">
 			<form>
-				<p><label for="limitcommonstream" style="width:100px; margin-bottom: 10px!important;margin-left: 5px;""> Limit</label>
+				<p><label for="limitcommonstream" style="width:100px; margin-bottom: 10px!important;margin-left: 5px;"> Limit</label>
 					<input id="limitcommonstream" style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"
 						type="number" min="1" value="1" step="1"> </input>
 				</p>
@@ -798,9 +802,17 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 		<div id="graphofinterestUI">
 
 			<form>
-				<label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
+				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
 				<input id="limitGoI" type="number" min="1" value="1" step="1"
 					style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
+				</p>
+					<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
+						<select id="directionGoI" class="direction"
+							style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">
+							<option value="DIRECTED">DIRECTED</option>
+							<option value="UNDIRECTED"> UNDIRECTED</option>
+						</select>
+					</p>
 			</form>
 			<br />
 			<button id="addNodesGoI" class="button">Add Selected Nodes</button>

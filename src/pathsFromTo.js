@@ -43,7 +43,7 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 			edgesOnThePaths.merge(edges[i]);
 		}
 
-		if (mod === "UNDIRECTED") {
+		else if (mod === "UNDIRECTED") {
 			if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined &&
 				distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
 				edgesOnThePaths.merge(edges[i]);

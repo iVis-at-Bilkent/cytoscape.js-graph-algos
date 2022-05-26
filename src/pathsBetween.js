@@ -4,10 +4,10 @@
 	roots: source nodes
 	k: limit
 */
-export function pathsBetween(roots, k) {
+export function pathsBetween(roots, k, direction) {
 	let cy = this.cy();
-	var forwardBFS = this.compoundBFS(roots, k, "DOWNSTREAM");
-	let reverseBFS = this.compoundBFS(roots, k, "UPSTREAM");
+	var forwardBFS = this.compoundBFS(roots, k, direction === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
+	let reverseBFS = this.compoundBFS(roots, k, direction === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
 	var forwardNeighborNodes = forwardBFS.neighborNodes;
 	var forwardNeighborEdges = forwardBFS.neighborEdges;
 	var forwardDist = forwardBFS.distances;
@@ -27,12 +27,20 @@ export function pathsBetween(roots, k) {
 				continue;
 		}
 	}
-	for (let i = 0; i < forwardNeighborEdges.length; i++) {
-		if (forwardDist[forwardNeighborEdges[i].source().id()] !== undefined &&
-			reverseDist[forwardNeighborEdges[i].target().id()] !== undefined &&
-			forwardDist[forwardNeighborEdges[i].source().id()] + reverseDist[forwardNeighborEdges[i].target().id()] < k
+	var edges = cy.edges();
+	for (let i = 0; i < edges.length; i++) {
+		console.log( "glyph1" +  " " + forwardDist["glyph1"] + " " +
+		 "glyph10" + " " + reverseDist["glyph10"]);
+		if (forwardDist[edges[i].source().id()] !== undefined &&
+			reverseDist[edges[i].target().id()] !== undefined &&
+			forwardDist[edges[i].source().id()] + reverseDist[edges[i].target().id()] < k 
 		) {
-			resultEdges.merge(forwardNeighborEdges[i]);
+			resultEdges.merge(edges[i]);
+		}
+		else if( direction === "UNDIRECTED" && reverseDist[edges[i].source().id()] !== undefined &&
+		forwardDist[edges[i].target().id()] !== undefined &&
+		reverseDist[edges[i].source().id()] + forwardDist[edges[i].target().id()] < k){
+			resultEdges.merge(edges[i]);
 		}
 	}
 	return {
