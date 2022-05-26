@@ -469,7 +469,6 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			document.getElementById('queries')
 				.addEventListener('change', function (ev) {
 					valueRoot = this.value;
-					console.log(this.value + "initial");
 					var element = document.getElementById('neighborhoodUI');
 					document.getElementById('neighborhoodUI').style.display = this.value === "kneighborhood" ? 'block' : 'none';
 					document.getElementById('commonstreamUI').style.display = this.value === "commonstream" ? 'block' : 'none';
@@ -541,7 +540,6 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 						var kNeighborhood = cy.elements().kNeighborhood(sourceNodes[0], limit, direction);
 						var neighborNodes = kNeighborhood.neighborNodes;
 						var neighborEdges = kNeighborhood.neighborEdges;
-						console.log(neighborEdges.length);
 						removeSelections();
 						for (let i = 0; i < neighborNodes.length; i++) {
 		                     if (neighborNodes[i].isParent() === false && neighborNodes[i].id() !== sourceNodes[0].id())
@@ -629,8 +627,6 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					var markedSources = {};
 					for( let i = 0; i < sourceNodes.length;i++)
 					     markedSources[sourceNodes[i].id()] = true;
-
-					console.log("GoI");
 					var pathsBetween = cy.elements().pathsBetween(sourceNodes, limit);
 					removeSelections();
 					var resultNodes = pathsBetween.resultNodes;

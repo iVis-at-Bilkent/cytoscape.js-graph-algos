@@ -11,7 +11,6 @@ export function compoundBFS(roots, k, direction) {
 
 
 	for( let i = 0; i < eles.length; i++){
-	     console.log(eles[i].id() ) ;
 		 inCallingCollection[eles[i].id()] = true;
 	}
 	for (let i = 0; i < roots.length; i++) {
