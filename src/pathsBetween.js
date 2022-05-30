@@ -29,8 +29,6 @@ export function pathsBetween(roots, k, direction) {
 	}
 	var edges = cy.edges();
 	for (let i = 0; i < edges.length; i++) {
-		console.log( "glyph1" +  " " + forwardDist["glyph1"] + " " +
-		 "glyph10" + " " + reverseDist["glyph10"]);
 		if (forwardDist[edges[i].source().id()] !== undefined &&
 			reverseDist[edges[i].target().id()] !== undefined &&
 			forwardDist[edges[i].source().id()] + reverseDist[edges[i].target().id()] < k 

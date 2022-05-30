@@ -225,8 +225,6 @@
 	  var edges = cy.edges();
 
 	  for (var _i2 = 0; _i2 < edges.length; _i2++) {
-	    console.log("glyph1" + " " + forwardDist["glyph1"] + " " + "glyph10" + " " + reverseDist["glyph10"]);
-
 	    if (forwardDist[edges[_i2].source().id()] !== undefined && reverseDist[edges[_i2].target().id()] !== undefined && forwardDist[edges[_i2].source().id()] + reverseDist[edges[_i2].target().id()] < k) {
 	      resultEdges.merge(edges[_i2]);
 	    } else if (direction === "UNDIRECTED" && reverseDist[edges[_i2].source().id()] !== undefined && forwardDist[edges[_i2].target().id()] !== undefined && reverseDist[edges[_i2].source().id()] + forwardDist[edges[_i2].target().id()] < k) {
