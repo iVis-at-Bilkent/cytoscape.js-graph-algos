@@ -1,13 +1,11 @@
 # Description
-This repository includes several graph algorithms which can be used for querying compound graph-based pathway databases. This repository is implemented as Cytoscape.js extension. k-neighborhood, CommonStream, Paths Between and Paths From to are the algorithms implemented in this extension. Details can be found at (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2784781/). 
+This repository includes several graph algorithms which can be used for querying compound graph-based pathway databases. This repository is implemented as Cytoscape.js extension. k-neighborhood, CommonStream, Paths Between and Paths From to are the algorithms implemented in this extension. Details of these algorithms can be found [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2784781/). 
 
-<a href=" href="" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
-<a href=" href="https://www.google.com/" target="https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html">Demo</a>
-[https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html]
-                                                                                                                                   
-This repository uses fCoSE layout in its demo. So, please cite the following you use this repository.
-                                                                                                                                   
-H. Balci and U. Dogrusoz, "fCoSE: a fast compound graph layout algorithm with constraint support", IEEE Trans. on Visualization and Computer Graphics, to appear.
+Here is a [demo](https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html).
+
+This repository uses [fCoSE layout](https://github.com/iVis-at-Bilkent/cytoscape.js-fcose) in its demo.
+
+Cite the following you use this repository:
 
 U. Dogrusoz, E. Giral, A. Cetintas, A. Civril and E. Demir, "A Layout Algorithm For Undirected Compound Graphs", Information Sciences, 179, pp. 980-994, 2009.
                                                                           
