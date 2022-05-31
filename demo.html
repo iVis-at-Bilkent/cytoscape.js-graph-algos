@@ -419,6 +419,7 @@
 				console.log(event);
 			}*/
 			//console.log(cy.elements().kneighborhood);
+		
 			var root = cy.$id("glyph10");
 			var root2 = cy.$id("glyph17");
 			/*root.addClass('highlighted');
@@ -447,7 +448,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			// cy.elements().commonstream([root,root2],1, "DOWNSTREAM");
 			//cy.elements().graphofinterest([root,root2], 5);
-			+
+			
 				function neighborhoodquery() {
 					cy.elements().kneighborhood(root, 2);
 				}
@@ -535,16 +536,22 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			document.getElementById('applyNeighborhood')
 				.addEventListener('click', () => {
                               
+				
 					if (sourceNodes[0] !== undefined){
 						
-						var kNeighborhood = cy.elements().kNeighborhood(sourceNodes[0], limit, direction);
+						/*var a = cy.collection().merge(cy.getElementById("glyph0")).merge(cy.getElementById("glyph6"));
+                        var kNeighborhood = cy.elements().kNeighborhood(a, 2, "BOTHSTREAM");*/
+						var kNeighborhood = cy.elements().kNeighborhood(sourceNodes, limit, direction);
 						var neighborNodes = kNeighborhood.neighborNodes;
 						var neighborEdges = kNeighborhood.neighborEdges;
+						var markedSources = {};
+					    for( let i = 0; i < sourceNodes.length;i++)
+					     markedSources[sourceNodes[i].id()] = true;
 						removeSelections();
 						for (let i = 0; i < neighborNodes.length; i++) {
-		                     if (neighborNodes[i].isParent() === false && neighborNodes[i].id() !== sourceNodes[0].id())
+		                     if (neighborNodes[i].isParent() === false && markedSources[neighborNodes[i].id()] !== true)
 			                      neighborNodes[i].addClass('highlighted');
-		                     else if (neighborNodes[i].id() !== sourceNodes[0].id())
+		                     else if (markedSources[neighborNodes[i].id()] !== true)
 			                      neighborNodes[i].addClass('highlightedParent');
                         	}
 	                for (let i = 0; i < neighborEdges.length; i++) {

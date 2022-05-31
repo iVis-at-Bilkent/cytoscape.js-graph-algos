@@ -1,4 +1,5 @@
 function kNeighborhood(root, k, direction) {
+  console.log(root);
   var cy = this.cy();
   var compoundBFS = this.compoundBFS(root, k, direction);
   var neighborNodes = compoundBFS.neighborNodes;
@@ -28,6 +29,7 @@ function compoundBFS(roots, k, direction) {
     if (inCallingCollection[roots[_i].id()] === true) {
       dist[roots[_i].id()] = 0;
       visited[roots[_i].id()] = true;
+      console.log(roots[_i].id());
       Q.push(roots[_i]);
       neighborNodes.merge(roots[_i]);
     }
@@ -76,11 +78,14 @@ function compoundBFS(roots, k, direction) {
       } else if (neighbori.isEdge() && depth < k && inCallingCollection[neighbori.id()] === true) {
         var targetNode = neighbori.source().id() === node.id() ? neighbori.target() : neighbori.source();
 
-        if (visited[targetNode.id()] !== true && depth + 1 <= k && inCallingCollection[targetNode.id()] === true) {
-          dist[targetNode.id()] = depth + 1;
-          visited[targetNode.id()] = true;
-          Q.push(targetNode);
-          neighborNodes.merge(targetNode);
+        if (depth + 1 <= k && inCallingCollection[targetNode.id()] === true) {
+          if (visited[targetNode.id()] !== true) {
+            dist[targetNode.id()] = depth + 1;
+            visited[targetNode.id()] = true;
+            Q.push(targetNode);
+            neighborNodes.merge(targetNode);
+          }
+
           neighborEdges.merge(neighbori);
         }
       }

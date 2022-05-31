@@ -1,4 +1,5 @@
 export function kNeighborhood(root, k, direction) {
+	console.log(root);
 	var Q = [];
 	var visited = {};
 	var compoundVisited = {};
