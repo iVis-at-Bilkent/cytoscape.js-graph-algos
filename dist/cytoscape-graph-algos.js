@@ -5,7 +5,6 @@
 }(this, function () { 'use strict';
 
 	function kNeighborhood(root, k, direction) {
-	  console.log(root);
 	  var cy = this.cy();
 	  var compoundBFS = this.compoundBFS(root, k, direction);
 	  var neighborNodes = compoundBFS.neighborNodes;
@@ -35,7 +34,6 @@
 	    if (inCallingCollection[roots[_i].id()] === true) {
 	      dist[roots[_i].id()] = 0;
 	      visited[roots[_i].id()] = true;
-	      console.log(roots[_i].id());
 	      Q.push(roots[_i]);
 	      neighborNodes.merge(roots[_i]);
 	    }

@@ -17,7 +17,6 @@ export function compoundBFS(roots, k, direction) {
 		if( inCallingCollection[roots[i].id()] === true){
 		dist[roots[i].id()] = 0;
 		visited[roots[i].id()] = true;
-		console.log(roots[i].id());
 		Q.push(roots[i]);
 		neighborNodes.merge(roots[i]);
 		}
