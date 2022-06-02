@@ -34,7 +34,6 @@
 	    if (inCallingCollection[roots[_i].id()] === true) {
 	      dist[roots[_i].id()] = 0;
 	      visited[roots[_i].id()] = true;
-	      console.log(roots[_i].id());
 	      Q.push(roots[_i]);
 	      neighborNodes.merge(roots[_i]);
 	    }

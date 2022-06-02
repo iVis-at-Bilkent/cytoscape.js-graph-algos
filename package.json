@@ -4,8 +4,8 @@
   "main": "dist/cytospace-graph-algos.cjs.js",
   "module": "dist/cytoscape-graph-algos.esm.js",
   "browser": "dist/cytoscape-graph-algos.js",
-  "dependencies": {
-    "cytoscape": "^3.21.0"
+  "peerDependencies": {
+    "cytoscape": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -18,7 +18,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "demo.html",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "pretest": "npm run build"
   },
   "files": [
