@@ -1,9 +1,8 @@
 'use strict';
 
-function kNeighborhood(root, k, direction) {
-  console.log(root);
+function kNeighborhood(sourceNodes, k, direction) {
   var cy = this.cy();
-  var compoundBFS = this.compoundBFS(root, k, direction);
+  var compoundBFS = this.compoundBFS(sourceNodes, k, direction);
   var neighborNodes = compoundBFS.neighborNodes;
   var neighborEdges = compoundBFS.neighborEdges;
   return {
@@ -107,8 +106,9 @@ function reverseDirection(direction) {
   if (direction === "DOWNSTREAM") return "UPSTREAM";
 }
 
-function commonStream(roots, k, direction) {
+function commonStream(sourceNodes, k, direction) {
   var cy = this.cy();
+  var eles = this;
   var count = {};
   var candidates = [];
   var commonNodes = cy.collection();
@@ -116,14 +116,19 @@ function commonStream(roots, k, direction) {
   var edgesOnPath = cy.collection();
   var distancesFrom = {};
   var visitSources = {};
+  var inCallingCollection = {};
 
-  for (var i = 0; i < roots.length; i++) {
-    visitSources[roots[i].id()] = true;
+  for (var i = 0; i < sourceNodes.length; i++) {
+    visitSources[sourceNodes[i].id()] = true;
   }
 
-  for (var _i = 0; _i < roots.length; _i++) {
+  for (var _i = 0; _i < eles.length; _i++) {
+    inCallingCollection[eles[_i].id()] = true;
+  }
+
+  for (var _i2 = 0; _i2 < sourceNodes.length; _i2++) {
     // find neighbors for each node in source nodes
-    var neighborBFS = this.compoundBFS(roots[_i], k, direction);
+    var neighborBFS = this.compoundBFS(sourceNodes[_i2], k, direction);
     var neighborNodes = neighborBFS.neighborNodes;
     var neighborEdges = neighborBFS.neighborEdges;
     var dist = neighborBFS.distances;
@@ -149,7 +154,7 @@ function commonStream(roots, k, direction) {
   while (candidates.length !== 0) {
     var candidate = candidates.pop(); //select common nodes
 
-    if (count[candidate.id()] === roots.length) {
+    if (count[candidate.id()] === sourceNodes.length) {
       if (candidate.isNode()) {
         commonNodes.merge(candidate);
         if (visitSources[candidate.id()] === true) continue;
@@ -165,23 +170,25 @@ function commonStream(roots, k, direction) {
   var neighborEdges = compoundBFS.commonEdges;
   var distancesTo = compoundBFS.distances; //highlighting graph
 
-  for (var _i2 = 0; _i2 < allNodes.length; _i2++) {
-    var nodeId = allNodes[_i2].id();
+  for (var _i3 = 0; _i3 < allNodes.length; _i3++) {
+    var nodeId = allNodes[_i3].id();
 
-    if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && distancesFrom[nodeId] + distancesTo[nodeId] <= k - 1) {
+    if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && distancesFrom[nodeId] + distancesTo[nodeId] <= k) {
       if (visitSources[nodeId] === true) continue;
-      nodesOnPath.merge(allNodes[_i2]);
+      nodesOnPath.merge(allNodes[_i3]);
       visitSources[nodeId] = true;
     }
   }
 
-  for (var _i3 = 0; _i3 < allEdges.length; _i3++) {
-    var sourceId = allEdges[_i3].source().id();
+  for (var _i4 = 0; _i4 < allEdges.length; _i4++) {
+    var sourceId = allEdges[_i4].source().id();
 
-    var targetId = allEdges[_i3].target().id();
+    var targetId = allEdges[_i4].target().id();
+
+    if (inCallingCollection[allEdges[_i4].id()] !== true) continue;
 
     if (visitSources[sourceId] === true && visitSources[targetId] === true) {
-      edgesOnPath.merge(allEdges[_i3]);
+      edgesOnPath.merge(allEdges[_i4]);
     }
   }
 
@@ -195,13 +202,13 @@ function commonStream(roots, k, direction) {
 /*
 	Implementation of PathsBetween algorithm, this algorithm finds all paths whose length not exceeding given limit
 	, starting from source nodes and ends at source nodes.
-	roots: source nodes
 	k: limit
 */
-function pathsBetween(roots, k) {
+function pathsBetween(sourceNodes, k) {
   var cy = this.cy();
-  var forwardBFS = this.compoundBFS(roots, k, "DOWNSTREAM");
-  var reverseBFS = this.compoundBFS(roots, k, "UPSTREAM");
+  var eles = this;
+  var forwardBFS = this.compoundBFS(sourceNodes, k, "DOWNSTREAM");
+  var reverseBFS = this.compoundBFS(sourceNodes, k, "UPSTREAM");
   var forwardNeighborNodes = forwardBFS.neighborNodes;
   var forwardNeighborEdges = forwardBFS.neighborEdges;
   var forwardDist = forwardBFS.distances;
@@ -211,23 +218,30 @@ function pathsBetween(roots, k) {
   var resultNodes = cy.collection(),
       resultEdges = cy.collection(),
       visitSources = {};
+  var inCallingCollection = {};
 
-  for (var i = 0; i < roots.length; i++) {
-    visitSources[roots[i].id()] = true;
+  for (var i = 0; i < eles.length; i++) {
+    inCallingCollection[eles[i].id()] = true;
   }
 
-  for (var _i = 0; _i < forwardNeighborNodes.length; _i++) {
-    if (forwardDist[forwardNeighborNodes[_i].id()] !== undefined && reverseDist[forwardNeighborNodes[_i].id()] && forwardDist[forwardNeighborNodes[_i].id()] + reverseDist[forwardNeighborNodes[_i].id()] <= k) {
-      resultNodes.merge(forwardNeighborNodes[_i]);
-      if (visitSources[forwardNeighborNodes[_i].id()] === true) continue;
+  for (var _i = 0; _i < sourceNodes.length; _i++) {
+    visitSources[sourceNodes[_i].id()] = true;
+  }
+
+  for (var _i2 = 0; _i2 < forwardNeighborNodes.length; _i2++) {
+    if (forwardDist[forwardNeighborNodes[_i2].id()] !== undefined && reverseDist[forwardNeighborNodes[_i2].id()] && forwardDist[forwardNeighborNodes[_i2].id()] + reverseDist[forwardNeighborNodes[_i2].id()] <= k) {
+      if (visitSources[forwardNeighborNodes[_i2].id()] === true) continue;
+      resultNodes.merge(forwardNeighborNodes[_i2]);
     }
   }
 
   var edges = cy.edges();
 
-  for (var _i2 = 0; _i2 < edges.length; _i2++) {
-    if (forwardDist[edges[_i2].source().id()] !== undefined && reverseDist[edges[_i2].target().id()] !== undefined && forwardDist[edges[_i2].source().id()] + reverseDist[edges[_i2].target().id()] < k) {
-      resultEdges.merge(edges[_i2]);
+  for (var _i3 = 0; _i3 < edges.length; _i3++) {
+    if (inCallingCollection[edges[_i3].id()] !== true) continue;
+
+    if (forwardDist[edges[_i3].source().id()] !== undefined && reverseDist[edges[_i3].target().id()] !== undefined && forwardDist[edges[_i3].source().id()] + reverseDist[edges[_i3].target().id()] < k) {
+      resultEdges.merge(edges[_i3]);
     }
   }
 
@@ -248,6 +262,7 @@ function pathsBetween(roots, k) {
 */
 function pathsFromTo(sources, targets, k, d, mod) {
   var cy = this.cy();
+  var eles = this;
   var bfsFromSources = this.compoundBFS(sources, k, mod === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
   var bfsToTargets = this.compoundBFS(targets, k, mod === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
   var nodesFromSources = bfsFromSources.neighborNodes;
@@ -261,50 +276,57 @@ function pathsFromTo(sources, targets, k, d, mod) {
       visitTargets = {};
   var nodesOnThePaths = cy.collection(),
       edgesOnThePaths = cy.collection();
+  var inCallingCollection = {};
 
-  for (var i = 0; i < sources.length; i++) {
-    visitSources[sources[i].id()] = true;
+  for (var i = 0; i < eles.length; i++) {
+    inCallingCollection[eles[i].id()] = true;
   }
 
   for (var _i = 0; _i < sources.length; _i++) {
-    visitTargets[targets[_i].id()] = true;
+    visitSources[sources[_i].id()] = true;
   }
 
-  for (var _i2 = 0; _i2 < targets.length; _i2++) {
-    if (l == -1) l = distancesFromSources[targets[_i2].id()];
-    if (distancesFromSources[targets[_i2].id()] < l) l = distancesFromSources[targets[_i2].id()];
+  for (var _i2 = 0; _i2 < sources.length; _i2++) {
+    visitTargets[targets[_i2].id()] = true;
+  }
+
+  for (var _i3 = 0; _i3 < targets.length; _i3++) {
+    if (l == -1) l = distancesFromSources[targets[_i3].id()];
+    if (distancesFromSources[targets[_i3].id()] < l) l = distancesFromSources[targets[_i3].id()];
   }
 
   var edges = cy.edges();
 
-  for (var _i3 = 0; _i3 < edges.length; _i3++) {
-    var sourceId = edges[_i3].source().id();
+  for (var _i4 = 0; _i4 < edges.length; _i4++) {
+    if (inCallingCollection[edges[_i4].id()] !== true) continue;
 
-    var targetId = edges[_i3].target().id();
+    var sourceId = edges[_i4].source().id();
+
+    var targetId = edges[_i4].target().id();
 
     var minDistance = l + d >= k ? k : l + d;
 
     if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
-      edgesOnThePaths.merge(edges[_i3]);
+      edgesOnThePaths.merge(edges[_i4]);
     } else if (mod === "UNDIRECTED") {
       if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
-        edgesOnThePaths.merge(edges[_i3]);
+        edgesOnThePaths.merge(edges[_i4]);
       }
     }
   }
 
   var nodes = cy.nodes();
 
-  for (var _i4 = 0; _i4 < nodes.length; _i4++) {
+  for (var _i5 = 0; _i5 < nodes.length; _i5++) {
     var minDistance = l + d >= k ? k : l + d;
 
-    if (distancesFromSources[nodes[_i4].id()] !== undefined && distancesToTargets[nodes[_i4].id()] !== undefined && distancesFromSources[nodes[_i4].id()] + distancesToTargets[nodes[_i4].id()] <= minDistance) {
-      if (visitSources[nodes[_i4].id()] === true || visitTargets[nodes[_i4].id()] === true) continue;
+    if (distancesFromSources[nodes[_i5].id()] !== undefined && distancesToTargets[nodes[_i5].id()] !== undefined && distancesFromSources[nodes[_i5].id()] + distancesToTargets[nodes[_i5].id()] <= minDistance) {
+      if (visitSources[nodes[_i5].id()] === true || visitTargets[nodes[_i5].id()] === true) continue;
 
-      if (nodes[_i4].isParent() === true) {
-        nodesOnThePaths.merge(nodes[_i4]);
+      if (nodes[_i5].isParent() === true) {
+        nodesOnThePaths.merge(nodes[_i5]);
       } else {
-        nodesOnThePaths.merge(nodes[_i4]);
+        nodesOnThePaths.merge(nodes[_i5]);
       }
     }
   }

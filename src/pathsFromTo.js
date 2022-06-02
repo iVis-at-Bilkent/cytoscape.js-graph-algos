@@ -9,6 +9,7 @@
 */
 export function pathsFromTo(sources, targets, k, d, mod) {
 	let cy = this.cy();
+	var eles = this;
 	var bfsFromSources = this.compoundBFS(sources, k, mod === "DIRECTED" ?
 		"DOWNSTREAM" : "BOTHSTREAM");
 	var bfsToTargets = this.compoundBFS(targets, k, mod === "DIRECTED" ?
@@ -22,6 +23,11 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 	var l = -1;
 	var visitSources = {}, visitTargets = {};
 	var nodesOnThePaths = cy.collection(), edgesOnThePaths = cy.collection();
+	var inCallingCollection = {};
+	for( let i = 0; i < eles.length; i++){
+		inCallingCollection[eles[i].id()] = true;
+    }
+	
 
 	for (let i = 0; i < sources.length; i++)
 		visitSources[sources[i].id()] = true;
@@ -35,6 +41,8 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 	}
 	var edges = cy.edges();
 	for (let i = 0; i < edges.length; i++) {
+		if( inCallingCollection[edges[i].id()] !== true)
+		    continue;
 		var sourceId = edges[i].source().id();
 		var targetId = edges[i].target().id();
 		var minDistance = (l + d >= k ? k : l + d);

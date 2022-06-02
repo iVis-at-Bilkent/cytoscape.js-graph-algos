@@ -6,8 +6,9 @@ function reverseDirection(direction) {
 	if (direction === "DOWNSTREAM")
 		return "UPSTREAM";
 }
-export function commonStream(roots, k, direction) {
+export function commonStream(sourceNodes, k, direction) {
 	let cy = this.cy();
+	var eles = this;
 	var count = {};
 	var candidates = [];
 	var commonNodes = cy.collection();
@@ -16,11 +17,15 @@ export function commonStream(roots, k, direction) {
 	var edgesOnPath = cy.collection();
 	var distancesFrom = {};
 	var visitSources = {};
-	for (let i = 0; i < roots.length; i++)
-		visitSources[roots[i].id()] = true;
-	for (let i = 0; i < roots.length; i++) {
+	var inCallingCollection = {};
+	for (let i = 0; i < sourceNodes.length; i++)
+		visitSources[sourceNodes[i].id()] = true;
+	for( let i = 0; i < eles.length; i++){
+		inCallingCollection[eles[i].id()] = true;
+    }
+	for (let i = 0; i < sourceNodes.length; i++) {
 		// find neighbors for each node in source nodes
-		let neighborBFS = this.compoundBFS(roots[i], k, direction);
+		let neighborBFS = this.compoundBFS(sourceNodes[i], k, direction);
 		var neighborNodes = neighborBFS.neighborNodes;
 		var neighborEdges = neighborBFS.neighborEdges;
 		var dist = neighborBFS.distances;
@@ -46,7 +51,7 @@ export function commonStream(roots, k, direction) {
 	while (candidates.length !== 0) {
 		var candidate = candidates.pop();
 		//select common nodes
-		if (count[candidate.id()] === roots.length) {
+		if (count[candidate.id()] === sourceNodes.length) {
 			if (candidate.isNode()) {
 				commonNodes.merge(candidate);
 				if (visitSources[candidate.id()] === true)
@@ -68,7 +73,7 @@ export function commonStream(roots, k, direction) {
 	for (let i = 0; i < allNodes.length; i++) {
 		var nodeId = allNodes[i].id();
 		if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined &&
-			distancesFrom[nodeId] + distancesTo[nodeId] <= k - 1) {
+			distancesFrom[nodeId] + distancesTo[nodeId] <= k ) {
 			if (visitSources[nodeId] === true)
 				continue;
 			nodesOnPath.merge(allNodes[i]);
@@ -78,6 +83,8 @@ export function commonStream(roots, k, direction) {
 	for (let i = 0; i < allEdges.length; i++) {
 		var sourceId = allEdges[i].source().id();
 		var targetId = allEdges[i].target().id();
+		if( inCallingCollection[allEdges[i].id()] !== true )
+		    continue;
 		if (visitSources[sourceId] === true && visitSources[targetId] === true){
 			edgesOnPath.merge(allEdges[i]);
 		}
