@@ -1,19 +1,17 @@
 # Description
-This repository includes several graph algorithms which can be used for querying compound graph-based pathway databases. This repository is implemented as Cytoscape.js extension. k-neighborhood, CommonStream, Paths Between and Paths From to are the algorithms implemented in this extension. Details of these algorithms can be found [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2784781/). 
+This repository includes several graph algorithms such as k-Neighborhood, Common Stream, Paths Between and Paths From To which can be used for querying compound graphs. These algorithms are the generalized versions of the ones developed for querying biological pathways whose details are explained [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2784781/). 
 
-Here is a [demo](https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/blob/master/demo.html).
+Here is a [demo](https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html).
 
 This repository uses [fCoSE layout](https://github.com/iVis-at-Bilkent/cytoscape.js-fcose) in its demo.
 
-Cite the following you use this repository:
+Cite the following if you use this repository:
 
-U. Dogrusoz, E. Giral, A. Cetintas, A. Civril and E. Demir, "A Layout Algorithm For Undirected Compound Graphs", Information Sciences, 179, pp. 980-994, 2009.
+U. Dogrusoz, A. Cetintas, E. Demir and O. Babur, "Algorithms for effective querying of compound graph-based pathway databases", BMC Bioinformatics, 10(1), pp. 1-16, 2009.
                                                                           
 # Dependencies
 
-    Cytoscape.js ^3.2.0
-    cose-base ^2.0.0
-    cytoscape-layout-utilities.js (optional for packing disconnected components) ^1.0.0
+- Cytoscape.js ^3.2.0
 
 # Usage Instructions
 
