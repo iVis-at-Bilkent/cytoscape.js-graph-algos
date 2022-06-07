@@ -3,8 +3,6 @@ This repository includes several graph algorithms such as k-Neighborhood, Common
 
 Here is a [demo](https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html).
 
-This repository uses [fCoSE layout](https://github.com/iVis-at-Bilkent/cytoscape.js-fcose) in its demo.
-
 Cite the following if you use this repository:
 
 U. Dogrusoz, A. Cetintas, E. Demir and O. Babur, "Algorithms for effective querying of compound graph-based pathway databases", BMC Bioinformatics, 10(1), pp. 1-16, 2009.
@@ -12,24 +10,6 @@ U. Dogrusoz, A. Cetintas, E. Demir and O. Babur, "Algorithms for effective query
 # Dependencies
 
 - Cytoscape.js ^3.2.0
-
-# Usage Instructions
-
-Clone this repository.
-
-```bash
-git clone https://github.com/rollup/rollup-starter-lib
-```                                                                                                
-`npm run build` builds the library to `dist`, generating three files:
-
-* `dist/cytoscape-graph-algos.esm.js`
-    A CommonJS bundle, suitable for use in Node.js, that `require`s the external dependency. This corresponds to the `"main"` field in package.json
-* `dist/cytoscape-graph-algos.js`
-    an ES module bundle, suitable for use in other people's libraries and applications, that `import`s the external dependency. This corresponds to the `"module"` field in package.json
-* `dist/cytoscape-graph-algos.cjs.js`
-    a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json             
-    
- `npm test` builds the library, then tests it.
  
 # Details of Algorithms
 
@@ -105,9 +85,23 @@ Example:\
 `result.nodesOnThePaths` : nodes which are on the paths from source nodes to target nodes.\
 `result.edgesOnThePaths` : edges which are on the paths from source nodes to target nodes.
 
+# Usage Instructions
 
-                                                                                          
-                                                                                                              
+Clone this repository.
+
+```bash
+git clone https://github.com/rollup/rollup-starter-lib
+```                                                                                                
+`npm run build` builds the library to `dist`, generating three files:
+
+* `dist/cytoscape-graph-algos.esm.js`
+    A CommonJS bundle, suitable for use in Node.js, that `require`s the external dependency. This corresponds to the `"main"` field in package.json
+* `dist/cytoscape-graph-algos.js`
+    an ES module bundle, suitable for use in other people's libraries and applications, that `import`s the external dependency. This corresponds to the `"module"` field in package.json
+* `dist/cytoscape-graph-algos.cjs.js`
+    a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json             
+    
+ `npm test` builds the library, then tests it.
 
 ## License
 
