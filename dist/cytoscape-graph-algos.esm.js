@@ -312,46 +312,49 @@ function pathsFromTo(sources, targets, k, d, mod) {
   }
 
   for (var _i3 = 0; _i3 < targets.length; _i3++) {
+    if (distancesFromSources[targets[_i3].id()] === undefined) continue;
     if (l == -1) l = distancesFromSources[targets[_i3].id()];
     if (distancesFromSources[targets[_i3].id()] < l) l = distancesFromSources[targets[_i3].id()];
   } // find paths from source nodes to target nodes
 
 
-  var edges = cy.edges();
+  if (l !== -1) {
+    var edges = cy.edges();
 
-  for (var _i4 = 0; _i4 < edges.length; _i4++) {
-    // find edges on the paths
-    if (inCallingCollection[edges[_i4].id()] !== true) continue;
+    for (var _i4 = 0; _i4 < edges.length; _i4++) {
+      // find edges on the paths
+      if (inCallingCollection[edges[_i4].id()] !== true) continue;
 
-    var sourceId = edges[_i4].source().id();
+      var sourceId = edges[_i4].source().id();
 
-    var targetId = edges[_i4].target().id();
+      var targetId = edges[_i4].target().id();
 
-    var minDistance = l + d >= k ? k : l + d;
+      var minDistance = l + d >= k ? k : l + d;
 
-    if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
-      edgesOnThePaths.merge(edges[_i4]);
-    } else if (mod === "UNDIRECTED") {
-      // if graph is undirected check reverse direction
-      if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
+      if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
         edgesOnThePaths.merge(edges[_i4]);
+      } else if (mod === "UNDIRECTED") {
+        // if graph is undirected check reverse direction
+        if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
+          edgesOnThePaths.merge(edges[_i4]);
+        }
       }
     }
-  }
 
-  var nodes = cy.nodes();
+    var nodes = cy.nodes();
 
-  for (var _i5 = 0; _i5 < nodes.length; _i5++) {
-    // find nodes on the paths
-    var minDistance = l + d >= k ? k : l + d;
+    for (var _i5 = 0; _i5 < nodes.length; _i5++) {
+      // find nodes on the paths
+      var minDistance = l + d >= k ? k : l + d;
 
-    if (distancesFromSources[nodes[_i5].id()] !== undefined && distancesToTargets[nodes[_i5].id()] !== undefined && distancesFromSources[nodes[_i5].id()] + distancesToTargets[nodes[_i5].id()] <= minDistance) {
-      if (visitSources[nodes[_i5].id()] === true || visitTargets[nodes[_i5].id()] === true) continue;
+      if (distancesFromSources[nodes[_i5].id()] !== undefined && distancesToTargets[nodes[_i5].id()] !== undefined && distancesFromSources[nodes[_i5].id()] + distancesToTargets[nodes[_i5].id()] <= minDistance) {
+        if (visitSources[nodes[_i5].id()] === true || visitTargets[nodes[_i5].id()] === true) continue;
 
-      if (nodes[_i5].isParent() === true) {
-        nodesOnThePaths.merge(nodes[_i5]);
-      } else {
-        nodesOnThePaths.merge(nodes[_i5]);
+        if (nodes[_i5].isParent() === true) {
+          nodesOnThePaths.merge(nodes[_i5]);
+        } else {
+          nodesOnThePaths.merge(nodes[_i5]);
+        }
       }
     }
   }

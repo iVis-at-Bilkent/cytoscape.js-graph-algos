@@ -439,6 +439,23 @@
 				for( let i = 0; i < edges.length; i++)
 					 edges[i].unselect();
 			}
+			function clearHighlights(){
+				var nodes = cy.nodes();
+
+        for (let i = 0; i < nodes.length; i++) {
+	        nodes[i].unselect();
+	        nodes[i].removeClass('highlighted');
+	        nodes[i].removeClass('highlightedParent');
+	        nodes[i].removeClass('highlightedCommon');
+	        nodes[i].removeClass('highlightedCommonParent');
+        }
+        var edges = cy.edges();
+
+        for (let i = 0; i < edges.length; i++) {
+	        edges[i].unselect();
+	        edges[i].removeClass('highlighted');
+        }
+			}
 			var newNodeCounter = 0;
 			document.getElementById('queries')
 				.addEventListener('change', function (ev) {
@@ -497,7 +514,6 @@
 
 			document.getElementById('addNodesNeighborhood')
 				.addEventListener('click', () => {
-					sourceNodes = [];
 
 					var nodes = cy.nodes();
 
@@ -515,7 +531,7 @@
                               
 				
 					if (sourceNodes[0] !== undefined){
-						
+						clearHighlights();
 						/*var a = cy.collection().merge(cy.getElementById("glyph0")).merge(cy.getElementById("glyph6"));
                         var kNeighborhood = cy.elements().kNeighborhood(a, 2, "BOTHSTREAM");*/
 						var kNeighborhood = cy.elements().kNeighborhood(sourceNodes, limit, direction);
@@ -536,12 +552,10 @@
 	                        	neighborEdges[i].addClass('highlighted');
 	                      }
 						}
-					sourceNodes = [];
 				});
 
 			document.getElementById('addNodescommonstream')
 				.addEventListener('click', () => {
-					sourceNodes = [];
 					var nodes = cy.nodes();
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
@@ -554,6 +568,7 @@
 
 			document.getElementById('applycommonstream')
 				.addEventListener('click', () => {
+					clearHighlights();
 					var commonStream = cy.elements().commonStream(sourceNodes, limit, direction);
 					removeSelections();
 					var commonNodes = commonStream.commonNodes;
@@ -585,13 +600,11 @@
 		        	edgesOnPath[i].addClass('highlighted');
 	      	}
 
-					sourceNodes = [];
 				});
 
 
 			document.getElementById('addNodesGoI')
 				.addEventListener('click', () => {
-					sourceNodes = [];
 					var nodes = cy.nodes();
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
@@ -604,6 +617,7 @@
 
 			document.getElementById('applyGoI')
 				.addEventListener('click', () => {
+					clearHighlights();
 					var markedSources = {};
 					for( let i = 0; i < sourceNodes.length;i++)
 					     markedSources[sourceNodes[i].id()] = true;
@@ -622,12 +636,10 @@
           for ( let i = 0; i < resultEdges.length; i++){
 				resultEdges[i].addClass('highlighted');
 					}
-					sourceNodes = [];
 				});
 
 			document.getElementById('addSourceNodesPfT')
 				.addEventListener('click', () => {
-					sourceNodes = [];
 					var nodes = cy.nodes();
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
@@ -642,7 +654,7 @@
 
 			document.getElementById('addTargetNodesPfT')
 				.addEventListener('click', () => {
-					targetNodes = [];
+
 					var nodes = cy.nodes();
 
 					for (let i = 0; i < nodes.length; i++) {
@@ -656,6 +668,7 @@
 
 			document.getElementById('applyPfT')
 				.addEventListener('click', () => {
+					clearHighlights();
 					var markedSources = {};
 					var markedTargets = {};
 					for( let i = 0; i < sourceNodes.length;i++)
@@ -699,6 +712,8 @@
 						edges[i].unselect();
 						edges[i].removeClass('highlighted');
 					}
+					sourceNodes = [];
+					targetNodes = [];
 				});
 
 
