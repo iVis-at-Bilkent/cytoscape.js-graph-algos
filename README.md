@@ -90,7 +90,7 @@ Example:\
 Clone this repository.
 
 ```bash
-git clone https://github.com/rollup/rollup-starter-lib
+git clone https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos.git
 ```                                                                                                
 `npm run build` builds the library to `dist`, generating three files:
 
@@ -102,6 +102,9 @@ git clone https://github.com/rollup/rollup-starter-lib
     a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json             
     
  `npm test` builds the library, then tests it.
+ 
+ # Team
+[Yusuf Ziya Ozgul](https://github.com/YusufZiyaOzgul),  [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](https://github.com/iVis-at-Bilkent).
 
 ## License
 
