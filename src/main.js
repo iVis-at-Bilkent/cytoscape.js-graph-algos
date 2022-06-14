@@ -4,6 +4,7 @@ import {commonStream} from "./commonStream.js"
 import {pathsBetween} from "./pathsBetween.js";
 import {pathsFromTo} from "./pathsFromTo.js";
 
+//register the algorithms as cytoscape collection function
 export default function register(cytoscape) {
 	cytoscape('collection', 'kNeighborhood', kNeighborhood);
 	cytoscape('collection', 'compoundBFS', compoundBFS);

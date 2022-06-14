@@ -6,6 +6,7 @@
 export function pathsBetween(sourceNodes, k) {
 	let cy = this.cy();
 	var eles = this;
+	// forward( downstream) and reverse( upstream) compound BFSs for calculating distances from source nodes
 	var forwardBFS = this.compoundBFS(sourceNodes, k, "DOWNSTREAM");
 	let reverseBFS = this.compoundBFS(sourceNodes, k, "UPSTREAM");
 	var forwardNeighborNodes = forwardBFS.neighborNodes;
@@ -24,6 +25,7 @@ export function pathsBetween(sourceNodes, k) {
 		visitSources[sourceNodes[i].id()] = true;
 
 	for (let i = 0; i < forwardNeighborNodes.length; i++) {
+		// check given node is on any path between source nodes
 		if (forwardDist[forwardNeighborNodes[i].id()] !== undefined && reverseDist[forwardNeighborNodes[i].id()] &&
 			forwardDist[forwardNeighborNodes[i].id()] + reverseDist[forwardNeighborNodes[i].id()] <= k) {
 			if (visitSources[forwardNeighborNodes[i].id()] === true)
@@ -35,6 +37,7 @@ export function pathsBetween(sourceNodes, k) {
 	for (let i = 0; i < edges.length; i++) {
 		if( inCallingCollection[edges[i].id()] !== true)
 		    continue;
+        // check given edge is on any path between source nodes
 		if (forwardDist[edges[i].source().id()] !== undefined &&
 			reverseDist[edges[i].target().id()] !== undefined &&
 			forwardDist[edges[i].source().id()] + reverseDist[edges[i].target().id()] < k 

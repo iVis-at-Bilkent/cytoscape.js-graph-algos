@@ -10,8 +10,10 @@
 export function pathsFromTo(sources, targets, k, d, mod) {
 	let cy = this.cy();
 	var eles = this;
+	// forward bfs from source nodes 
 	var bfsFromSources = this.compoundBFS(sources, k, mod === "DIRECTED" ?
 		"DOWNSTREAM" : "BOTHSTREAM");
+	// reverse bfs from target nodes
 	var bfsToTargets = this.compoundBFS(targets, k, mod === "DIRECTED" ?
 		"UPSTREAM" : "BOTHSTREAM");
 	var nodesFromSources = bfsFromSources.neighborNodes;
@@ -27,8 +29,6 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 	for( let i = 0; i < eles.length; i++){
 		inCallingCollection[eles[i].id()] = true;
     }
-	
-
 	for (let i = 0; i < sources.length; i++)
 		visitSources[sources[i].id()] = true;
 	for (let i = 0; i < sources.length; i++)
@@ -39,8 +39,10 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 		if (distancesFromSources[targets[i].id()] < l)
 			l = distancesFromSources[targets[i].id()];
 	}
+
+	// find paths from source nodes to target nodes
 	var edges = cy.edges();
-	for (let i = 0; i < edges.length; i++) {
+	for (let i = 0; i < edges.length; i++) { // find edges on the paths
 		if( inCallingCollection[edges[i].id()] !== true)
 		    continue;
 		var sourceId = edges[i].source().id();
@@ -50,8 +52,7 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 			distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
 			edgesOnThePaths.merge(edges[i]);
 		}
-
-		else if (mod === "UNDIRECTED") {
+		else if (mod === "UNDIRECTED") { // if graph is undirected check reverse direction
 			if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined &&
 				distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
 				edgesOnThePaths.merge(edges[i]);
@@ -59,7 +60,7 @@ export function pathsFromTo(sources, targets, k, d, mod) {
 		}
 	}
 	var nodes = cy.nodes();
-	for (let i = 0; i < nodes.length; i++) {
+	for (let i = 0; i < nodes.length; i++) { // find nodes on the paths
 		var minDistance = (l + d >= k ? k : l + d);
 		if (distancesFromSources[nodes[i].id()] !== undefined && distancesToTargets[nodes[i].id()] !== undefined &&
 			distancesFromSources[nodes[i].id()] + distancesToTargets[nodes[i].id()] <= minDistance) {

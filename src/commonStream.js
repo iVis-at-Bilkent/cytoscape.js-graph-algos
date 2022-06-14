@@ -1,3 +1,10 @@
+/*
+	Implementation of Common Stream algorithm, this algorithm finds all common nodes which are reachable
+	all source nodes within given limit.
+	sources: source nodes
+	k: limit
+	direction: direction of algorithm ( DOWNSTREAM( only outgoing edges), UPSTREAM( only incoming edges), BOTHSTREAM( all edges) )
+*/
 function reverseDirection(direction) {
 	if (direction === "BOTHSTREAM")
 		return direction;
@@ -48,9 +55,9 @@ export function commonStream(sourceNodes, k, direction) {
 			else
 				count[neighborEdges[j].id()]++;
 	}
+	//find common nodes
 	while (candidates.length !== 0) {
 		var candidate = candidates.pop();
-		//select common nodes
 		if (count[candidate.id()] === sourceNodes.length) {
 			if (candidate.isNode()) {
 				commonNodes.merge(candidate);
@@ -63,14 +70,15 @@ export function commonStream(sourceNodes, k, direction) {
 			}
 		}
 	}
+
+	//find paths from source nodes to common nodes and highlight
 	var compoundBFS = this.compoundBFS(commonNodes, k, reverseDirection(direction));
 	var allEdges = cy.edges();
 	var allNodes = cy.nodes();
 	var neighborNodes = compoundBFS.commonNodes;
 	var neighborEdges = compoundBFS.commonEdges;
 	var distancesTo = compoundBFS.distances;
-	//highlighting graph
-	for (let i = 0; i < allNodes.length; i++) {
+	for (let i = 0; i < allNodes.length; i++) { // find nodes
 		var nodeId = allNodes[i].id();
 		if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined &&
 			distancesFrom[nodeId] + distancesTo[nodeId] <= k ) {
@@ -80,7 +88,7 @@ export function commonStream(sourceNodes, k, direction) {
 			visitSources[nodeId] = true;
 		}
 	}
-	for (let i = 0; i < allEdges.length; i++) {
+	for (let i = 0; i < allEdges.length; i++) { // find edges
 		var sourceId = allEdges[i].source().id();
 		var targetId = allEdges[i].target().id();
 		if( inCallingCollection[allEdges[i].id()] !== true )

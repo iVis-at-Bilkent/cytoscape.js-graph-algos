@@ -74,28 +74,28 @@
 		}
 
 		#cy {
-			width: 80%;
+			width: 76%;
 			height: 95%;
-			left: 21%;
+			left: 22%;
 			top: 0%;
-			float: left;
+			float: right;
 			overflow: hidden;
 			position: fixed;
 
 		}
 
 		.topnav {
-			width: 300px;
+			width: 20%;
 			background-color: #e9e9e9;
 			/* font-weight: bold;*/
 			border-color: black;
 			border-style: solid;
 			font-size: 16px;
-			padding: 10px;
+			padding: 0%;
 		}
 
 		.topnav2 {
-			width: 19%;
+			/*width: 19%;*/
 			background-color: #e9e9e9;
 			/* font-weight: bold;*/
 			border-color: black;
@@ -408,26 +408,17 @@
 				//{"data":{"id":"e70","source":"glyph42","target":"glyph31","group":"edges"}}
 			});
 
+			
+
 			cy.layout({
 				name: 'fcose',
 				nodeDimensionsIncludeLabels: true
 			}).run();
 
-			/*var elemnt = document.getElementById("neighborhood");
-			element.onclick = function(event) {
-				console.log( "Enter")
-				console.log(event);
-			}*/
-			//console.log(cy.elements().kneighborhood);
 		
 			var root = cy.$id("glyph10");
 			var root2 = cy.$id("glyph17");
-			/*root.addClass('highlighted');
-			console.log(cy.$('node.highlighted').size());
-			console.log(cy.$('node.highlighted')[0].id());*/
 			cy.style().update();
-			//console.log(cy.$('node.highlighted')[1].id());
-			//return ;
 			var sourceNodes = [];
 			var targetNodes = [];
 			var d = 1;
@@ -440,33 +431,15 @@
 			var valueRoot;
 			var neighborhoodK = 0;
 
-			/*let a = cy.collection().merge(cy.getElementById("glyph36")).merge(cy.getElementById("glyph27"));
-console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
-            //cy.elements().pathsFromTo(cy.getElementById("glyph11"), cy.getElementById("glyph1"), 3, 1, "UNDIRECTED");
-
-			/*let a = cy.collection().merge(cy.getElementById("glyph36")).merge(cy.getElementById("glyph27"));
-console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
-			// cy.elements().commonstream([root,root2],1, "DOWNSTREAM");
-			//cy.elements().graphofinterest([root,root2], 5);
-			
-				function neighborhoodquery() {
-					cy.elements().kneighborhood(root, 2);
-				}
-
-				function removeSelections(){
-					var nodes = cy.nodes();
-					var edges = cy.edges();
-					for( let i = 0; i < nodes.length; i++)
-					    nodes[i].unselect();
-					for( let i = 0; i < edges.length; i++)
-					    edges[i].unselect();
-				}
-
-
-
+			function removeSelections(){
+				var nodes = cy.nodes();
+				var edges = cy.edges();
+				for( let i = 0; i < nodes.length; i++)
+					 nodes[i].unselect();
+				for( let i = 0; i < edges.length; i++)
+					 edges[i].unselect();
+			}
 			var newNodeCounter = 0;
-
-
 			document.getElementById('queries')
 				.addEventListener('change', function (ev) {
 					valueRoot = this.value;
@@ -565,11 +538,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			document.getElementById('addNodescommonstream')
 				.addEventListener('click', () => {
 					sourceNodes = [];
-					// neighborhoodK = parseInt( this.value);
-					//return ;
-
 					var nodes = cy.nodes();
-
 					for (let i = 0; i < nodes.length; i++) {
 						if (nodes[i].selected() === true) {
 							sourceNodes.push(nodes[i]);
@@ -737,15 +706,11 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 
 <body>
 	<h1>cytoscape-graph-algos.js demo</h1>
-
-
-	<div style="width:300px;">
 	<div class="topnav">
-
+       	<div style = "padding: 4%">
 		<div>
 			<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Select Query</label>
 				<select name="queries" id="queries" style="width:140px; margin-bottom: 10px!important;margin-left: 5px;">
-
 					<option value="kneighborhood">k-Neighborhood</option>
 					<option value="commonstream">Common Stream</option>
 					<option value="graphofinterest">Paths Between</option>
@@ -754,16 +719,12 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			</p>
 			<br /> 
 		</div>
-
 		<div id="neighborhoodUI">
-
 			<form>
 				<p><label for="limitneighborhood" style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
 					<input id="limitneighborhood" style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"
 						type="number" min="1" value="1" step="1"> </input>
 				</p>
-
-
 				<p> <label for="directionNeighborhood"style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
 					<select id="directionNeighborhood" style="width:110px; margin-bottom: 10px!important;margin-left: 5px">
 						<option value="UPSTREAM">UPSTREAM</option>
@@ -772,14 +733,12 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 					</select>
 				</p>
 			</form>
-
 			<br />
 			<button id="addNodesNeighborhood" class="button">Add Selected Nodes</button>
 			<br /> <br />
 			<button id="applyNeighborhood" class="button">Apply Neighborhood Query</button>
 			<br /> <br />
 		</div>
-
 		<div id="commonstreamUI">
 			<form>
 				<p><label for="limitcommonstream" style="width:100px; margin-bottom: 10px!important;margin-left: 5px;"> Limit</label>
@@ -802,9 +761,7 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			<br /> <br />
 
 		</div>
-
 		<div id="graphofinterestUI">
-
 			<form>
 				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
 				<input id="limitGoI" type="number" min="1" value="1" step="1"
@@ -817,8 +774,6 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			<button id="applyGoI" class="button">Apply Paths Between Query</button>
 			<br /> <br />
 		</div>
-
-
 		<div id="PathsFromToUI">
 			<form>
 				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
@@ -853,10 +808,8 @@ console.log(cy.elements().commonStream(a, 1, "BOTHSTREAM"));*/
 			<div> And apply the query</div>
 		</div>
 	</div>
-    </div>
+   </div>
 
 	<div id="cy"></div>
-
 </body>
-
 </html>

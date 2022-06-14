@@ -1,8 +1,14 @@
 'use strict';
 
-function kNeighborhood(sourceNodes, k, direction) {
+/*
+	Implementation of k-Neighborhood algorithm, this algorithm finds the nodes and paths from source node within given limit(k).
+	roots: source nodes
+	k: limit
+	direction: direction of algorithm ( DOWNSTREAM( only outgoing edges), UPSTREAM( only incoming edges), BOTHSTREAM( all edges) )
+*/
+function kNeighborhood(sourceNode, k, direction) {
   var cy = this.cy();
-  var compoundBFS = this.compoundBFS(sourceNodes, k, direction);
+  var compoundBFS = this.compoundBFS(sourceNode, k, direction);
   var neighborNodes = compoundBFS.neighborNodes;
   var neighborEdges = compoundBFS.neighborEdges;
   return {
@@ -11,6 +17,13 @@ function kNeighborhood(sourceNodes, k, direction) {
   };
 }
 
+/*
+	Implementation of Compound BFS algorithm, this algorithm finds the nodes from source nodes within given limit. Other four algorithms
+	benefits this algorithm.
+	roots: source nodes
+	k: limit
+	direction: direction of algorithm ( DOWNSTREAM( only outgoing edges), UPSTREAM( only incoming edges), BOTHSTREAM( all edges) )
+*/
 function compoundBFS(roots, k, direction) {
   var eles = this;
   var cy = this.cy();
@@ -24,7 +37,8 @@ function compoundBFS(roots, k, direction) {
 
   for (var i = 0; i < eles.length; i++) {
     inCallingCollection[eles[i].id()] = true;
-  }
+  } //add source nodes to queue
+
 
   for (var _i = 0; _i < roots.length; _i++) {
     if (inCallingCollection[roots[_i].id()] === true) {
@@ -61,20 +75,13 @@ function compoundBFS(roots, k, direction) {
 
     var neighbors;
     if (direction === "BOTHSTREAM") neighbors = node.neighborhood();else if (direction === "UPSTREAM") neighbors = node.incomers();else if (direction === "DOWNSTREAM") neighbors = node.outgoers();
-    var noOfNeighbors = neighbors.length; //chechking neighbors of current node
+    var noOfNeighbors = neighbors.length; //chechking neighbors of current node and add them to queue if not visited
 
     for (var _i3 = 0; _i3 < noOfNeighbors; _i3++) {
       var neighbori = neighbors[_i3];
 
       if (neighbori.isNode()) {
         continue;
-
-        if (visited[neighbori.id()] !== true && depth + 1 <= k) {
-          dist[neighbori.id()] = depth + 1;
-          visited[neighbori.id()] = true;
-          Q.push(neighbori);
-          neighborNodes.merge(neighbori);
-        }
       } else if (neighbori.isEdge() && depth < k && inCallingCollection[neighbori.id()] === true) {
         var targetNode = neighbori.source().id() === node.id() ? neighbori.target() : neighbori.source();
 
@@ -99,6 +106,13 @@ function compoundBFS(roots, k, direction) {
   };
 }
 
+/*
+	Implementation of Common Stream algorithm, this algorithm finds all common nodes which are reachable
+	all source nodes within given limit.
+	sources: source nodes
+	k: limit
+	direction: direction of algorithm ( DOWNSTREAM( only outgoing edges), UPSTREAM( only incoming edges), BOTHSTREAM( all edges) )
+*/
 function reverseDirection(direction) {
   if (direction === "BOTHSTREAM") return direction;
   if (direction === "UPSTREAM") return "DOWNSTREAM";
@@ -148,10 +162,11 @@ function commonStream(sourceNodes, k, direction) {
         count[neighborEdges[_j].id()] = 1;
       } else count[neighborEdges[_j].id()]++;
     }
-  }
+  } //find common nodes
+
 
   while (candidates.length !== 0) {
-    var candidate = candidates.pop(); //select common nodes
+    var candidate = candidates.pop();
 
     if (count[candidate.id()] === sourceNodes.length) {
       if (candidate.isNode()) {
@@ -160,16 +175,18 @@ function commonStream(sourceNodes, k, direction) {
         visitSources[candidate.id()] = true;
       }
     }
-  }
+  } //find paths from source nodes to common nodes and highlight
+
 
   var compoundBFS = this.compoundBFS(commonNodes, k, reverseDirection(direction));
   var allEdges = cy.edges();
   var allNodes = cy.nodes();
   var neighborNodes = compoundBFS.commonNodes;
   var neighborEdges = compoundBFS.commonEdges;
-  var distancesTo = compoundBFS.distances; //highlighting graph
+  var distancesTo = compoundBFS.distances;
 
   for (var _i3 = 0; _i3 < allNodes.length; _i3++) {
+    // find nodes
     var nodeId = allNodes[_i3].id();
 
     if (distancesFrom[nodeId] !== undefined && distancesTo[nodeId] !== undefined && distancesFrom[nodeId] + distancesTo[nodeId] <= k) {
@@ -180,6 +197,7 @@ function commonStream(sourceNodes, k, direction) {
   }
 
   for (var _i4 = 0; _i4 < allEdges.length; _i4++) {
+    // find edges
     var sourceId = allEdges[_i4].source().id();
 
     var targetId = allEdges[_i4].target().id();
@@ -205,7 +223,8 @@ function commonStream(sourceNodes, k, direction) {
 */
 function pathsBetween(sourceNodes, k) {
   var cy = this.cy();
-  var eles = this;
+  var eles = this; // forward( downstream) and reverse( upstream) compound BFSs for calculating distances from source nodes
+
   var forwardBFS = this.compoundBFS(sourceNodes, k, "DOWNSTREAM");
   var reverseBFS = this.compoundBFS(sourceNodes, k, "UPSTREAM");
   var forwardNeighborNodes = forwardBFS.neighborNodes;
@@ -228,6 +247,7 @@ function pathsBetween(sourceNodes, k) {
   }
 
   for (var _i2 = 0; _i2 < forwardNeighborNodes.length; _i2++) {
+    // check given node is on any path between source nodes
     if (forwardDist[forwardNeighborNodes[_i2].id()] !== undefined && reverseDist[forwardNeighborNodes[_i2].id()] && forwardDist[forwardNeighborNodes[_i2].id()] + reverseDist[forwardNeighborNodes[_i2].id()] <= k) {
       if (visitSources[forwardNeighborNodes[_i2].id()] === true) continue;
       resultNodes.merge(forwardNeighborNodes[_i2]);
@@ -237,7 +257,7 @@ function pathsBetween(sourceNodes, k) {
   var edges = cy.edges();
 
   for (var _i3 = 0; _i3 < edges.length; _i3++) {
-    if (inCallingCollection[edges[_i3].id()] !== true) continue;
+    if (inCallingCollection[edges[_i3].id()] !== true) continue; // check given edge is on any path between source nodes
 
     if (forwardDist[edges[_i3].source().id()] !== undefined && reverseDist[edges[_i3].target().id()] !== undefined && forwardDist[edges[_i3].source().id()] + reverseDist[edges[_i3].target().id()] < k) {
       resultEdges.merge(edges[_i3]);
@@ -261,8 +281,10 @@ function pathsBetween(sourceNodes, k) {
 */
 function pathsFromTo(sources, targets, k, d, mod) {
   var cy = this.cy();
-  var eles = this;
-  var bfsFromSources = this.compoundBFS(sources, k, mod === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
+  var eles = this; // forward bfs from source nodes 
+
+  var bfsFromSources = this.compoundBFS(sources, k, mod === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM"); // reverse bfs from target nodes
+
   var bfsToTargets = this.compoundBFS(targets, k, mod === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
   var nodesFromSources = bfsFromSources.neighborNodes;
   var edgesFromSources = bfsFromSources.neighborEdges;
@@ -292,11 +314,13 @@ function pathsFromTo(sources, targets, k, d, mod) {
   for (var _i3 = 0; _i3 < targets.length; _i3++) {
     if (l == -1) l = distancesFromSources[targets[_i3].id()];
     if (distancesFromSources[targets[_i3].id()] < l) l = distancesFromSources[targets[_i3].id()];
-  }
+  } // find paths from source nodes to target nodes
+
 
   var edges = cy.edges();
 
   for (var _i4 = 0; _i4 < edges.length; _i4++) {
+    // find edges on the paths
     if (inCallingCollection[edges[_i4].id()] !== true) continue;
 
     var sourceId = edges[_i4].source().id();
@@ -308,6 +332,7 @@ function pathsFromTo(sources, targets, k, d, mod) {
     if (distancesFromSources[sourceId] !== undefined && distancesToTargets[targetId] !== undefined && distancesFromSources[sourceId] + distancesToTargets[targetId] + 1 <= minDistance) {
       edgesOnThePaths.merge(edges[_i4]);
     } else if (mod === "UNDIRECTED") {
+      // if graph is undirected check reverse direction
       if (distancesFromSources[targetId] !== undefined && distancesToTargets[sourceId] !== undefined && distancesFromSources[targetId] + distancesToTargets[sourceId] + 1 <= minDistance) {
         edgesOnThePaths.merge(edges[_i4]);
       }
@@ -317,6 +342,7 @@ function pathsFromTo(sources, targets, k, d, mod) {
   var nodes = cy.nodes();
 
   for (var _i5 = 0; _i5 < nodes.length; _i5++) {
+    // find nodes on the paths
     var minDistance = l + d >= k ? k : l + d;
 
     if (distancesFromSources[nodes[_i5].id()] !== undefined && distancesToTargets[nodes[_i5].id()] !== undefined && distancesFromSources[nodes[_i5].id()] + distancesToTargets[nodes[_i5].id()] <= minDistance) {

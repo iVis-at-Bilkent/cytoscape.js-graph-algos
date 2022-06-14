@@ -1,3 +1,10 @@
+/*
+	Implementation of Compound BFS algorithm, this algorithm finds the nodes from source nodes within given limit. Other four algorithms
+	benefits this algorithm.
+	roots: source nodes
+	k: limit
+	direction: direction of algorithm ( DOWNSTREAM( only outgoing edges), UPSTREAM( only incoming edges), BOTHSTREAM( all edges) )
+*/
 export function compoundBFS(roots, k, direction) {
 	let eles = this;
 	let cy = this.cy();
@@ -13,6 +20,8 @@ export function compoundBFS(roots, k, direction) {
 	for( let i = 0; i < eles.length; i++){
 		 inCallingCollection[eles[i].id()] = true;
 	}
+
+	//add source nodes to queue
 	for (let i = 0; i < roots.length; i++) {
 		if( inCallingCollection[roots[i].id()] === true){
 		dist[roots[i].id()] = 0;
@@ -21,6 +30,7 @@ export function compoundBFS(roots, k, direction) {
 		neighborNodes.merge(roots[i]);
 		}
 	}
+
 	while (Q.length !== 0) {
 		var node = Q.shift();
 		var depth = dist[node.id()];
@@ -49,17 +59,11 @@ export function compoundBFS(roots, k, direction) {
 		else if (direction === "DOWNSTREAM")
 			neighbors = node.outgoers();
 		var noOfNeighbors = neighbors.length;
-		//chechking neighbors of current node
+		//chechking neighbors of current node and add them to queue if not visited
 		for (let i = 0; i < noOfNeighbors; i++) {
 			var neighbori = neighbors[i];
 			if (neighbori.isNode()) {
 				continue;
-				if (visited[neighbori.id()] !== true && depth + 1 <= k) {
-					dist[neighbori.id()] = depth + 1;
-					visited[neighbori.id()] = true;
-					Q.push(neighbori);
-					neighborNodes.merge(neighbori);
-				}
 			}
 			else if (neighbori.isEdge() && depth < k && inCallingCollection[neighbori.id()] === true) {
 				var targetNode = neighbori.source().id() === node.id() ? neighbori.target() : neighbori.source();
