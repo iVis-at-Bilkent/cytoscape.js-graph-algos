@@ -221,12 +221,12 @@ function commonStream(sourceNodes, k, direction) {
 	, starting from source nodes and ends at source nodes.
 	k: limit
 */
-function pathsBetween(sourceNodes, k) {
+function pathsBetween(sourceNodes, k, direction) {
   var cy = this.cy();
   var eles = this; // forward( downstream) and reverse( upstream) compound BFSs for calculating distances from source nodes
 
-  var forwardBFS = this.compoundBFS(sourceNodes, k, "DOWNSTREAM");
-  var reverseBFS = this.compoundBFS(sourceNodes, k, "UPSTREAM");
+  var forwardBFS = this.compoundBFS(sourceNodes, k, direction === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
+  var reverseBFS = this.compoundBFS(sourceNodes, k, direction === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
   var forwardNeighborNodes = forwardBFS.neighborNodes;
   var forwardNeighborEdges = forwardBFS.neighborEdges;
   var forwardDist = forwardBFS.distances;
@@ -260,6 +260,8 @@ function pathsBetween(sourceNodes, k) {
     if (inCallingCollection[edges[_i3].id()] !== true) continue; // check given edge is on any path between source nodes
 
     if (forwardDist[edges[_i3].source().id()] !== undefined && reverseDist[edges[_i3].target().id()] !== undefined && forwardDist[edges[_i3].source().id()] + reverseDist[edges[_i3].target().id()] < k) {
+      resultEdges.merge(edges[_i3]);
+    } else if (direction === "UNDIRECTED" && reverseDist[edges[_i3].source().id()] !== undefined && forwardDist[edges[_i3].target().id()] !== undefined && reverseDist[edges[_i3].source().id()] + forwardDist[edges[_i3].target().id()] < k) {
       resultEdges.merge(edges[_i3]);
     }
   }

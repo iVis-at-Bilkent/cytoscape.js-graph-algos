@@ -3,12 +3,12 @@
 	, starting from source nodes and ends at source nodes.
 	k: limit
 */
-export function pathsBetween(sourceNodes, k) {
+export function pathsBetween(sourceNodes, k, direction) {
 	let cy = this.cy();
 	var eles = this;
 	// forward( downstream) and reverse( upstream) compound BFSs for calculating distances from source nodes
-	var forwardBFS = this.compoundBFS(sourceNodes, k, "DOWNSTREAM");
-	let reverseBFS = this.compoundBFS(sourceNodes, k, "UPSTREAM");
+	var forwardBFS = this.compoundBFS(sourceNodes, k, direction === "DIRECTED" ? "DOWNSTREAM" : "BOTHSTREAM");
+	let reverseBFS = this.compoundBFS(sourceNodes, k, direction === "DIRECTED" ? "UPSTREAM" : "BOTHSTREAM");
 	var forwardNeighborNodes = forwardBFS.neighborNodes;
 	var forwardNeighborEdges = forwardBFS.neighborEdges;
 	var forwardDist = forwardBFS.distances;
@@ -42,6 +42,11 @@ export function pathsBetween(sourceNodes, k) {
 			reverseDist[edges[i].target().id()] !== undefined &&
 			forwardDist[edges[i].source().id()] + reverseDist[edges[i].target().id()] < k 
 		) {
+			resultEdges.merge(edges[i]);
+		}
+		else if( direction === "UNDIRECTED" && reverseDist[edges[i].source().id()] !== undefined &&
+		forwardDist[edges[i].target().id()] !== undefined &&
+		reverseDist[edges[i].source().id()] + forwardDist[edges[i].target().id()] < k){
 			resultEdges.merge(edges[i]);
 		}
 	}

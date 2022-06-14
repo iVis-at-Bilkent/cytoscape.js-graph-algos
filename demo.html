@@ -449,7 +449,7 @@
 					document.getElementById('graphofinterestUI').style.display = this.value === "graphofinterest" ? 'block' : 'none';
 					document.getElementById('PathsFromToUI').style.display = this.value === "pathsFromTo" ? 'block' : 'none';
 					limit = 1; // default
-					direction = ( this.value !== "pathsFromTo") ? "UPSTREAM" : "DIRECTED";
+					direction = ( this.value !== "pathsFromTo" && this.value !== "graphofinterest" ) ? "UPSTREAM" : "DIRECTED";
 				});
 
 			document.getElementById('limitneighborhood')
@@ -465,6 +465,10 @@
 			document.getElementById('limitGoI')
 				.addEventListener('change', function (ev) {
 					limit = parseInt(this.value);
+				});
+				document.getElementById('directionGoI')
+				.addEventListener('change', function (ev) {
+					direction = this.value;
 				});
 
 
@@ -603,7 +607,7 @@
 					var markedSources = {};
 					for( let i = 0; i < sourceNodes.length;i++)
 					     markedSources[sourceNodes[i].id()] = true;
-					var pathsBetween = cy.elements().pathsBetween(sourceNodes, limit);
+					var pathsBetween = cy.elements().pathsBetween(sourceNodes, limit,direction);
 					removeSelections();
 					var resultNodes = pathsBetween.resultNodes;
 					var resultEdges = pathsBetween.resultEdges;
@@ -766,6 +770,13 @@
 				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Limit</label>
 				<input id="limitGoI" type="number" min="1" value="1" step="1"
 					style="width:110px; margin-bottom: 10px!important;margin-left: 5px;"> </input>
+				</p>
+				<p><label style="width:100px; margin-bottom: 10px!important;margin-left: 5px;">Direction</label>
+					<select id="directionGoI" class="direction"
+						style="width:110px; margin-bottom: 10px!important;margin-left: 5px;">
+						<option value="DIRECTED">DIRECTED</option>
+						<option value="UNDIRECTED"> UNDIRECTED</option>
+					</select>
 				</p>
 			</form>
 			<br />
