@@ -107,8 +107,4 @@ git clone https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos.git
  `npm test` builds the library, then tests it.
  
  # Team
-[Yusuf Ziya Ozgul](https://github.com/YusufZiyaOzgul),  [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](https://github.com/iVis-at-Bilkent).
-
-## License
-
-[MIT](LICENSE).
+[Yusuf Ziya Ozgul](https://github.com/YusufZiyaOzgul), [Hasan Balci](https://github.com/HasanBalci) and  [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](https://github.com/iVis-at-Bilkent).
