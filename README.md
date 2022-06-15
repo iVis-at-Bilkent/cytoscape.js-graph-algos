@@ -53,9 +53,12 @@ Example:\
 
 3 - Paths Between Algorithm : This algorithm finds the paths which are between the source nodes within specified distance.
 
-`pathsBetween( sourceNodes, limit)`\
+`pathsBetween( sourceNodes, limit, direction)`\
 `sourceNodes` - Source node set of this algorithm.\
-`limit` - Specified distance of this algorithm.
+`limit` - Specified distance of this algorithm.\
+`direction` - Direction of algorithm. It can be  "DIRECTED" or "UNDIRECTED".\
+Only outgoing edges of nodes can be used if direction is "DIRECTED".\
+Edges can be used bidirectionally if direction is "UNDIRECTED".
 
 Returns nodes and edges on the paths between source nodes as a collection of Cytopscape.js.
 
