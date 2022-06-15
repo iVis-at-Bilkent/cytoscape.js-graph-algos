@@ -69,12 +69,12 @@ Example:\
   
 **4 - Paths From To Algorithm:** This algorithm finds the paths from source nodes to target nodes within specified distance.
 
-`pathsFromTo( sourceNodes, targetNodes, limit, furtherDistance, mod)`\
+`pathsFromTo( sourceNodes, targetNodes, limit, furtherDistance, direction)`\
 `sourceNodes` - Source node set of this algorithm.\
 `targetNodes` - Target node set of this algorithm.\
 `limit` - Specified distance of this algorithm.\
 `furtherDistance` - which is used in calculation `min( shortestPathLength + furtherDistance, limit)`.\
-`mod` -  Direction of algorithm. It can be  "UPSTREAM", "DIRECTED" or "UNDIRECTED".\
+`direction` -  Direction of algorithm. It can be "DIRECTED" or "UNDIRECTED".\
 Only outgoing edges of nodes can be used if direction is "DIRECTED".\
 Every edges of nodes can be used if direction is "UNDIRECTED".
   
