@@ -13,7 +13,7 @@ U. Dogrusoz, A. Cetintas, E. Demir and O. Babur, "Algorithms for effective query
  
 # Details of Algorithms
 
-1 - kNeighborhood Algorithm : This algorithm finds the neighbors of source node set within a specified distance.
+**1 - k-Neighborhood Algorithm:** This algorithm finds the neighbors of source node set within a specified distance.
 
 `kNeighborhood( sourceNodes, limit, direction)`
 
@@ -32,7 +32,7 @@ Example:\
 `result.neighborNodes` : neighbors of source nodes.\
 `result.neighborEdges` : edges which are on paths from source nodes to neighbor nodes.
 
-2 - Common Stream Algorithm : This algorithm finds the nodes which are common in the kNeighborhood of each source node within specified distance. These nodes are     called common nodes. Also, it finds the paths from source nodes to common nodes.
+**2 - Common Stream Algorithm:** This algorithm finds the nodes which are common in the kNeighborhood of each source node within specified distance. These nodes are     called common nodes. Also, it finds the paths from source nodes to common nodes.
 
 `commonStream( sourceNodes, limit, direction)`
 
@@ -51,11 +51,14 @@ Example:\
 `result.nodesOnPath` : nodes which are not common but are on the paths from source nodes to common nodes.\
 `result.edgesOnPath` : edges which are on the paths from source nodes to common nodes.
 
-3 - Paths Between Algorithm : This algorithm finds the paths which are between the source nodes within specified distance.
+**3 - Paths Between Algorithm:** This algorithm finds the paths which are between the source nodes within specified distance.
 
-`pathsBetween( sourceNodes, limit)`\
+`pathsBetween( sourceNodes, limit, direction)`\
 `sourceNodes` - Source node set of this algorithm.\
-`limit` - Specified distance of this algorithm.
+`limit` - Specified distance of this algorithm.\
+`direction` - Direction of algorithm. It can be  "DIRECTED" or "UNDIRECTED".\
+Only outgoing edges of nodes can be used if direction is "DIRECTED".\
+Edges can be used bidirectionally if direction is "UNDIRECTED".
 
 Returns nodes and edges on the paths between source nodes as a collection of Cytopscape.js.
 
@@ -64,14 +67,14 @@ Example:\
 `result.resultNodes` : nodes which are on the paths between source nodes.\
 `result.resultEdges` : edges which are on the paths between source nodes.
   
-4 - Paths From To Algorithm : This algorithm finds the paths from source nodes to target nodes within specified distance.
+**4 - Paths From To Algorithm:** This algorithm finds the paths from source nodes to target nodes within specified distance.
 
-`pathsFromTo( sourceNodes, targetNodes, limit, furtherDistance, mod)`\
+`pathsFromTo( sourceNodes, targetNodes, limit, furtherDistance, direction)`\
 `sourceNodes` - Source node set of this algorithm.\
 `targetNodes` - Target node set of this algorithm.\
 `limit` - Specified distance of this algorithm.\
 `furtherDistance` - which is used in calculation `min( shortestPathLength + furtherDistance, limit)`.\
-`mod` -  Direction of algorithm. It can be  "UPSTREAM", "DIRECTED" or "UNDIRECTED".\
+`direction` -  Direction of algorithm. It can be "DIRECTED" or "UNDIRECTED".\
 Only outgoing edges of nodes can be used if direction is "DIRECTED".\
 Every edges of nodes can be used if direction is "UNDIRECTED".
   
@@ -104,8 +107,4 @@ git clone https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos.git
  `npm test` builds the library, then tests it.
  
  # Team
-[Yusuf Ziya Ozgul](https://github.com/YusufZiyaOzgul),  [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](https://github.com/iVis-at-Bilkent).
-
-## License
-
-[MIT](LICENSE).
+[Yusuf Ziya Ozgul](https://github.com/YusufZiyaOzgul), [Hasan Balci](https://github.com/HasanBalci) and  [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](https://github.com/iVis-at-Bilkent).
