@@ -31,7 +31,7 @@ export function pathsFromTo(sources, targets, k, d, mod) {
     }
 	for (let i = 0; i < sources.length; i++)
 		visitSources[sources[i].id()] = true;
-	for (let i = 0; i < sources.length; i++)
+	for (let i = 0; i < targets.length; i++)
 		visitTargets[targets[i].id()] = true;
 	for (let i = 0; i < targets.length; i++) {
 		if( distancesFromSources[targets[i].id()] === undefined )

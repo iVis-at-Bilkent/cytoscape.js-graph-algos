@@ -313,7 +313,7 @@
 	    visitSources[sources[_i].id()] = true;
 	  }
 
-	  for (var _i2 = 0; _i2 < sources.length; _i2++) {
+	  for (var _i2 = 0; _i2 < targets.length; _i2++) {
 	    visitTargets[targets[_i2].id()] = true;
 	  }
 
