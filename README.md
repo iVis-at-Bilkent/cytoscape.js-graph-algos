@@ -7,7 +7,7 @@ This repository includes several graph algorithms such as k-Neighborhood, Common
 
 Cite the following if you use this repository:
 
-U. Dogrusoz, A. Cetintas, E. Demir and O. Babur, "Algorithms for effective querying of compound graph-based pathway databases", BMC Bioinformatics, 10(1), pp. 1-16, 2009.
+U. Dogrusoz, A. Cetintas, E. Demir and O. Babur, "[Algorithms for effective querying of compound graph-based pathway databases](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-376)", BMC Bioinformatics, 10(1), pp. 1-16, 2009.
                                                                           
 # Dependencies
 
