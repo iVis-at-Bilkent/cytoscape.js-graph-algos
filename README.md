@@ -112,7 +112,7 @@ git clone https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos.git
 
 This project is set up to automatically be published to npm and bower.  To publish:
 
-1. Build the extension : `npm run build:release`
+1. Build the extension : `npm run build`
 1. Commit the build : `git commit -am "Build for release"`
 1. Bump the version number and tag: `npm version major|minor|patch`
 1. Push to origin: `git push && git push --tags`
