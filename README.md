@@ -1,7 +1,9 @@
 # Description
 This repository includes several graph algorithms such as k-Neighborhood, Common Stream, Paths Between and Paths From To which can be used for querying compound graphs. These algorithms are the generalized versions of the ones developed for querying biological pathways whose details are explained [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2784781/). 
 
-Here is a [demo](https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html).
+<p align="center">
+<a href="https://ivis-at-bilkent.github.io/cytoscape.js-graph-algos/demo.html" title="Simple"><img src="https://www.cs.bilkent.edu.tr/~ivis/images/demo1.png" height=42px></a> &emsp;
+</p>
 
 Cite the following if you use this repository:
 
@@ -105,6 +107,18 @@ git clone https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos.git
     a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json             
     
  `npm test` builds the library, then tests it.
+
+ ## Publishing instructions
+
+This project is set up to automatically be published to npm and bower.  To publish:
+
+1. Build the extension : `npm run build:release`
+1. Commit the build : `git commit -am "Build for release"`
+1. Bump the version number and tag: `npm version major|minor|patch`
+1. Push to origin: `git push && git push --tags`
+1. Publish to npm: `npm publish .`
+1. If publishing to bower for the first time, you'll need to run `bower register cytoscape-graph-algos https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos.git`
+1. [Make a new release](https://github.com/iVis-at-Bilkent/cytoscape.js-graph-algos/releases/new) for Zenodo.
  
  # Team
 [Yusuf Ziya Ozgul](https://github.com/YusufZiyaOzgul), [Hasan Balci](https://github.com/HasanBalci) and  [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](https://github.com/iVis-at-Bilkent).
